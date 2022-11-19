@@ -1,6 +1,6 @@
 # bluech
 
-An chatting app degined to handle mutli users, threaded, and other complex forms of converstions. It supports media attachements, video & audio calls, text messages, and continuous notifications through its built-in push notification features.
+An chatting app designed to handle multi users, threaded, and other complex forms of converstions. It supports media attachements, video & audio calls, text messages, and continuous notifications through its built-in push notification features.
 
 
 ## Technologies
@@ -11,6 +11,7 @@ An chatting app degined to handle mutli users, threaded, and other complex forms
 - pyPDF2
 - python-docx
 - Asyncio
+- Sockets
 - PostgreSQL
 - Python
 

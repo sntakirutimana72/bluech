@@ -1,9 +1,9 @@
-import os
+from pathlib import Path
 
 
 def exec_dir():
-    return '.'
+    return Path('.')
 
 
 def res_dir():
-    return os.path.join('.', 'res')
+    return Path('.') / 'res'

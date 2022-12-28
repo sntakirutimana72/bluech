@@ -15,5 +15,5 @@ __pycache__
 *secrets
 *credentials
 
-# environment variables
+# dev environment variables
 .env

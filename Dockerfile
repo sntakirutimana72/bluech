@@ -13,8 +13,5 @@ COPY . .
 # Install dependancies/modules
 RUN python3.9 -m pip install --no-cache-dir -r requirements.txt
 
-# Run test units using pytest
-CMD ["pytest -w --disable-warnings"]
-
 # Run app shell core `run.py`
-# CMD ["python3.9", "./run.py"]
+CMD ["python3.9", "./run.py"]

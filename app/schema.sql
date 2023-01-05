@@ -1,6 +1,6 @@
-CREATE DATABASE bluech_development;
-CREATE DATABASE bluech_test;
-CREATE DATABASE bluech_production;
+CREATE DATABASE IF NOT EXISTS bluech_development;
+CREATE DATABASE IF NOT EXISTS bluech_test;
+CREATE DATABASE IF NOT EXISTS bluech_production;
 
 \c bluech_development;
 
@@ -36,7 +36,10 @@ CREATE TABLE actions (
 CREATE TABLE resources (
   id INT GENERATED ALWAYS AS IDENTITY,
   res_path VARCHAR NOT NULL,
+  message_id INT,
+  user_id INT,
   PRIMARY KEY(id),
+  FOREIGN KEY(user_id) REFERENCES (users),
   FOREIGN KEY(message_id) REFERENCES (messages)
 );
 
@@ -64,7 +67,7 @@ CREATE TABLE groups (
   FOREIGN KEY(created_by) REFERENCES(users)
 );
 
-CREATE TABLE group_users (
+CREATE TABLE joints (
   user_id INT NOT NULL,
   group_id INT NOT NULL,
   is_group_admin BOOLEAN NOT NULL,

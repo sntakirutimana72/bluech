@@ -1,16 +1,23 @@
+# Server environment
+##
+#:=>host IP
+HOST_URL = 'localhost'
+#
+#:=>host PORT
+HOST_PORT = 8090
+
+
 # Database environment variables
-
+##
 #:=>default
-
 DB_DEFAULT = {
     host: 'localhost',
     port: 5542,
     user: 'postgres',
     password: 'postgres'
 }
-
+#
 #:=>development, :=>test, :=>production
-
 DB_CONFIGS = {
     'development': {
         schema: 'bluech_development',

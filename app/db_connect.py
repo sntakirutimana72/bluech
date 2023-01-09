@@ -4,7 +4,7 @@ from .settings import DB_CONFIGS
 from .models import *
 
 
-def connect(context = 'development'):
+def db_connector(context = 'development'):
     """ Used to setup and load database initial configuration on start-up. """
     # Create a db instance with specific configurations
     database = PostgresqlDatabase(**DB_CONFIGS[context])

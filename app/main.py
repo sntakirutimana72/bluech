@@ -1,13 +1,13 @@
 import asyncio
 
-from .middlewares import service_connection
-from .db_connect import db_connector
+from .utils.middlewares import accept_conn
+from .utils.shareables import db_conn
 from .settings import HOST_URL, HOST_PORT
     
 
 async def main():
-    conn = db_connector()
-    server = await asyncio.start_server(service_connection(db), HOST_URL, HOST_PORT)
+    db_conn()
+    server = await asyncio.start_server(accept_conn, HOST_URL, HOST_PORT)
 
     addrs = ', '.join(str(sock.getsockname()) for sock in server.sockets)
     print(f'Serving on {addrs}')

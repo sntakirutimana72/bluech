@@ -34,3 +34,9 @@ DB_CONFIGS = AttributeDict({
         **DB_DEFAULT
     })
 })
+
+
+# System Configurations
+#
+#:=>encoding
+ENCODING = 'utf-8'

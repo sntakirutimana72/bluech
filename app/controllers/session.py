@@ -1,7 +1,8 @@
-from .controller import Controller
+from .base import Base
 
 
-class SessionController(Controller):
+class Session(Base):
     
     async def signin():
+        ...
     

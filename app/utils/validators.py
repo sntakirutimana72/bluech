@@ -37,6 +37,58 @@ display_validator = Schema({
     'params': {'entity_id': int}
 })
 #
+# :Users
+#
+# :all_users validator
+edit_profile_pic_validator = Schema({
+    'body': {
+        'data': str
+    }
+    'params': {'user_id': int}
+})
+#
+# :Groups
+#
+# :new_group validator
+new_group_validator = Schema({
+    'body': {
+        'name': str,
+        'created_by': int,
+        'is_private': bool
+    }
+})
+# :new_member validator
+new_member_validator = Schema({
+    'body': {
+        'user_id': str,
+        'is_group_admin': bool
+    },
+    'params': {'group_id': int}
+})
+# :new_member validator
+remove_member_validator = Schema({
+    'body': None,
+    'params': {
+        'group_id': int,
+        'member_id': int
+    }
+})
+# :exit_group & :remove_group validator
+exit_or_remove_group_validator = Schema({
+    'body': None,
+    'params': {'group_id': int}
+})
+# :group_privilege validator
+assign_group_privilege_validator = Schema({
+    'body': {
+        'is_group_admin': bool
+    },
+    'params': {
+        'group_id': int,
+        'member_id': int
+    }
+})
+#
 # :Messages
 #
 # :new_message validator

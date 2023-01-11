@@ -40,3 +40,6 @@ DB_CONFIGS = AttributeDict({
 #
 #:=>encoding
 ENCODING = 'utf-8'
+#
+# :=>content-types
+CONTENT_TYPES = ('json', 'text',)

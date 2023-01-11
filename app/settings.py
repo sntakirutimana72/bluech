@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-from .utils.interfaces import AttributeDict
+rom .utils.interfaces import AttributeDict
 
 # Server environment
 ##

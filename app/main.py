@@ -3,7 +3,7 @@ import asyncio
 from .utils.middlewares import accept_conn
 from .utils.shareables import db_conn
 from .settings import HOST_URL, HOST_PORT
-    
+
 
 async def main():
     db_conn()
@@ -14,5 +14,3 @@ async def main():
 
     async with server:
         await server.serve_forever()
-
-asyncio.run(main())

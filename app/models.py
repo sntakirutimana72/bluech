@@ -16,6 +16,8 @@ from peewee import (
     CharField, TextField, DateTimeField, BooleanField
 )
 
+from .utils.interfaces import AttributeDict
+
 class _Model(Model):
     created_at = DateTimeField(default=datetime.now)
     updated_at = DateTimeField(null=True)
@@ -26,6 +28,9 @@ class _Model(Model):
 class User(_Model):
     name = CharField(max_length=60)
     display_name = CharField(unique=True, max_length=12)
+    
+    def as_json(self):
+        return AttributeDict({'id': self.id, 'display_name': self.display_name})
 
 class Privilege(_Model):
     name = CharField(unique=True, max_length=16)

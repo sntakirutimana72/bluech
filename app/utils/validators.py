@@ -1,4 +1,4 @@
-from schema import Schema, Or
+from schema import Schema, Or, Optional
 
 from ..settings import CONTENT_TYPES
 
@@ -11,5 +11,11 @@ req_validator = Schema({
     'content_type': enum_validate(*CONTENT_TYPES),
     'content_length': int,
     'route': str,
-    'body': Or(str, dict, list)
+    'params': {
+        Optional('user_id'): int,
+        Optional('message_id'): int,
+        Optional('group_id'): int,
+    },
+    'body': Or(str, dict, list),
+    Optional('data'): bytes
 })

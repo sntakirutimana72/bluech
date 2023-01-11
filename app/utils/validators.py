@@ -92,7 +92,7 @@ assign_group_privilege_validator = Schema({
 # :Messages
 #
 # :new_message validator
-new_messge_validator = Schema({
+new_message_validator = Schema({
     'body': {
         'recipient_id': int,
         'description': str,
@@ -100,13 +100,13 @@ new_messge_validator = Schema({
     }
 })
 # :edit_message validator
-edit_messge_validator = Schema({
+edit_message_validator = Schema({
     'body': {
         'description': str
     },
     'params': {'message_id': int}
 })
 # :remove_message validator
-remove_messge_validator = Schema({
+remove_message_validator = Schema({
     'params': {'message_id': int}
 })

@@ -18,5 +18,3 @@ def change_user_display_name(username, display_name):
     
     return user.id
     
-def 
-    

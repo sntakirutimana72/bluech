@@ -4,8 +4,8 @@ from ..settings import DB_CONFIGS
 from ..models import *
 
 
-def db_connector(env = 'development'):
-    """ Used to setup and load database initial configuration on start-up. """
+def db_connector(env='development'):
+    """ Used to set up and load database initial configuration on start-up. """
     # Create a db instance with specific configurations
     database = PostgresqlDatabase(**DB_CONFIGS[env])
     # Initiate db instance connection
@@ -14,7 +14,7 @@ def db_connector(env = 'development'):
     models = [
         User,
         Privilege,
-        UserPrevilege,
+        UserPrivilege,
         Action,
         Resource,
         Message,

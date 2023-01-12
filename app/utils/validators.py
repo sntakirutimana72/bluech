@@ -9,7 +9,7 @@ def enum_type(*enums):
 
 # :default validator
 req_validator = Schema({
-    'content_type': enum_validate(*CONTENT_TYPES),
+    'content_type': enum_type(*CONTENT_TYPES),
     'content_length': int,
     'route': str,
     'request': {
@@ -29,11 +29,11 @@ signin_validator = Schema({
 #
 # :Users | :Groups
 #
-# :display_name validator and it applies on both group and user factions
+# :display_name validator, and it applies on both group and user factions
 display_validator = Schema({
     'body': {
         'display_name': str
-    }
+    },
     'params': {'entity_id': int}
 })
 #
@@ -43,7 +43,7 @@ display_validator = Schema({
 edit_profile_pic_validator = Schema({
     'body': {
         'data': str
-    }
+    },
     'params': {'user_id': int}
 })
 #

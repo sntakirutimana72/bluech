@@ -1,22 +1,22 @@
-rom .utils.interfaces import AttributeDict
+from .utils.interfaces import AttributeDict
 
 # Server environment
 ##
-#:=>host IP
+# :=>host IP
 HOST_URL = 'localhost'
 #
-#:=>host PORT
+# :=>host PORT
 HOST_PORT = 8090
 #
-# Pre defined Allowed Routes
+# Pre-defined Allowed Routes
 ALLOWED_ROUTES = AttributeDict({
     # For session
     'signin': 'POST:/session',
     'signout': 'DELETE:/session',
     # For messages
-    'all_messges': 'GET:/messages',
+    'all_messages': 'GET:/messages',
     'new_message': 'POST:/messages',
-    'edit_messge': 'PATCH:/messages/<id int>',
+    'edit_message': 'PATCH:/messages/<id int>',
     'remove_message': 'DELETE:/messages/<id int>',
     # For users
     'edit_username': 'PATCH:/users/<id int>',                        # (edit display name)
@@ -32,52 +32,6 @@ ALLOWED_ROUTES = AttributeDict({
     # For invalid routes
     'not_found': '*'
 })
-
-
-# Database environment variables
-##
-#:=>default
-DB_DEFAULT = AttributeDict({
-    host: 'localhost',
-    port: 5542,
-    user: 'postgres',
-    password: 'postgres'
-})
-#
-#:=>development, :=>test, :=>production
-DB_CONFIGS = AttributeDict({
-    'development': AttributeDict({
-        schema: 'bluech_development',
-        **DB_DEFAULT
-    }),
-    'test': AttributeDict({
-        schema: 'bluech_test',
-        **DB_DEFAULT
-    }),
-    'production': AttributeDict({
-        schema: 'bluech_production',
-        **DB_DEFAULT
-    })
-})
-
-
-# System Configurations
-#
-#:=>encoding
-ENCODING = 'utf-8'
-#
-# :=>content-types
-CONTENT_TYPES = ('json', 'text',)
-=======
-from .utils.interfaces import AttributeDict
-
-# Server environment
-##
-# :=>host IP
-HOST_URL = 'localhost'
-#
-# :=>host PORT
-HOST_PORT = 8090
 
 
 # Database environment variables
@@ -111,4 +65,6 @@ DB_CONFIGS = AttributeDict({
 #
 # :=>encoding
 ENCODING = 'utf-8'
->>>>>>> 160d46f1726a7832d7dbc02bbc7c5fc76667dfe5
+#
+# :=>content-types
+CONTENT_TYPES = ('json', 'text',)

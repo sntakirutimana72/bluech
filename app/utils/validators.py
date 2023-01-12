@@ -2,111 +2,130 @@ from schema import Schema, Or, Optional
 
 from ..settings import CONTENT_TYPES
 
-def enum_type(*enums):
-    def validate(initial):
-        return initial in enums
-    return validate
+class Validators:
 
-# :default validator
-req_validator = Schema({
-    'content_type': enum_type(*CONTENT_TYPES),
-    'content_length': int,
-    'route': str,
-    'request': {
-        'body': Or(None, {str: object}),
-        Optional('params'): {str: int}
-    }
-})
-#
-# :Session
-#
-# :signin validator
-signin_validator = Schema({
-    'body': {
-        'name': str
-    }
-})
-#
-# :Users | :Groups
-#
-# :display_name validator, and it applies on both group and user factions
-display_validator = Schema({
-    'body': {
-        'display_name': str
-    },
-    'params': {'entity_id': int}
-})
-#
-# :Users
-#
-# :all_users validator
-edit_profile_pic_validator = Schema({
-    'body': {
-        'data': str
-    },
-    'params': {'user_id': int}
-})
-#
-# :Groups
-#
-# :new_group validator
-new_group_validator = Schema({
-    'body': {
-        'name': str,
-        'created_by': int,
-        'is_private': bool
-    }
-})
-# :new_member validator
-new_member_validator = Schema({
-    'body': {
-        'user_id': str,
-        'is_group_admin': bool
-    },
-    'params': {'group_id': int}
-})
-# :new_member validator
-remove_member_validator = Schema({
-    'body': None,
-    'params': {
-        'group_id': int,
-        'member_id': int
-    }
-})
-# :exit_group & :remove_group validator
-exit_or_remove_group_validator = Schema({
-    'body': None,
-    'params': {'group_id': int}
-})
-# :group_privilege validator
-assign_group_privilege_validator = Schema({
-    'body': {
-        'is_group_admin': bool
-    },
-    'params': {
-        'group_id': int,
-        'member_id': int
-    }
-})
-#
-# :Messages
-#
-# :new_message validator
-new_message_validator = Schema({
-    'body': {
-        'recipient_id': int,
-        'description': str,
-        Optional('reply_to'): int
-    }
-})
-# :edit_message validator
-edit_message_validator = Schema({
-    'body': {
-        'description': str
-    },
-    'params': {'message_id': int}
-})
-# :remove_message validator
-remove_message_validator = Schema({
-    'params': {'message_id': int}
-})
+    @staticmethod
+    def enum_type(*enums):
+        def validate(initial):
+            return initial in enums
+        return validate
+
+    # :default validator
+    @classmethod
+    def request(cls, req): 
+        return Schema({
+            'content_type': cls.enum_type(*CONTENT_TYPES),
+            'content_length': int,
+            'route': str,
+            'request': {
+                'body': Or(None, {str: object}),
+                Optional('params'): {str: int}
+            }
+        }).validate(req)
+    
+    # :Session
+    #
+    # :signin validator
+    @staticmethod
+    def signin(req): 
+        return Schema({'body': {'name': str}}).validate(req)
+        
+    # :Users | :Groups
+    #
+    # :display_name validator, and it applies on both group and user factions
+    @staticmethod
+    def display_name(req): 
+        return Schema({
+            'body': {'display_name': str},
+            'params': {'entity_id': int}
+        }).validate(req)
+    
+    # :Users
+    #
+    # :all_users validator
+    @staticmethod
+    def edit_profile_pic(req):
+        return Schema({
+            'body': {'data': str},
+            'params': {'user_id': int}
+        }).validate(req)
+   
+    # :Groups
+    #
+    # :new_group validator
+    @staticmethod
+    def new_group(req):
+        return Schema({
+            'body': {
+                'name': str,
+                'created_by': int,
+                'is_private': bool
+            }
+        }).validate(req)
+        
+    # :new_member validator
+    @staticmethod
+    def new_member(req):
+        return Schema({
+            'body': {
+                'user_id': str,
+                'is_group_admin': bool
+            },
+            'params': {'group_id': int}
+        }).validate(req)
+    
+    # :new_member validator
+    @staticmethod
+    def remove_member(req):
+        return Schema({
+            'body': None,
+            'params': {
+                'group_id': int,
+                'member_id': int
+            }
+        }).validate(req)
+    
+    # :exit_group & :remove_group validator
+    @staticmethod
+    def exit_or_remove_group(req):
+        return Schema({
+            'body': None,
+            'params': {'group_id': int}
+        }).validate(req)
+    
+    # :group_privilege validator
+    @staticmethod
+    def assign_group_privilege(req):
+        return Schema({
+            'body': {'is_group_admin': bool},
+            'params': {
+                'group_id': int,
+                'member_id': int
+            }
+        }).validate(req)
+
+    # :Messages
+    #
+    # :new_message validator
+    @staticmethod
+    def new_message(req):
+        return Schema({
+            'body': {
+                'recipient_id': int,
+                'description': str,
+                Optional('reply_to'): int
+            }
+        }).validate(req)
+    
+    # :edit_message validator
+    @staticmethod
+    def edit_message(req):
+        return Schema({
+            'body': {'description': str},
+            'params': {'message_id': int}
+        }).validate(req)
+    
+    # :remove_message validator
+    @staticmethod
+    def remove_message(req):
+        return Schema({'params': {'message_id': int}}).validate(req)

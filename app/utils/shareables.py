@@ -1,16 +1,16 @@
 from functools import lru_cache
 
 from .db_connect import db_connector
-from .interfaces import AttributeDict, Queuable
+from .interfaces import ChannelsQ, Queuable
 
 @lru_cache(typed=True)
 def db_conn(env='development'):
     return db_connector(env)
 
 @lru_cache
-def conns_Q():
-    return AttributeDict()
+def channels_Q():
+    return ChannelsQ()
 
 @lru_cache
-def messages_Q():
+def tasks_Q():
     return Queuable()

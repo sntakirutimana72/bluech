@@ -16,7 +16,7 @@ class Validators:
         return Schema({
             'content_type': cls.enum_type(*CONTENT_TYPES),
             'content_length': int,
-            'route': str,
+            'protocol': str,
             'request': {
                 'body': Or(None, {str: object}),
                 Optional('params'): {str: int}

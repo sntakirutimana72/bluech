@@ -1,8 +1,14 @@
+from .exceptions import Unauthorized
 from ..models import User
 
 def signin(username):
-    user = User.get_or_none(User.name == username)
-    return user.id if user else None
+    user = None
+    try:
+        user = User.get(User.name == username)
+    except:
+        raise Unauthorized
+        
+    return user
 
 def signout():
     ...

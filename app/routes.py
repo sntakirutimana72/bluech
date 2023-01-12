@@ -20,6 +20,4 @@ route_patterns = [
     router('exit_group', '[<CONTROLLER>]'),        # (leave group)
     router('remove_group', '[<CONTROLLER>]'),      # (delete group)
     router('group_privilege', '[<CONTROLLER>]'),   # (assign privilege)
-    # not found zone
-    router('not_found', '[<NOT_FOUND>]')
 ]

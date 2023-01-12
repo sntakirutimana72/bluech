@@ -24,6 +24,9 @@ class _Model(Model):
 
     class Meta:
         database = DatabaseProxy()
+        
+    def as_json(self):
+        return {}
 
 class User(_Model):
     name = CharField(max_length=60)

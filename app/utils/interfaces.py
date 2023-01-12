@@ -1,47 +1,44 @@
-from asyncio import Lock, Queue, StreamReader, StreamWriter
+from asyncio import Lock, Queue
 from uuid import uuid4
 from typing import Union, List, Dict, Any
-
-from .serializers import json_parse
 
 class AttributeDict(dict):
     __getattr__ = dict.__getitem__
     __setattr__ = dict.__setitem__
     __delattr__ = dict.__delitem__
 
-class Connection:
-    def __init__(self, reader: StreamReader, writer: StreamWriter):
-        self.uid = uuid4()
-        self.reader = reader
-        self.writer = writer
+class RouteRef:
 
-class RefUrl:
-    def __init__(self, url_path):
-        self.method, self.path = url_path.lsplit(':', 1)
+    def __init__(self, route_path):
+        self.method, self.path = route_path.lsplit(':', 1)
 
     @property
     def full_path(self):
         return f'{self.method}:{self.path}'
 
 class Request:
-    def __init__(self, payload: Dict[str, Any]):
-        self.ref_url = RefUrl(payload.route)
-        self.content_type = payload.content_type
-        self.content_length = payload.content_length
-        self.body = payload.body
+
+    def __init__(self, req: Dict[str, Any]):
+        self.route_ref = RouteRef(req.pop('protocol'))
+        
+        for name, value in req.items():
+            setattr(self, name, value)
 
     @property
-    def as_json(self) -> Union[str, List[Any], Dict[str, Any]]:
-        if self.content_type != 'json':
-            return self.body
-        return json_parse(self.body)
-
+    def route_path(self) -> str:
+        return self.route_ref.path
+        
     @property
-    def rel_path(self) -> str:
-        return self.ref_url.path
+    def method(self) -> str:
+        return self.route_ref.method
+        
+    @property
+    def full_path(self) -> str:
+        return self.route_ref.full_path
 
 class Queuable:
-    def __init__(self, q: Queue = Queue(), lock: Lock = Lock()):
+
+    def __init__(self, q = Queue(), lock: Lock = Lock()):
         self._q = q
         self._lock = lock
 
@@ -59,3 +56,21 @@ class Queuable:
         async with self._lock:
             for _ in range(self._q.qsize()):
                 self._q.get_nowait()
+                
+class ChannelsQ:
+
+    def __init__(self, q = {}, lock: Lock = Lock()):
+        self._q = q
+        self._lock = lock
+        
+    async def push(self, channel):
+        async with self._lock:
+            self._q[channel.channel_id] = channel
+
+    async def remove(self, channel_id):
+        async with self._lock:
+            del self._q[channel_id]
+
+    async def clear(self):
+        async with self._lock:
+            self._q = {}

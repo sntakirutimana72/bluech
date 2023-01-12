@@ -29,8 +29,6 @@ ALLOWED_ROUTES = AttributeDict({
     'exit_group': 'DROP:/groups/<id int>',                           # (leave group)
     'remove_group': 'DELETE:/groups/<id int>',                       # (delete group)
     'group_privilege': 'ASSIGN:/groups/<id int>/members/<id int>',   # (assign privilege)
-    # For invalid routes
-    'not_found': '*'
 })
 
 

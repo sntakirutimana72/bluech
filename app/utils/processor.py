@@ -18,39 +18,53 @@ class Processor:
         self._is_servicing = True
         self._request = None
 
-        create_task(self._service_new())
+        create_task(self._in_service())
 
-    async def _register_new(self, user):
+    async def _in_registry(self, user):
         self._is_servicing = None
-        # Update Channels Queue
         channel = Channel(self._writer, user)
         channels_q = channels_Q()
+
         await channels_q.push(channel)
-        # Ping back the channel
         await pump(self._writer, Response.as_signin_success(user))
-        # Cache broadcast task in the corresponding queue
         await self._create_task('users', user.id)
 
     @staticmethod
-    async def _create_task(proto, entity_id):
+    async def _create_task(proto, resource_id):
         tasks_q = tasks_Q()
-        await tasks_q.push(AttributeDict({'protocol': proto, 'id': entity_id}))
+        await tasks_q.push(AttributeDict({'protocol': proto, 'id': resource_id}))
 
-    async def _service_new(self):
-        # new connection is still in transit and haven't been cleared to operate
+    async def _in_submission(self, req):
+        self._in_process(req)
+        controller = dispatch(self._request)
+        return await controller.exec()
+
+    async def _in_service(self):
         try:
             req = await fetch(self._reader)
-            self._process_request(req)
-            # Invoke resource controller to handle the rest
-            controller = dispatch(self._request)
-            user = await controller.exec()
-            await self._register_new(user)
+            resource = await self._in_submission(req)
+            await self._in_registry(resource)
         except Exception as ex:
             await pump(self._writer, Response.as_exc(ex))
-        finally:
-            self._request = None
 
-    def _process_request(self, req):
+        self._request = None
+
+    async def _in_transition(self, req):
+        try:
+            await self._in_submission(req)
+        except Exception as ex:
+            await pump(self._writer, Response.as_exc(ex))
+
+        self._request = None
+
+    async def _in_streaming(self):
+        try:
+            async for req in self._reader:
+                await self._in_transition(req)
+        except Exception as ex:
+            print(ex)
+
+    def _in_process(self, req):
         validated_req = AttributeDict(Validators.request(req))
         action_req = validated_req.pop('request')
 

@@ -24,14 +24,18 @@ class _Model(Model):
 
     class Meta:
         database = DatabaseProxy()
-        
+
     def as_json(self):
         return {}
+
+    @property
+    def name(self):
+        return self.__class__.__name__.lower()
 
 class User(_Model):
     name = CharField(max_length=60)
     display_name = CharField(unique=True, max_length=12)
-    
+
     def as_json(self):
         return AttributeDict({'id': self.id, 'display_name': self.display_name})
 

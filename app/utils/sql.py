@@ -2,12 +2,11 @@ from .exceptions import Unauthorized
 from ..models import User
 
 def signin(username):
-    user = None
     try:
         user = User.get(User.name == username)
     except:
         raise Unauthorized
-        
+
     return user
 
 def signout():

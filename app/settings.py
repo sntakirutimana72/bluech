@@ -58,6 +58,16 @@ DB_CONFIGS = AttributeDict({
     })
 })
 
+# Logging
+#
+# :=>db
+LOGGING_LEVELS = AttributeDict({
+    'LOGIN': 1,
+    'LOGOUT': 2,
+    'MSG_NEW': 3,
+    'MSG_EDIT': 4,
+    'MSG_DEL': 5
+})
 
 # System Configurations
 #

@@ -1,9 +1,10 @@
 from .utils.router import router
+from .controllers import SessionController
 
 route_patterns = [
     # session
-    router('signin', '[<CONTROLLER>]'),
-    router('signout', '[<CONTROLLER>]'),
+    router('signin', SessionController),
+    router('signout', SessionController),
     # messages
     router('all_messages', '[<CONTROLLER>]'),
     router('new_message', '[<CONTROLLER>]'),

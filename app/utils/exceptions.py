@@ -20,3 +20,11 @@ class ProtocolValidationError(CustomException):
 
 class ProtocolLookupError(CustomException):
     code = 404
+    
+class ActiveModelError(CustomException):
+    code = 501
+    message = 'DB Model operation failure'
+    
+class NoResourcesFound(CustomException):
+    code = 404
+    message = 'Not Found'

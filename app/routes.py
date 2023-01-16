@@ -1,15 +1,15 @@
 from .utils.router import router
 from .controllers import SessionController
+from .controllers import MessagesController
 
 route_patterns = [
     # session
-    router('signin', SessionController),
-    router('signout', SessionController),
+    router(('signin', 'signout',), SessionController),
     # messages
-    router('all_messages', '[<CONTROLLER>]'),
-    router('new_message', '[<CONTROLLER>]'),
-    router('edit_message', '[<CONTROLLER>]'),
-    router('remove_message', '[<CONTROLLER>]'),
+    router(
+        ('new_message', 'all_messages', 'edit_message', 'remove_message',),
+        MessagesController
+    ),
     # users
     router('edit_username', '[<CONTROLLER>]'),     # (edit display name)
     router('edit_profile_pic', '[<CONTROLLER>]'),  # (change profile picture)

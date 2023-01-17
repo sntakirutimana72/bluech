@@ -1,6 +1,7 @@
 from .utils.router import router
 from .controllers import SessionController
 from .controllers import MessagesController
+from .controllers import UsersController
 
 route_patterns = [
     # session
@@ -10,10 +11,11 @@ route_patterns = [
         ('new_message', 'all_messages', 'edit_message', 'remove_message',),
         MessagesController
     ),
-    # # users
-    # router('edit_username', '[<CONTROLLER>]'),     # (edit display name)
-    # router('edit_profile_pic', '[<CONTROLLER>]'),  # (change profile picture)
-    # router('all_users', '[<CONTROLLER>]'),         # (fetch all users)
+    # users
+    router(
+        ('edit_username', 'edit_profile_pic', 'all_users',),
+        UsersController
+    ),
     # # groups
     # router('new_group', '[<CONTROLLER>]'),         # (create group)
     # router('new_member', '[<CONTROLLER>]'),        # (add member)

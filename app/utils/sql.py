@@ -95,3 +95,31 @@ def all_users(pk: int):
     
     db_logger(logging_level=LOGGING_LEVELS.USERS_ALL, done_by=pk)
     return users + list(groups)
+
+def new_group(user_id: int, **kwargs):
+    try:
+        group = Group.create(created_by=user_id, **kwargs)
+    except:
+        raise ActiveModelError
+    
+    db_logger(logging_level=LOGGING_LEVELS.GROUP_NEW, done_by=user_id)
+    return group.id
+
+def new_member(user_id: int, pk: int, **kwargs):
+    try:
+        query = (Group
+                 .select()
+                 .join(User)
+                 .switch(Group)
+                 .join(Joint)
+                 .where(Group.id == pk, Group.created_by == user_id or Joint.user == user_id and Joint.is_group_admin))
+        results = list(query)
+    except:
+        raise ActiveModelError
+    
+    if not results:
+        raise Unauthorized
+    
+    member = Joint.create(group=pk, **kwargs)
+    db_logger(logging_level=LOGGING_LEVELS.MEMBER_ADD, done_by=user_id)
+    return member

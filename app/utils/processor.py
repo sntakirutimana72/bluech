@@ -1,9 +1,9 @@
 from asyncio import StreamReader, StreamWriter, create_task
 
 from .interfaces import AttributeDict, Request
-from .shareables import channels_Q, tasks_Q
+from .shareables import channels_Q
 from .channels import Channel
-from .pipe import fetch, pump
+from .pipe import fetch, pump, create_response_task
 from .response import Response
 from .validators import Validators
 from .exceptions import ProtocolLookupError, ProtocolValidationError, CustomException
@@ -15,15 +15,10 @@ class Processor:
     def __init__(self, reader: StreamReader, writer: StreamWriter):
         self._reader = reader
         self._writer = writer
-        self._session = None
-        self._request = None
+        self._session: AttributeDict | None = None
+        self._request: Request | None = None
 
         create_task(self._in_stream())
-        
-    @staticmethod
-    async def _create_task(proto, resource_id):
-        tasks_q = tasks_Q()
-        await tasks_q.push(AttributeDict({'protocol': proto, 'id': resource_id}))
 
     async def _in_registry(self, user):
         self._session = AttributeDict({'user_id': user.id, 'is_group': False})
@@ -32,12 +27,12 @@ class Processor:
 
         await channels_q.push(channel)
         await pump(self._writer, Response.as_signin_success(user))
-        await self._create_task('users', user.id)
+        await create_response_task('users', user.id)
 
     async def _in_submission(self, req):
         self._in_process(req)
         controller = dispatch(self._request)
-        
+
         return await controller.exec()
 
     async def _in_transition(self, req):

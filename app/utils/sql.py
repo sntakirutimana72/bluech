@@ -1,8 +1,6 @@
-from typing import Union
-
-from .exceptions import Unauthorized
-from ..models import User, Log
+from .exceptions import *
 from ..settings import LOGGING_LEVELS
+from ..models import *
 
 def db_logger(**kwargs) -> int:
     return Log.create(**kwargs)
@@ -17,15 +15,47 @@ def signin(username) -> User:
     return user
 
 def signout(user_id):
-    db_logger(action_id=LOGGING_LEVELS.LOGOUT, done_by=user_id)
+    db_logger(logging_level=LOGGING_LEVELS.LOGOUT, done_by=user_id)
 
-def change_user_display_name(username, display_name) -> Union[int, None]:
-    user = User.get_or_none(User.name == username)
-    if user is None:
-        return
-    if user.display_name == display_name or User.get_or_none(User.display_name == display_name):
-        return
-    user.display_name = display_name
-    user.save()
+def new_message(user_id, **kwargs) -> int:
+    try:
+        message = Message.create(user=user_id, **kwargs)
+    except:
+        raise ActiveModelError
 
-    return user.id
+    db_logger(logging_level=LOGGING_LEVELS.MSG_NEW, done_by=user_id)
+    return message.id
+
+def all_messages(user_id, **kwargs):
+    try:
+        messages = Message.get(recipient=user_id, **kwargs).where(Message.status != 'DISABLED')
+    except:
+        raise ActiveModelError
+
+    if not messages:
+        raise NoResourcesFound
+
+    db_logger(logging_level=LOGGING_LEVELS.MSG_ALL, done_by=user_id)
+    return messages
+
+def edit_message(user_id, pk, **kwargs):
+    try:
+        cn = Message.update(**kwargs).where(Message.sender == user_id and Message.id == pk)
+    except:
+        raise ActiveModelError
+
+    if cn is None:
+        raise NoResourcesFound
+
+    db_logger(logging_level=LOGGING_LEVELS.MSG_EDIT, done_by=user_id)
+
+def remove_message(user_id, pk):
+    try:
+        cn = Message.delete().where(Message.sender == user_id and Message.id == pk and Message.status != 'DELETED')
+    except:
+        raise ActiveModelError
+
+    if cn is None:
+        raise NoResourcesFound
+
+    db_logger(logging_level=LOGGING_LEVELS.MSG_DEL, done_by=user_id)

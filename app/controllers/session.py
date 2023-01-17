@@ -9,4 +9,4 @@ class Session(Base):
         
     async def _delete(self):
         """ Signout """
-        sql.signout(self._request.session.user_id)
+        sql.signout(self.user_id)

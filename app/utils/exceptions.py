@@ -28,3 +28,7 @@ class ActiveModelError(CustomException):
 class NoResourcesFound(CustomException):
     code = 404
     message = 'Not Found'
+    
+class ResourceNotChanged(CustomException):
+    code = 304
+    message = 'Resource was already up to date.'

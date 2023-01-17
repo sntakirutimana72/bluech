@@ -67,7 +67,10 @@ LOGGING_LEVELS = AttributeDict({
     'MSG_NEW': 3,
     'MSG_EDIT': 4,
     'MSG_DEL': 5,
-    'MSG_ALL': 6
+    'MSG_ALL': 6,
+    'USER_EDIT_NICKNAME': 7,
+    'USER_EDIT_PIC': 8,
+    'USERS_ALL': 9
 })
 
 # System Configurations

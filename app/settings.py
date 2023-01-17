@@ -25,10 +25,10 @@ ALLOWED_ROUTES = AttributeDict({
     # For groups
     'new_group': 'POST:/groups',                                     # (create group)
     'new_member': 'PUT:/groups/<id int>',                            # (add member)
-    'remove_member': 'DELETE:/groups/<id int>/members/<id int>',     # (remove member)
+    'remove_member': 'POP:/groups/<id int>/members/<id int>',     # (remove member)
     'exit_group': 'DROP:/groups/<id int>',                           # (leave group)
     'remove_group': 'DELETE:/groups/<id int>',                       # (delete group)
-    'group_privilege': 'ASSIGN:/groups/<id int>/members/<id int>',   # (assign privilege)
+    'assign_group_privilege': 'ASSIGN:/groups/<id int>/members/<id int>',   # (assign privilege)
 })
 
 
@@ -70,7 +70,13 @@ LOGGING_LEVELS = AttributeDict({
     'MSG_ALL': 6,
     'USER_EDIT_NICKNAME': 7,
     'USER_EDIT_PIC': 8,
-    'USERS_ALL': 9
+    'USERS_ALL': 9,
+    'GROUP_NEW': 10,
+    'GROUP_EXIT': 11,
+    'GROUP_DEL': 12,
+    'GROUP_PRIV_ASSIGN': 13,
+    'MEMBER_ADD': 14,
+    'MEMBER_DEL': 15    
 })
 
 # System Configurations

@@ -15,8 +15,8 @@ class Processor:
     def __init__(self, reader: StreamReader, writer: StreamWriter):
         self._reader = reader
         self._writer = writer
-        self._session = None
-        self._request = None
+        self._session: AttributeDict | None = None
+        self._request: Request | None = None
 
         create_task(self._in_stream())
 
@@ -32,7 +32,7 @@ class Processor:
     async def _in_submission(self, req):
         self._in_process(req)
         controller = dispatch(self._request)
-        
+
         return await controller.exec()
 
     async def _in_transition(self, req):

@@ -38,21 +38,20 @@ def all_messages(user_id, **kwargs):
     db_logger(logging_level=LOGGING_LEVELS.MSG_ALL, done_by=user_id)
     return messages
 
-def edit_message(user_id, **kwargs):
+def edit_message(user_id, pk, **kwargs):
     try:
-        message = Message.update(**kwargs).where(Message.sender == user_id)
+        cn = Message.update(**kwargs).where(Message.sender == user_id and Message.id == pk)
     except:
         raise ActiveModelError
 
-    if message is None:
+    if cn is None:
         raise NoResourcesFound
 
     db_logger(logging_level=LOGGING_LEVELS.MSG_EDIT, done_by=user_id)
-    return message.id
 
 def remove_message(user_id, pk):
     try:
-        cn = Message.delete().where(Message.sender == user_id and Message.id == pk and Message.status != 'DISABLED')
+        cn = Message.delete().where(Message.sender == user_id and Message.id == pk and Message.status != 'DELETED')
     except:
         raise ActiveModelError
 

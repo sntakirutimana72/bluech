@@ -18,7 +18,8 @@ class Messages(Base):
 
     async def _patch(self):
         """Edit an existing in service message"""
-        message_id = sql.edit_message(self.user_id, **self._request.body)
+        message_id = self._request.params.message_id
+        sql.edit_message(self.user_id, message_id, **self._request.body)
         await create_response_task(self._request.protocol, message_id)
 
     async def _delete(self):

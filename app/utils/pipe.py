@@ -9,7 +9,7 @@ async def fetch(reader):
 async def pump(writer, data):
     writer.write(compress(data))
     await writer.drain()
-    
-async def create_response_task(proto, resource_id):
+
+async def create_response_task(proto, resource_id, **options):
     tasks_q = tasks_Q()
-    await tasks_q.push(AttributeDict({'proto': proto, 'id': resource_id}))
+    await tasks_q.push(AttributeDict({**options, 'proto': proto, 'id': resource_id}))

@@ -37,9 +37,79 @@ class TestRequestValidator(PyTestCase):
         self.assert_dict_has_key(validated, 'request')
         self.assert_isinstanceof(validated['request']['params'], AttributeDict)
         
-    def test_with_wrong_params(self):
+    def test_without_request(self):
+        raw = {**self.request}
+        del raw['request']
+        
+        with self.assert_raises():
+            V.request(raw)
+            
+    def test_with_invalid_request(self):
+        raw = {**self.request}
+        raw['request'] = [4, 8]
+        
+        with self.assert_raises():
+            V.request(raw)
+        
+    def test_with_invalid_params(self):
         raw = {**self.request}
         raw['request']['params'] = {5: 'hello'}
+        
+        with self.assert_raises():
+            V.request(raw)
+            
+    def test_with_invalid_body(self):
+        raw = {**self.request}
+        raw['request']['body'] = 'INVALID BODY'
+        
+        with self.assert_raises():
+            V.request(raw)
+            
+    def test_without_body(self):
+        raw = {**self.request}
+        del raw['request']['body']
+        
+        with self.assert_raises():
+            V.request(raw)
+            
+    def test_with_invalid_content_type(self):
+        raw = {**self.request}
+        raw['content_type'] = 'INVALID CONTENT TYPE'
+        
+        with self.assert_raises():
+            V.request(raw)
+            
+    def test_without_content_type(self):
+        raw = {**self.request}
+        del raw['content_type']
+        
+        with self.assert_raises():
+            V.request(raw)
+            
+    def test_with_invalid_content_length(self):
+        raw = {**self.request}
+        raw['content_length'] = 17.5
+        
+        with self.assert_raises():
+            V.request(raw)
+            
+    def test_without_content_length(self):
+        raw = {**self.request}
+        del raw['content_length']
+        
+        with self.assert_raises():
+            V.request(raw)
+            
+    def test_with_invalid_protocol(self):
+        raw = {**self.request}
+        raw['protocol'] = None
+        
+        with self.assert_raises():
+            V.request(raw)
+            
+    def test_without_protocol(self):
+        raw = {**self.request}
+        del raw['protocol']
         
         with self.assert_raises():
             V.request(raw)

@@ -1,7 +1,5 @@
 from .utils.router import router
-from .controllers import SessionController
-from .controllers import MessagesController
-from .controllers import UsersController
+from .controllers import *
 
 route_patterns = [
     # session
@@ -16,11 +14,9 @@ route_patterns = [
         ('edit_username', 'edit_profile_pic', 'all_users',),
         UsersController
     ),
-    # # groups
-    # router('new_group', '[<CONTROLLER>]'),         # (create group)
-    # router('new_member', '[<CONTROLLER>]'),        # (add member)
-    # router('remove_member', '[<CONTROLLER>]'),     # (remove member)
-    # router('exit_group', '[<CONTROLLER>]'),        # (leave group)
-    # router('remove_group', '[<CONTROLLER>]'),      # (delete group)
-    # router('group_privilege', '[<CONTROLLER>]'),   # (assign privilege)
+    # groups
+    router(
+        ('new_group', 'new_member', 'remove_member', 'exit_group', 'remove_group', 'assign_group_privilege',),
+        GroupsController
+    ),
 ]

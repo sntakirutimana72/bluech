@@ -123,3 +123,43 @@ def new_member(user_id: int, pk: int, **kwargs):
     member = Joint.create(group=pk, **kwargs)
     db_logger(logging_level=LOGGING_LEVELS.MEMBER_ADD, done_by=user_id)
     return member.as_json()
+
+def remove_member(user_id: int, member_id: int, group_id: int):
+    try:
+        if user_id == member_id:
+            raise
+        
+        admin: Joint | None = Joint.get(Joint.user == user_id, Joint.group == group_id, Joint.is_group_admin)
+        if admin is None:
+            raise
+        
+        member: Joint | None = Joint.get(Joint.user == member_id, Joint.group == group_id)
+        if member is None:
+            raise
+        member.delete_instance()
+    except:
+        raise ActiveModelError
+    
+    db_logger(logging_level=LOGGING_LEVELS.MEMBER_DEL, done_by=user_id)
+    
+def exit_group(member_id: int, group_id: int):
+    try:
+        member: Joint | None = Joint.get(Joint.user == member_id, Joint.group == group_id)
+        if member is None or member.is_founder:
+            raise
+        member.delete_instance()
+    except:
+        raise ActiveModelError
+    
+    db_logger(logging_level=LOGGING_LEVELS.GROUP_EXIT, done_by=member_id)
+    
+def delete_group(user_id: int, group_id: int):
+    try:
+        group: Group | None = Group.get(Group.id == group_id, Group.created_by == user_id)
+        if group is None:
+            raise
+        group.delete_instance()
+    except:
+        raise ActiveModelError
+    
+    db_logger(logging_level=LOGGING_LEVELS.GROUP_DEL, done_by=user_id)

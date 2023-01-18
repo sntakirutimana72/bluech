@@ -28,5 +28,4 @@ COPY . .
 RUN python3.9 -m pip install --no-cache-dir -r requirements.txt
 
 # Run tests
-RUN ls
 CMD ["pytest", "./app/tests/test_validators.py", "-v", "--disable-warnings"]

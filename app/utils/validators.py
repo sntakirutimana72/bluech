@@ -1,5 +1,6 @@
-from schema import Schema, Or, Optional
+from schema import Schema, Or, And, Use, Optional
 
+from .interfaces import AttributeDict
 from ..settings import CONTENT_TYPES
 
 class Validators:
@@ -18,8 +19,8 @@ class Validators:
             'content_length': int,
             'protocol': str,
             'request': {
-                'body': Or(None, {str: object}),
-                Optional('params'): {str: int}
+                'body': Or(None, And({str: object}, Use(AttributeDict))),
+                Optional('params'): And({str: int}, Use(AttributeDict))
             }
         }).validate(req)
     

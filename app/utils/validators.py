@@ -20,7 +20,7 @@ class Validators:
             'protocol': str,
             'request': {
                 'body': Or(None, And({str: object}, Use(AttributeDict))),
-                Optional('params'): And({str: int}, Use(AttributeDict))
+                Optional('params'): And({str: Or(int, str)}, Use(AttributeDict))
             }
         }).validate(req)
     
@@ -29,27 +29,21 @@ class Validators:
     # :signin validator
     @staticmethod
     def signin(req): 
-        return Schema({'body': {'name': str}}).validate(req)
+        return Schema({'body': {'user': {'email': str, 'password': str}}}).validate(req)
         
-    # :Users | :Groups
+    # :Users
     #
-    # :display_name validator, and it applies on both group and user factions
+    # :display_name validator
     @staticmethod
     def display_name(req): 
-        return Schema({
-            'body': {'display_name': str},
-            'params': {'entity_id': int}
-        }).validate(req)
+        return Schema({'body': {'user': {'display_name': str}}}).validate(req)
     
     # :Users
     #
     # :all_users validator
     @staticmethod
     def edit_profile_pic(req):
-        return Schema({
-            'body': {'data': str},
-            'params': {'user_id': int}
-        }).validate(req)
+        return Schema({'body': {'user': {'picture': str, 'extension': str}}}).validate(req)
    
     # :Groups
     #
@@ -58,32 +52,35 @@ class Validators:
     def new_group(req):
         return Schema({
             'body': {
-                'name': str,
-                'created_by': int,
-                'is_private': bool
+                'group': {
+                    'name': str,
+                    Optional('members'): And([{'id': int, 'is_admin': bool}], len)
+                }
             }
+        }).validate(req)
+        
+    # :group_display_name validator
+    @staticmethod
+    def group_display_name(req):
+        return Schema({
+            'body': {'group': {'display_name': str}},
+            'params': {'id': Or(int, str)}
         }).validate(req)
         
     # :new_member validator
     @staticmethod
     def new_member(req):
         return Schema({
-            'body': {
-                'user_id': str,
-                'is_group_admin': bool
-            },
-            'params': {'group_id': int}
+            'body': {'group': {'members': And([{'id': int, 'is_admin': bool}], len)}},
+            'params': {'id': Or(int, str)}
         }).validate(req)
     
     # :new_member validator
     @staticmethod
     def remove_member(req):
         return Schema({
-            'body': None,
-            'params': {
-                'group_id': int,
-                'member_id': int
-            }
+            'body': {'group': {'members': And([int], len)}},
+            'params': {'id': Or(int, str)}
         }).validate(req)
     
     # :exit_group & :remove_group validator
@@ -91,18 +88,15 @@ class Validators:
     def exit_or_remove_group(req):
         return Schema({
             'body': None,
-            'params': {'group_id': int}
+            'params': {'id': Or(int, str)}
         }).validate(req)
     
     # :group_privilege validator
     @staticmethod
     def assign_group_privilege(req):
         return Schema({
-            'body': {'is_group_admin': bool},
-            'params': {
-                'group_id': int,
-                'member_id': int
-            }
+            'body': {'group': {'member': {'id': int, 'is_admin': bool}}},
+            'params': {'id': Or(int, str)}
         }).validate(req)
 
     # :Messages

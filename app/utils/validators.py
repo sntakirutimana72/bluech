@@ -43,7 +43,7 @@ class Validators:
     # :all_users validator
     @staticmethod
     def edit_profile_pic(req):
-        return Schema({'body': {'user': {'picture': str, 'extension': str}}}).validate(req)
+        return Schema({'body': {'user': {'picture': str, 'suffix': str}}}).validate(req)
    
     # :Groups
     #
@@ -106,9 +106,12 @@ class Validators:
     def new_message(req):
         return Schema({
             'body': {
-                'recipient_id': int,
-                'description': str,
-                Optional('reply_to'): int
+                'message': {
+                    'recipient': Or(int, str),
+                    Optional('description'): And(str, len),
+                    Optional('reply_to'): int,
+                    Optional('attachments'): And([{'media': str, 'name': str, 'suffix': str}], len)
+                }
             }
         }).validate(req)
     
@@ -116,11 +119,11 @@ class Validators:
     @staticmethod
     def edit_message(req):
         return Schema({
-            'body': {'description': str},
-            'params': {'message_id': int}
+            'body': {'message': {'description': And(str, len)}},
+            'params': {'id': int}
         }).validate(req)
     
     # :remove_message validator
     @staticmethod
     def remove_message(req):
-        return Schema({'params': {'message_id': int}}).validate(req)
+        return Schema({'body': None, 'params': {'id': int}}).validate(req)

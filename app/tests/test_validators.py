@@ -152,16 +152,16 @@ class TestUserValidators(PyTestCase):
             V.display_name(schema)
             
     def test_edit_profile_pic_with_valid_schema(self):
-        schema = {'body': {'user': {'picture': 'kdasji392iotfpng80438q', 'extension': 'png'}}}
+        schema = {'body': {'user': {'picture': 'kdasji392iotfpng80438q', 'suffix': 'png'}}}
         self._assert_for_all(V.edit_profile_pic(schema))
         
     def test_edit_profile_pic_with_invalid_schema(self):
         # with :picture as anything else other than `string`
-        schema = {'body': {'user': {'picture': 545465, 'extension': 'png'}}}
+        schema = {'body': {'user': {'picture': 545465, 'suffix': 'png'}}}
         with self.assert_raises():
             V.edit_profile_pic(schema)
         # with :extension as anything else other than `string`
-        schema['body']['user'] = {'picture': '545465', 'extension': None}
+        schema['body']['user'] = {'picture': '545465', 'suffix': None}
         with self.assert_raises():
             V.edit_profile_pic(schema)
         # With an extra key that is not countered for
@@ -214,6 +214,24 @@ class TestGroupValidators(PyTestCase):
         del schema['body']['group']['display_name']
         with self.assert_raises():
             V.group_display_name(schema)
+            
+    def test_valid_assign_group_privilege(self):
+        req = {
+            'body': {'group': {'member': {'id': 1, 'is_admin': False}}},
+            'params': {'id': 'dksaj0382porjsdv9e'}
+        }
+        validated = V.assign_group_privilege(req)
+        self.assert_isinstanceof(validated, dict)
+        self.assert_dict_has_key(validated, 'body')
+        self.assert_dict_has_key(validated, 'params')
+        
+    def test_invalid_assign_group_privilege(self):
+        req = {
+            'body': {'group': {'member': {'id': 1}}},
+            'params': {'id': 'dksaj0382porjsdv9e'}
+        }
+        with self.assert_raises():
+            V.assign_group_privilege(req)
             
     def test_new_member_with_valid_schema(self):
         # with members
@@ -277,3 +295,113 @@ class TestGroupValidators(PyTestCase):
         }
         with self.assert_raises():
             V.remove_member(schema)
+
+class TestMessageValidators(PyTestCase):
+    full_req = {
+        'body': {
+            'message': {
+                'recipient': 1,
+                'description': 'NEW_MESSAGE',
+                'reply_to': 1,
+                'attachments': [{'media': 'kdsaj048f90egm', 'name': 'report', 'suffix': 'txt'}],
+            }
+        }
+    }
+    
+    def test_valid_new_message(self):
+        validated = V.new_message(self.full_req)
+        self.assert_true(validated)
+        with self.assert_raises(AssertionError):
+            self.assert_dict_has_key(validated, 'params')
+            
+        # without :multiparts
+        no_attachments = self.full_req.copy()
+        del no_attachments['body']['message']['attachments']
+        validated = V.new_message(no_attachments)
+        self.assert_isinstanceof(validated, dict)
+        with self.assert_raises(AssertionError):
+            self.assert_dict_has_key(validated['body']['message'], 'attachments')
+        
+        # without :reply_to
+        no_reply_to = self.full_req.copy()
+        del no_reply_to['body']['message']['reply_to']
+        validated = V.new_message(no_reply_to)
+        self.assert_isinstanceof(validated, dict)
+        with self.assert_raises(AssertionError):
+            self.assert_dict_has_key(validated['body']['message'], 'reply_to')
+            
+    def test_invalid_new_message(self):
+        with_extra_key = {**self.full_req, 'params': 5}
+        with self.assert_raises():
+            V.new_message(with_extra_key)
+            
+        invalid_recipient = self.full_req.copy()
+        invalid_recipient['body']['message']['recipient'] = None
+        with self.assert_raises():
+            V.new_message(invalid_recipient)
+            
+        del invalid_recipient['body']['message']['recipient']
+        with self.assert_raises():
+            V.new_message(invalid_recipient)
+            
+        invalid_description = self.full_req.copy()
+        invalid_description['body']['message']['description'] = 11
+        with self.assert_raises():
+            V.new_message(invalid_description)
+            
+    def test_valid_edit_message(self):
+        req = {
+            'body': {'message': {'description': "EDIT MESSAGE"}},
+            'params': {'id': 1}
+        }
+        validated = V.edit_message(req)
+        with self.assert_raises(AssertionError):
+            self.assert_dict_has_key(validated['body']['message'], 'attachments')
+        with self.assert_raises(AssertionError):
+            self.assert_dict_has_key(validated['body']['message'], 'recipient')
+        with self.assert_raises(AssertionError):
+            self.assert_dict_has_key(validated['body']['message'], 'reply_to')
+            
+    def test_invalid_edit_message(self):
+        with_extra_key = {
+            'body': {'message': {'description': "EDIT MESSAGE", 'reply_to': 5}},
+            'params': {'id': 1}
+        }
+        with self.assert_raises():
+            V.edit_message(with_extra_key)
+            
+        invalid_desc = {
+            'body': {'message': {'description': ""}},
+            'params': {'id': 1}
+        }
+        with self.assert_raises():
+            V.edit_message(invalid_desc)
+            
+        invalid_params = {
+            'body': {'message': {'description': "EDITED"}},
+            'params': {'id': None}
+        }
+        with self.assert_raises():
+            V.edit_message(invalid_params)
+            
+    def test_valid_remove_message(self):
+        req = {
+            'body': None,
+            'params': {'id': 1}
+        }
+        validated = V.remove_message(req)
+        self.assert_isinstanceof(validated, dict)
+        self.assert_dict_has_key(validated, 'params')
+        self.assert_is_none(validated['body'])
+        
+    def test_invalid_remove_message(self):
+        invalid_body = {
+            'body': 'INVALID BODY',
+            'params': {'id': 1}
+        }
+        with self.assert_raises():
+            V.remove_message(invalid_body)
+            
+        invalid_params = {'body': None, 'params': {}}
+        with self.assert_raises():
+            V.remove_message(invalid_params)

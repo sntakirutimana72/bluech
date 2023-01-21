@@ -37,7 +37,7 @@ ALLOWED_ROUTES = AttributeDict({
 # :=>default
 DB_DEFAULT = AttributeDict({
     'host': 'localhost',
-    'port': 5542,
+    'port': 5432,
     'user': 'postgres',
     'password': 'postgres'
 })

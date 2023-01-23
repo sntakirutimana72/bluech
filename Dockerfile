@@ -14,11 +14,6 @@ RUN apt-get update && \
     python3.9 -m ensurepip && \
     apt-get install -y postgresql postgresql-contrib
 
-# Start system services
-#
-# Postgresql services
-# RUN service postgresql start
-
 # Copy app files from host to current working directory
 COPY . .
 

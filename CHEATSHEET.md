@@ -2,12 +2,20 @@
   docker build -t bluech .
 
   docker run bluech
+  
+  docker ps
 
-  docker exec -it 04926994c0a1 /bin/bash
+  docker exec -it 240709f0217a /bin/bash
 
   service postgresql start
   
   su postgres
+  
+  psql
+  
+  \password postgres;
+  
+  service postgresql reload
 
   python3.9
 

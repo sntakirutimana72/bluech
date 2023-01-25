@@ -1,18 +1,11 @@
 import pytest
-import peewee as pee
 
-from ..utils.db_connect import db_connector
-from .. import models
+from ..utils.db_connect import db_connector, drop_schema
+from ..settings import DB_CONFIGS
 
 @pytest.fixture(scope='session')
 def configure_db():
+    drop_schema(**DB_CONFIGS['test'])
     conn = db_connector('test')
-    
     yield conn
-    model_cls: list[pee.Model] = list(map(models.__dict__.get, models.__all__))  # type: ignore
-    model_cls.reverse()
-    
-    for cls in model_cls:
-        cls.truncate_table(restart_identity=True, cascade=True)
-        
     conn.close()

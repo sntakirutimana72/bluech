@@ -26,6 +26,11 @@ class _Model(Model):
 
     class Meta:
         database = DatabaseProxy()
+        
+    def save(self, *args, **kwargs):
+        if self._pk:
+            self.updated_at = datetime.now()
+        return super(_Model, self).save(*args, **kwargs)
 
     def as_json(self):
         ...

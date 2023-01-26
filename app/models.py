@@ -33,20 +33,10 @@ class _Model(Model):
             self.updated_at = datetime.now()
         return super(_Model, self).save(*args, **kwargs)
 
-    def as_json(self):
-        ...
-
-    @property
-    def name(self):
-        return self.__class__.__name__.lower()
-
 class User(_Model):
     email = CharField(unique=True, max_length=100)
     password = CharField(null=False)
     nickname = CharField(max_length=12, null=False)
-
-    def as_json(self):
-        return AttributeDict({'id': self.id, 'nickname': self.nickname})
 
 class Channel(_Model):
     uuid = UUIDField(unique=True, default=uuid4)
@@ -74,25 +64,11 @@ class Message(_Model):
     reply_to = ForeignKeyField('self', backref='replies', null=True)
 
 class Resource(_Model):
-    name = CharField(max_length=60)
     location = CharField(unique=True)
 
     user = ForeignKeyField(User, backref='picture', null=True)
     channel = ForeignKeyField(Channel, backref='attachments', null=True)
     message = ForeignKeyField(Message, backref='attachments', null=True)
-
-    def to_json(self):
-        return AttributeDict({
-            'name': self.name, 'path': self.path, 'suffix': self.suffix
-        })
-
-    @property
-    def path(self):
-        return Path(self.path)
-
-    @property
-    def suffix(self):
-        return self.path.suffix
 
 class Activity(_Model):
     name = CharField(unique=True, max_length=16)

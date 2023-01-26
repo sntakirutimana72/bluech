@@ -11,10 +11,6 @@ class UserTestCases(unit.TestCase):
     def test_valid_user(self):
         self.assertIsInstance(self.user, User)
 
-    def test_as_json(self):
-        user_json = {'id': self.user.id, 'nickname': self.user.nickname}
-        self.assertDictEqual(self.user.as_json(), user_json)
-
     def test_email_uniqueness(self):
         with self.assertRaises(pee.IntegrityError):
             create_user()

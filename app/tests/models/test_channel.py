@@ -2,15 +2,8 @@ import peewee as pee
 import pytest
 import unittest
 
-from ..support.helpers import instant_member, create_channel
-from ...models import Channel, Member
-
-@pytest.fixture(scope='class')
-def channel(request, user):
-    _channel = create_channel(created_by=user)
-    request.cls.channel = _channel
-    yield _channel
-    _channel.delete_instance()
+from ..support.helpers import InstantUse, create_member
+from ...models import Channel
 
 @pytest.mark.usefixtures('configure_db', 'channel')
 class ChannelTestCases(unittest.TestCase):
@@ -38,7 +31,7 @@ class ChannelTestCases(unittest.TestCase):
             self.user.save()
 
     def test_membership_backref(self):
-        with instant_member(user=self.user, channel=self.channel, is_admin=True, is_creator=True):
+        with InstantUse.member(user=self.user, channel=self.channel, is_admin=True, is_creator=True):
             self.assertIn(self.user, list(self.members))
             self.assertIn(self.channel, list(self.channels))
 
@@ -59,6 +52,6 @@ class ChannelTestCases(unittest.TestCase):
         self.assertNotIn(self.channel, list(self.channels))
 
     def test_duplicate_membership(self):
-        with instant_member(user=self.user, channel=self.channel):
+        with InstantUse.member(user=self.user, channel=self.channel):
             with self.assertRaises(pee.IntegrityError):
-                Member.create(user=self.user, channel=self.channel)
+                create_member(user=self.user, channel=self.channel)

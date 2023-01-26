@@ -17,6 +17,12 @@ def create_message(**options) -> Message:
 
 def create_resource(**options) -> Resource:
     return Resource.create(**Models.resource(**options))
+    
+def create_activity(**options) -> Activity:
+    return Activity.create(**Models.activity(**options))
+    
+def create_activity_log(**options) -> Activity:
+    return ActivityLog.create(**Models.activity_log(**options))
 
 
 class InstantUse:
@@ -24,13 +30,13 @@ class InstantUse:
     @staticmethod
     @contextlib.contextmanager
     def member(**options):
-        member = create_member(**options)
-        yield member
-        member.delete_instance()
+        _member = create_member(**options)
+        yield _member
+        _member.delete_instance()
         
     @staticmethod
     @contextlib.contextmanager
     def message(**options):
-        message = create_message(**options)
-        yield message
-        message.delete_instance()
+        _message = create_message(**options)
+        yield _message
+        _message.delete_instance()

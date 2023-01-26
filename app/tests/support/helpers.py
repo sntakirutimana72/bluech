@@ -1,30 +1,36 @@
 import contextlib
 
 from .declarations import Models
-from ...models import User, Channel, Member, Message
+from ...models import *
 
 def create_user(**options) -> User:
-    user = User.create(**Models.user(**options))
-    return user
+    return User.create(**Models.user(**options))
 
 def create_channel(**options) -> Channel:
-    channel = Channel.create(**Models.channel(**options))
-    return channel
+    return Channel.create(**Models.channel(**options))
 
-def create_member(**options):
+def create_member(**options) -> Member:
     return Member.create(**options)
 
-def create_message(**options):
+def create_message(**options) -> Message:
     return Message.create(**options)
 
-@contextlib.contextmanager
-def instant_member(**options):
-    member = create_member(**options)
-    yield member
-    member.delete_instance()
+def create_resource(**options) -> Resource:
+    return Resource.create(**Models.resource(**options))
 
-@contextlib.contextmanager
-def instant_message(**options):
-    message = create_message(**options)
-    yield message
-    message.delete_instance()
+
+class InstantUse:
+    
+    @staticmethod
+    @contextlib.contextmanager
+    def member(**options):
+        member = create_member(**options)
+        yield member
+        member.delete_instance()
+        
+    @staticmethod
+    @contextlib.contextmanager
+    def message(**options):
+        message = create_message(**options)
+        yield message
+        message.delete_instance()

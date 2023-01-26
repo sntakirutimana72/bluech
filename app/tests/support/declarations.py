@@ -7,3 +7,7 @@ class Models:
     @staticmethod
     def channel(**others):
         return {'nickname': 'channel_728', **others}
+    
+    @staticmethod
+    def resource(**others):
+        return {'location': 'app/ext_static/images/profile.png', **others}

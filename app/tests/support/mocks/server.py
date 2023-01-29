@@ -4,7 +4,7 @@ class ConnectivityMockServer:
     def __init__(self, host='localhost', port=8080):
         self._host = host
         self._port = port
-        self._con_counter = 0
+        self.con_counter = 0
         self._server = None
 
     async def initiate(self):
@@ -15,7 +15,7 @@ class ConnectivityMockServer:
 
     async def _on_connected(self, _, writer):
         print('Client connected!')
-        self._con_counter += 1
+        self.con_counter += 1
         await self._handshake(writer)
 
         # close pipeline

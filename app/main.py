@@ -9,8 +9,8 @@ async def main():
     db_conn()
     server = await asyncio.start_server(accept_conn, HOST_URL, HOST_PORT)
 
-    addrs = ', '.join(str(sock.getsockname()) for sock in server.sockets)
-    print(f'Serving on {addrs}')
+    address = ', '.join(str(sock.getsockname()) for sock in server.sockets)
+    print(f'Serving on {address}')
 
     async with server:
         await server.serve_forever()

@@ -9,19 +9,6 @@ def server(event_loop):
     event_loop.run_until_complete(_server.initiate())
     return _server
 
-@pytest.fixture
-def connect_client():
-    def connect(host='localhost', port=8080):
-        return asyncio.open_connection(host=host, port=port)
-    return connect
-
-@pytest.fixture
-def disconnect_client():
-    async def disconnect(pipe):
-        pipe.close()
-        await pipe.wait_closed()
-    return disconnect
-
 @pytest.mark.asyncio
 async def test_client_connection(server, disconnect_client, connect_client):
     assert server.con_counter == 0

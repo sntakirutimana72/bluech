@@ -11,13 +11,18 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: "3.11"
+        python-version: [3.11]
+    services:
+      postgres:
+        image: postgres:12-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
     steps:
-      - name: Checking out code from the repository
-        uses: actions/checkout@v2
-        
-      - name: Setting up python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
         

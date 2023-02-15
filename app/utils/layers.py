@@ -1,6 +1,6 @@
-from ..models import User, Group
+from ..models import User, Channel
 
-class Channel(object):
+class ChannelLayer(object):
 
     def __init__(self, writer, channel_id):
         self.channel_id = channel_id
@@ -14,4 +14,4 @@ class Channel(object):
     def model(self):
         if self.writer:
             return User.get_by_id(self.channel_id)
-        return Group.get_by_id(self.channel_id)
+        return Channel.get_by_id(self.channel_id)

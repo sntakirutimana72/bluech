@@ -1,12 +1,12 @@
 import pytest
+import json
 
 from ..support.unittests import PyTestCase
 
+@pytest.mark.usefixtures('configure_db', 'server', 'clis_con')
 class TestSession(PyTestCase):
-
     @pytest.mark.asyncio
-    async def test_signin(self, cli_con, cli_discon):
-        reader, writer = await cli_con()
+    async def test_signin(self):
         signin_req = {
             'content_length': int,
             'content_type': 'json',
@@ -25,8 +25,8 @@ class TestSession(PyTestCase):
         to_bytes = to_json.encode()
         c_len = str(len(to_bytes)).encode()
         payload = c_len + to_bytes
-        writer.write(payload)
-        await writer.drain()
+        self._writer.write(payload)
+        await self._writer.drain()
 
     @pytest.mark.asyncio
     async def test_signout(self):

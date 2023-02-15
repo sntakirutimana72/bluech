@@ -1,8 +1,8 @@
 from asyncio import StreamReader, StreamWriter, create_task
 
 from .interfaces import AttributeDict, Request
-from .shareables import channels_Q
-from .channels import Channel
+from .repositories import channels_repository
+from .layers import ChannelLayer
 from .pipe import fetch, pump, create_response_task
 from .response import Response
 from .validators import Validators
@@ -22,10 +22,10 @@ class Processor:
 
     async def _in_registry(self, user):
         self._session = AttributeDict({'user_id': user.id, 'is_group': False})
-        channel = Channel(self._writer, user)
-        channels_q = channels_Q()
+        channel_layer = ChannelLayer(self._writer, user)
+        channels_repo = channels_repository()
 
-        await channels_q.push(channel)
+        await channels_repo.push(channel_layer)
         await pump(self._writer, Response.as_signin_success(user))
         await create_response_task('users', user.id)
 

@@ -1,5 +1,5 @@
 from .serializers import decompress, compress
-from .shareables import tasks_Q
+from .repositories import tasks_repository
 from .interfaces import AttributeDict
 
 async def fetch(reader):
@@ -11,5 +11,5 @@ async def pump(writer, data):
     await writer.drain()
 
 async def create_response_task(proto, resource_id, **options):
-    tasks_q = tasks_Q()
-    await tasks_q.push(AttributeDict({**options, 'proto': proto, 'id': resource_id}))
+    tasks_repo = tasks_repository()
+    await tasks_repo.push(AttributeDict({**options, 'proto': proto, 'id': resource_id}))

@@ -10,5 +10,14 @@ def server(event_loop):
     return s
 
 @pytest.fixture(scope='class')
-def connect_sclient():
-    return asyncio.open_connection(host=HOST_URL, port=HOST_PORT)
+async def clis_con(request):
+    def _ready(r_stream=None, w_stream=None):
+        request.cls._reader = r_stream
+        request.cls._writer = w_stream
+
+    reader, writer = await asyncio.open_connection(host=HOST_URL, port=HOST_PORT)
+    _ready(reader, writer)
+    yield
+    _ready()
+    writer.close()
+    await writer.wait_closed()

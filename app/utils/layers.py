@@ -1,26 +1,34 @@
-from .serializers import compress, decompress
+from .serializers import PayloadJSONSerializer
 from .repositories import RepositoriesHub
 from .interfaces import AttributeDict
 from ..models import *
 
 class ChannelLayer:
-
-    def __init__(self, writer, channel_id):
-        self.channel_id = channel_id
-        self.writer = writer
+    def __init__(self, writer, _id):
+        self._id = _id
+        self._writer = writer
+        
+    @property
+    def uid(self):
+        return self._id
 
     @property
-    def is_group(self):
-        return self.writer is None
+    def is_writable(self):
+        return self._writer is None
 
     @property
-    def model(self):
-        if self.writer:
-            return User.get_by_id(self.channel_id)
-        return Channel.get_by_id(self.channel_id)
+    def resource(self):
+        if self.is_writable:
+            return User.get_by_id(self._id)
+        return Channel.get_by_id(self._id)
+    
+    async def write(self, payload: bytes):
+        if not self.is_writable:
+            raise
+        self._writer.write(payload)
+        await self._writer.drain()
 
 class TasksLayer:
-
     @staticmethod
     def _new(proto, _id, **options):
         new_task = AttributeDict({**options, 'proto': proto, 'id': _id})
@@ -31,10 +39,9 @@ class TasksLayer:
         await RepositoriesHub.tasks_repository.push(cls._new(proto, resource_id, **options))
 
 class Response:
-
     @staticmethod
     def _make(proto: str, **kwargs) -> bytes:
-        return compress({'protocol': proto, **kwargs})
+        return PayloadJSONSerializer.compress({'protocol': proto, **kwargs})
 
     # noinspection PyProtectedMember
     @classmethod
@@ -78,13 +85,29 @@ class Response:
         return cls._as_resource('nickname_changed', resource)
 
 class PipeLayer:
-
     @staticmethod
     async def fetch(reader):
-        data = await reader.read()
-        return decompress(data)
+        content_size = await reader.read(4)
+        buffer_size = 1028
+        content_size = int(content_size.decode())
+        
+        if content_size < buffer_size:
+            buffer_size = content_size
+            
+        content = b''
+        
+        while content_size > 0:
+            chunk = await reader.read(buffer_size)
+            content += chunk
+            content_size -= buffer_size
+            
+            if buffer_size > content_size and content_size > 0:
+                buffer_size = content_size
+                
+        return PayloadJSONSerializer.decompress(content)
 
     @staticmethod
-    async def pump(writer, data):
-        writer.write(compress(data))
+    async def pump(writer, raw_payload: dict):
+        packed_payload = PayloadJSONSerializer.compress(raw_payload)
+        writer.write(packed_payload)
         await writer.drain()

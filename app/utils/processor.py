@@ -9,7 +9,6 @@ from .dispatch import dispatch
 from ..settings import ALLOWED_ROUTES
 
 class Processor:
-
     def __init__(self, reader: StreamReader, writer: StreamWriter):
         self._reader = reader
         self._writer = writer

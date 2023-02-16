@@ -6,46 +6,28 @@ from .db_connect import db_connector
 from .layers import ChannelLayer
 
 class Repository(object):
-
     def __init__(self, items: Queue | dict[str, Any]):
         self._items = items
         self._mutex = Lock()
 
-    async def fetch(self, *args):
-        raise NotImplemented
-
-    async def push(self, data: ChannelLayer | Any):
-        raise NotImplemented
-
-    async def clear(self):
-        raise NotImplemented
-
-    @property
-    def name(self):
-        cls_name = self.__class__.__name__
-        this_name = cls_name.rstrip('Repository')
-        return this_name.lower()
-
 class ChannelsRepository(Repository):
-
-    async def fetch(self, channel_id):
+    async def fetch(self, _id):
         async with self._mutex:
-            return self._items[channel_id]
+            return self._items[_id]
 
     async def push(self, channel: ChannelLayer):
         async with self._mutex:
-            self._items[channel.channel_id] = channel
+            self._items[channel.uid] = channel
 
-    async def remove(self, channel_id):
+    async def remove(self, _id):
         async with self._mutex:
-            del self._items[channel_id]
+            del self._items[_id]
 
     async def clear(self):
         async with self._mutex:
             self._items = {}
 
 class TasksRepository(Repository):
-
     async def fetch(self):
         async with self._mutex:
             if self._items.empty():

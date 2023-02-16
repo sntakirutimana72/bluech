@@ -1,10 +1,8 @@
 from asyncio import StreamReader, StreamWriter, create_task
 
 from .interfaces import AttributeDict, Request
-from .repositories import channels_repository
-from .layers import ChannelLayer
-from .pipe import fetch, pump, create_response_task
-from .response import Response
+from .repositories import RepositoriesHub
+from .layers import ChannelLayer, Response, PipeLayer, TasksLayer
 from .validators import Validators
 from .exceptions import ProtocolLookupError, ProtocolValidationError, CustomException
 from .dispatch import dispatch
@@ -23,11 +21,10 @@ class Processor:
     async def _in_registry(self, user):
         self._session = AttributeDict({'user_id': user.id, 'is_group': False})
         channel_layer = ChannelLayer(self._writer, user)
-        channels_repo = channels_repository()
 
-        await channels_repo.push(channel_layer)
-        await pump(self._writer, Response.as_signin_success(user))
-        await create_response_task('users', user.id)
+        await RepositoriesHub.channels_repository.push(channel_layer)
+        await PipeLayer.pump(self._writer, Response.as_signin_success(user))
+        await TasksLayer.build('users', user.id)
 
     async def _in_submission(self, req):
         self._in_process(req)
@@ -41,14 +38,14 @@ class Processor:
             if self._session is None:
                 await self._in_registry(result)
         except CustomException as ex:
-            await pump(self._writer, Response.as_exc(ex))
+            await PipeLayer.pump(self._writer, Response.as_exc(ex))
 
         self._request = None
 
     async def _in_stream(self):
         try:
             while True:
-                req = await fetch(self._reader)
+                req = await PipeLayer.fetch(self._reader)
                 await self._in_transition(req)
         except Exception as ex:
             print(ex)

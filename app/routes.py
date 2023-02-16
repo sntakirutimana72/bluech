@@ -17,6 +17,6 @@ route_patterns = [
     # groups
     router(
         ('new_group', 'new_member', 'remove_member', 'exit_group', 'remove_group', 'assign_group_privilege',),
-        GroupsController
+        ChannelsController
     ),
 ]

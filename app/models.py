@@ -6,9 +6,9 @@ __all__ = (
     'Resource',
     'Activity',
     'ActivityLog',
+    '_Model'
 )
 
-from pathlib import Path
 from datetime import datetime
 from uuid import uuid4
 from peewee import (
@@ -16,8 +16,6 @@ from peewee import (
     CharField, TextField, DateTimeField, BooleanField,
     UUIDField, ManyToManyField, DeferredThroughModel
 )
-
-from .utils.interfaces import AttributeDict
 
 MembershipThroughModel = DeferredThroughModel()
 

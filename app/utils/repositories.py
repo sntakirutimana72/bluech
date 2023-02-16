@@ -61,14 +61,10 @@ class TasksRepository(Repository):
             for _ in range(self._items.qsize()):
                 self._items.get_nowait()
 
+class RepositoriesHub:
+    tasks_repository = lru_cache(maxsize=None)(lambda: TasksRepository(Queue()))()
+    channels_repository = lru_cache(maxsize=None)(lambda: ChannelsRepository({}))()
+
 @lru_cache(typed=True)
 def db_conn(env='development'):
     return db_connector(env)
-
-@lru_cache
-def channels_repository():
-    return ChannelsRepository({})
-
-@lru_cache
-def tasks_repository():
-    return TasksRepository(Queue())

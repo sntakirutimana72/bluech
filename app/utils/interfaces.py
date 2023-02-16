@@ -17,7 +17,8 @@ class RouteRef:
 class Request:
 
     def __init__(self, req: dict[str, Any]):
-        self.route_ref = RouteRef(req.pop('protocol'))
+        proto = req.pop('protocol')
+        self.route_ref = RouteRef(proto)
 
         for name, value in req.items():
             setattr(self, name, value)

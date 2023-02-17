@@ -16,7 +16,7 @@ class SQLQueryManager(object):
 
 class SessionQueryManager(SQLQueryManager):
     @classmethod
-    def signin(cls, email, password) -> User:
+    def signin(cls, email: str, password: str) -> User:
         try:
             user: User = User.get(User.email == email)
             user.authenticate(password)

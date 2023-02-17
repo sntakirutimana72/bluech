@@ -1,5 +1,5 @@
 import json
-import typing
+import typing as yi
 
 from ..settings import ENCODING
 
@@ -21,12 +21,12 @@ class PayloadJSONSerializer:
         return data_obj.encode(ENCODING)
     
     @classmethod
-    def decompress(cls, payload: bytes):
+    def decompress(cls, payload: bytes) -> dict[str, yi.Any]:
         as_str = cls.from_bytes(payload)
         return cls.as_json(as_str)
     
     @classmethod
-    def compress(cls, obj: typing.Dict[str, typing.Any]):
+    def compress(cls, obj: dict[str, yi.Any]):
         as_str = cls.as_string(obj)
         as_byte = cls.as_bytes(as_str)
         content_size = len(as_byte)

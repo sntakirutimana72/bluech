@@ -16,6 +16,7 @@ from peewee import (
     CharField, TextField, DateTimeField, BooleanField,
     UUIDField, ManyToManyField, DeferredThroughModel
 )
+from .utils.extensions.models import UserExtension
 
 MembershipThroughModel = DeferredThroughModel()
 
@@ -31,7 +32,7 @@ class _Model(Model):
             self.updated_at = datetime.now()
         return super(_Model, self).save(*args, **kwargs)
 
-class User(_Model):
+class User(UserExtension, _Model):
     email = CharField(unique=True, max_length=100)
     password = CharField(null=False)
     nickname = CharField(max_length=12, null=False)

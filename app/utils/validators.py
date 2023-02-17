@@ -19,7 +19,7 @@ class Validators:
             'content_length': int,
             'protocol': str,
             'request': {
-                'body': Or(None, And({str: object}, Use(AttributeDict))),
+                Optional('body'): And({str: object}, Use(AttributeDict)),
                 Optional('params'): And({str: Or(int, str)}, Use(AttributeDict))
             }
         }).validate(req)

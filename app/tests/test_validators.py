@@ -21,13 +21,14 @@ class TestRequestValidator(PyTestCase):
         self.assert_isinstanceof(validated, dict)
         self.assert_isinstanceof(validated['request']['body'], AttributeDict)
 
-    def test_with_body_as_none(self):
+    def test_without_body(self):
         req = {**self.request}
-        req['request']['body'] = None
+        del req['request']['body']
         validated = V.request(req)
 
         self.assert_dict_has_key(validated, 'request')
-        self.assert_is_none(validated['request']['body'])
+        with self.assert_raises():
+            self.assert_dict_has_key(validated['request'], 'body')
 
     def test_with_params(self):
         raw_req = {**self.request}
@@ -61,13 +62,6 @@ class TestRequestValidator(PyTestCase):
     def test_with_invalid_body(self):
         raw = {**self.request}
         raw['request']['body'] = 'INVALID BODY'
-
-        with self.assert_raises():
-            V.request(raw)
-
-    def test_without_body(self):
-        raw = {**self.request}
-        del raw['request']['body']
 
         with self.assert_raises():
             V.request(raw)

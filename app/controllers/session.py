@@ -1,12 +1,12 @@
 from .base import Base
-from ..utils import sql
+from ..utils.sql import SessionQueryManager
 
 class Session(Base):
 
     async def _post(self):
         """ Signin """
-        return sql.signin(self._request.body['name'])
+        return SessionQueryManager.signin(**self._request.body.user)
         
     async def _delete(self):
         """ Signout """
-        sql.signout(self.user_id)
+        SessionQueryManager.signout(self.user_id)

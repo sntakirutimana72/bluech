@@ -10,14 +10,19 @@ def server(event_loop):
     return s
 
 @pytest.fixture(scope='class')
-async def clis_con(request):
-    def _ready(r_stream=None, w_stream=None):
+async def ccli_con(request, cli_discon):
+    def initiate(r_stream=None, w_stream=None):
         request.cls._reader = r_stream
         request.cls._writer = w_stream
 
     reader, writer = await asyncio.open_connection(host=HOST_URL, port=HOST_PORT)
-    _ready(reader, writer)
+    initiate(reader, writer)
     yield
-    _ready()
-    writer.close()
-    await writer.wait_closed()
+    initiate()
+    await cli_discon(writer)
+    
+@pytest.fixture
+async def cli_con(cli_discon):
+    pipe = await asyncio.open_connection(host=HOST_URL, port=HOST_PORT)
+    yield pipe
+    await cli_discon(pipe[1])

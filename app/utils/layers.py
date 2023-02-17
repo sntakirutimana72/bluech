@@ -1,15 +1,18 @@
+import asyncio as io
+import typing as yi
+
 from .serializers import PayloadJSONSerializer
 from .repositories import RepositoriesHub
 from .interfaces import AttributeDict
 from ..models import *
 
 class ChannelLayer:
-    def __init__(self, writer, _id):
+    def __init__(self, writer: io.StreamWriter, _id):
         self._id = _id
         self._writer = writer
 
     @property
-    def uid(self):
+    def uid(self) -> int | str:
         return self._id
 
     @property
@@ -17,7 +20,7 @@ class ChannelLayer:
         return self._writer is None
 
     @property
-    def resource(self):
+    def resource(self) -> User | Channel:
         if self.is_writable:
             return User.get_by_id(self._id)
         return Channel.get_by_id(self._id)
@@ -86,7 +89,7 @@ class Response:
 
 class PipeLayer:
     @staticmethod
-    async def fetch(reader):
+    async def fetch(reader: io.StreamReader):
         content_size = await reader.read(4)
         buffer_size = 1028
         content_size = int(content_size.decode())
@@ -107,7 +110,7 @@ class PipeLayer:
         return PayloadJSONSerializer.decompress(content)
 
     @staticmethod
-    async def pump(writer, raw_payload: dict):
+    async def pump(writer: io.StreamWriter, raw_payload: dict[str, yi.Any]):
         packed_payload = PayloadJSONSerializer.compress(raw_payload)
         writer.write(packed_payload)
         await writer.drain()

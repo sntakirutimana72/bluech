@@ -7,7 +7,7 @@ class ChannelLayer:
     def __init__(self, writer, _id):
         self._id = _id
         self._writer = writer
-        
+
     @property
     def uid(self):
         return self._id
@@ -21,7 +21,7 @@ class ChannelLayer:
         if self.is_writable:
             return User.get_by_id(self._id)
         return Channel.get_by_id(self._id)
-    
+
     async def write(self, payload: bytes):
         if not self.is_writable:
             raise
@@ -90,20 +90,20 @@ class PipeLayer:
         content_size = await reader.read(4)
         buffer_size = 1028
         content_size = int(content_size.decode())
-        
+
         if content_size < buffer_size:
             buffer_size = content_size
-            
+
         content = b''
-        
+
         while content_size > 0:
             chunk = await reader.read(buffer_size)
             content += chunk
             content_size -= buffer_size
-            
-            if buffer_size > content_size and content_size > 0:
+
+            if buffer_size > content_size > 0:
                 buffer_size = content_size
-                
+
         return PayloadJSONSerializer.decompress(content)
 
     @staticmethod

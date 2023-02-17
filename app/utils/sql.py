@@ -25,7 +25,7 @@ class SessionQueryManager(SQLQueryManager):
 
         cls._logging(action_id=LOGGING_LEVELS.LOGIN, done_by=user)
         return user
-    
+
     @classmethod
     def signout(cls, user_id: int):
         cls._logging(logging_level=LOGGING_LEVELS.LOGOUT, done_by=user_id)
@@ -133,11 +133,11 @@ class ChannelQueryManager(SQLQueryManager):
     def new_member(cls, user_id: int, pk: int, **kwargs):
         try:
             query = (Channel
-                    .select()
-                    .join(User)
-                    .switch(Channel)
-                    .join(Member)
-                    .where(Channel.id == pk,
+                     .select()
+                     .join(User)
+                     .switch(Channel)
+                     .join(Member)
+                     .where(Channel.id == pk,
                             Channel.created_by == user_id or (Member.user == user_id and Member.is_channel_admin)))
             results = list(query)
         except:
@@ -156,7 +156,8 @@ class ChannelQueryManager(SQLQueryManager):
             if user_id == member_id:
                 raise
 
-            admin: Member | None = Member.get(Member.user == user_id, Member.channel == channel_id, Member.is_channel_admin)
+            admin: Member | None = Member.get(Member.user == user_id, Member.channel == channel_id,
+                                              Member.is_channel_admin)
             if admin is None:
                 raise
 

@@ -1,12 +1,13 @@
 import pytest
-import json
+import asyncio
 
 from ..support.unittests import PyTestCase
+from ...utils.layers import PipeLayer
 
-@pytest.mark.usefixtures('configure_db', 'server', 'clis_con')
+@pytest.mark.usefixtures('configure_db', 'server')
 class TestSession(PyTestCase):
     @pytest.mark.asyncio
-    async def test_signin(self):
+    async def test_signin(self, cli_con):
         signin_req = {
             'content_length': int,
             'content_type': 'json',
@@ -20,13 +21,15 @@ class TestSession(PyTestCase):
                 }
             }
         }
+        # connect to server
+        reader, writer = await cli_con
         # formatting data and packing it for a specific factory pattern recognizable by the server
-        to_json = json.dumps(signin_req)
-        to_bytes = to_json.encode()
-        c_len = str(len(to_bytes)).encode()
-        payload = c_len + to_bytes
-        self._writer.write(payload)
-        await self._writer.drain()
+        await PipeLayer.pump(writer, signin_req)
+        # pause for a minute for the transition to complete its course
+        await asyncio.sleep(.25)
+        # now, receive server response
+        resp = await PipeLayer.fetch(reader)
+        print(resp)
 
     @pytest.mark.asyncio
     async def test_signout(self):

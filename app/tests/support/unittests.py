@@ -1,8 +1,7 @@
 import pytest
 import contextlib
 
-class PyTestCase(object):
-    
+class PyTestCase(object):    
     @staticmethod
     def assert_is_false(obj):
         assert obj is False

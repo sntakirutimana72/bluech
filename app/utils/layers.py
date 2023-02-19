@@ -43,33 +43,33 @@ class TasksLayer:
 
 class Response:
     @staticmethod
-    def _make(proto: str, **kwargs) -> bytes:
-        return PayloadJSONSerializer.compress({'protocol': proto, **kwargs})
+    def make(proto: str, status=200, **kwargs):
+        return {'proto': proto, 'status': status, **kwargs}
 
     # noinspection PyProtectedMember
     @classmethod
     def _as_resource(cls, proto: str, resource: _Model):
-        return cls._make(proto, **{resource.name: resource.as_json()})
+        return cls.make(proto, **{resource.name: resource.as_json()})
 
     @classmethod
-    def as_exc(cls, message):
-        return cls._make('exception', message=message)
+    def exception(cls, message='Internal Error', status=500):
+        return cls.make('error', status=status, message=message)
 
     @classmethod
-    def as_signin_success(cls, user):
+    def signin_success(cls, user):
         return cls._as_resource('signin_success', user)
 
     @classmethod
-    def as_signin_failure(cls, message: str):
-        return cls._make('signin_failure', message=message)
+    def signin_failure(cls, message: str, status=401):
+        return cls.make('signin_failure', status=status, message=message)
 
     @classmethod
     def as_signout_success(cls):
-        return cls._make('signout_success')
+        return cls.make('signout_success')
 
     @classmethod
     def as_signout_failure(cls, message=''):
-        return cls._make('signout_failure', message=message)
+        return cls.make('signout_failure', message=message)
 
     @classmethod
     def as_message(cls, message):

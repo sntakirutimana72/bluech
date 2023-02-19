@@ -3,7 +3,6 @@ from asyncio import Queue, Lock
 from typing import Any
 
 from .db_connect import db_connector
-from .layers import ChannelLayer
 
 class Repository(object):
     def __init__(self, items: Queue | dict[str, Any]):
@@ -15,7 +14,7 @@ class ChannelsRepository(Repository):
         async with self._mutex:
             return self._items[_id]
 
-    async def push(self, channel: ChannelLayer):
+    async def push(self, channel):
         async with self._mutex:
             self._items[channel.uid] = channel
 
@@ -34,7 +33,7 @@ class TasksRepository(Repository):
                 return
             return self._items.get_nowait()
 
-    async def push(self, data: ChannelLayer | Any):
+    async def push(self, data):
         async with self._mutex:
             self._items.put_nowait(data)
 

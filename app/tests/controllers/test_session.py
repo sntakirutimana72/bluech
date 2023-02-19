@@ -1,36 +1,33 @@
 import pytest
-import asyncio
 
 from ..support.unittests import PyTestCase
-from ...utils.layers import PipeLayer
+from ..support.mocks.clients import AppClientSpec
+from ..support.declarations import RequestSpecs
 
-@pytest.mark.usefixtures('configure_db', 'server')
-class TestSession(PyTestCase):
-    @pytest.mark.asyncio
-    async def test_signin(self, cli_con):
-        signin_req = {
-            'content_length': int,
-            'content_type': 'json',
-            'protocol': 'signin',
-            'request': {
-                'body': {
-                    'user': {
-                        'email': 'admin@email.com',
-                        'password': 'test@123'
-                    }
-                }
-            }
-        }
+@pytest.mark.usefixtures('server')
+class TestSigninFailure(PyTestCase):
+    async def assertResponse(self, status, **user):
         # connect to server
-        reader, writer = await cli_con
+        client = AppClientSpec()
+        await client.connect()
         # formatting data and packing it for a specific factory pattern recognizable by the server
-        await PipeLayer.pump(writer, signin_req)
-        # pause for a minute for the transition to complete its course
-        await asyncio.sleep(.25)
+        await client.send(RequestSpecs.signin(**user))
         # now, receive server response
-        resp = await PipeLayer.fetch(reader)
-        print(resp)
+        resp = await client.receive()
+
+        self.assert_isinstanceof(resp, dict)
+        self.assert_dict_has_key(resp, 'proto')
+        self.assert_equals(resp['proto'], 'signin_failure')
+        self.assert_dict_has_key(resp, 'status')
+        self.assert_equals(resp['status'], status)
+
+        await client.disconnect()
 
     @pytest.mark.asyncio
-    async def test_signout(self):
-        ...
+    async def test_bad_request(self):
+        await self.assertResponse(400)
+
+    @pytest.mark.asyncio
+    async def test_unauthorized(self):
+        user = {'email': 'admin@test', 'password': 'test@123'}
+        await self.assertResponse(401, **user)

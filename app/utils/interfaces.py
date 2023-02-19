@@ -6,32 +6,28 @@ class AttributeDict(dict):
     __delattr__ = dict.__delitem__
 
 class RouteRef:
-    def __init__(self, route_path: str):
-        self.method, self.path = route_path.split(':', 1)
-
-    @property
-    def full_path(self):
-        return f'{self.method!r}:{self.path!r}'
+    def __init__(self, route: str):
+        self.full_path = route
+        self.method, self.path = route.split(':', 1)
 
 class Request:
     body: AttributeDict
     """Carries all essential data required to complement the request"""
-    
+
     params: AttributeDict
-    """Carries the secondary data that accomodate the essential data"""
-    
+    """Carries the secondary data that accommodate the essential data"""
+
     protocol: str
     """Unique service identifier/signature used to delegate the right consumers"""
-    
+
     route_ref: RouteRef
     """Resolves the :attr:~protocol in order to determine the right consumers to dispatch"""
-    
+
     session: AttributeDict
     """Holds the current connection metadata & authenticity"""
 
-    def __init__(self, req: dict[str, Any]):
-        proto = req.pop('protocol')
-        self.route_ref = RouteRef(proto)
+    def __init__(self, route: str, req: dict[str, Any]):
+        self.route_ref = RouteRef(route)
 
         for name, value in req.items():
             setattr(self, name, value)

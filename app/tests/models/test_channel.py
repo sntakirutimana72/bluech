@@ -2,7 +2,7 @@ import peewee as pee
 import pytest
 import unittest
 
-from ..support.helpers import InstantUse, create_member
+from ..support.models import InstantUse, create_member
 from ...models import Channel
 
 @pytest.mark.usefixtures('configure_db', 'channel')

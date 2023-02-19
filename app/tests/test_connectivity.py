@@ -1,6 +1,7 @@
 import pytest
 
-from .support.mocks.server import ConnectivityMockServer
+from .support.mocks.servers import ConnectivityMockServer
+from .support.mocks.clients import ConnectivityClientSpec
 
 @pytest.fixture(scope='module')
 def server(event_loop):
@@ -9,10 +10,11 @@ def server(event_loop):
     return _server
 
 @pytest.mark.asyncio
-async def test_client_connection(server, cli_con, cli_discon):
+async def test_client_connection(server):
     assert server.con_counter == 0
-    reader, writer = await cli_con()
-    tls = await reader.read()
+    client = ConnectivityClientSpec()
+    await client.connect()
+    tls = await client.receive()
     assert tls == b'helo'
     assert server.con_counter != 0
-    await cli_discon(writer)
+    await client.disconnect()

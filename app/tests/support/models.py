@@ -1,7 +1,7 @@
 import contextlib
 
-from .declarations import Models
-from ...models import *
+from app.tests.support.declarations import Models
+from app.models import *
 
 def create_user(**options) -> User:
     return User.create(**Models.user(**options))
@@ -17,23 +17,22 @@ def create_message(**options) -> Message:
 
 def create_resource(**options) -> Resource:
     return Resource.create(**Models.resource(**options))
-    
+
 def create_activity(**options) -> Activity:
     return Activity.create(**Models.activity(**options))
-    
+
 def create_activity_log(**options) -> Activity:
     return ActivityLog.create(**Models.activity_log(**options))
 
 
 class InstantUse:
-    
     @staticmethod
     @contextlib.contextmanager
     def member(**options):
         _member = create_member(**options)
         yield _member
         _member.delete_instance()
-        
+
     @staticmethod
     @contextlib.contextmanager
     def message(**options):

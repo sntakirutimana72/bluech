@@ -28,6 +28,13 @@ def create_activity_log(**options) -> Activity:
 class InstantUse:
     @staticmethod
     @contextlib.contextmanager
+    def admin_user(**options):
+        admin = create_user(**options)
+        yield admin
+        admin.delete_instance()
+
+    @staticmethod
+    @contextlib.contextmanager
     def member(**options):
         _member = create_member(**options)
         yield _member

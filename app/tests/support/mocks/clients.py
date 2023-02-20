@@ -11,6 +11,7 @@ class ClientMockSpec(object):
         reader, writer = await io.open_connection(host=host, port=port)
         self._reader = reader
         self._writer = writer
+        return self
 
     async def disconnect(self):
         try:

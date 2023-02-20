@@ -3,7 +3,7 @@ from .controllers import *
 
 route_patterns = [
     # session
-    router('signin', SessionController),
+    router(['signin', 'signout'], SessionController),
     # messages
     # router('messages', MessagesController),
     # # users

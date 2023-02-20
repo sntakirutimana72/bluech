@@ -1,10 +1,6 @@
 # compiled cache files
 __pycache__
 
-# editor local config
-.idea
-.vscode
-
 # databases
 *.sqlite3
 *.sqlite3

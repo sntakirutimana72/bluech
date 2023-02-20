@@ -48,8 +48,8 @@ class Response:
 
     # noinspection PyProtectedMember
     @classmethod
-    def _as_resource(cls, proto: str, resource: _Model):
-        return cls.make(proto, **{resource.name: resource.as_json()})
+    def as_resource(cls, proto: str, status: int, resource: _Model):
+        return cls.make(proto, status=status, **{resource.name: resource.as_json})
 
     @classmethod
     def exception(cls, message='Internal Error', status=500):
@@ -57,7 +57,7 @@ class Response:
 
     @classmethod
     def signin_success(cls, user):
-        return cls._as_resource('signin_success', user)
+        return cls.as_resource('signin_success', 200, user)
 
     @classmethod
     def signin_failure(cls, message: str, status=401):
@@ -72,20 +72,20 @@ class Response:
         return cls.make('signout_failure', message=message)
 
     @classmethod
-    def as_message(cls, message):
-        return cls._as_resource('message', message)
+    def as_message(cls, status: int, message: _Model):
+        return cls.as_resource('message', status, message)
 
     @classmethod
-    def as_message_edited(cls, message):
-        return cls._as_resource('message_edited', message)
+    def as_message_edited(cls, status: int, message: _Model):
+        return cls.as_resource('message_edited', status, message)
 
     @classmethod
-    def as_my_nickname_changed(cls, user):
-        return cls._as_resource('my_nickname_changed', user)
+    def as_my_nickname_changed(cls, status: int, user: _Model):
+        return cls.as_resource('my_nickname_changed', status, user)
 
     @classmethod
-    def as_nickname_changed(cls, resource):
-        return cls._as_resource('nickname_changed', resource)
+    def as_nickname_changed(cls, status: int, resource: _Model):
+        return cls.as_resource('nickname_changed', status, resource)
 
 class PipeLayer:
     @staticmethod

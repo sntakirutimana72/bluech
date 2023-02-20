@@ -22,8 +22,7 @@ class SessionQueryManager(SQLQueryManager):
             user.authenticate(password)
         except:
             raise Unauthorized
-
-        cls._logging(action_id=LOGGING_LEVELS.LOGIN, done_by=user)
+        # cls._logging(action_id=LOGGING_LEVELS.LOGIN, done_by=user)
         return user
 
     @classmethod

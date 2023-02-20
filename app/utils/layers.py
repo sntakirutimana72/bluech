@@ -64,12 +64,12 @@ class Response:
         return cls.make('signin_failure', status=status, message=message)
 
     @classmethod
-    def as_signout_success(cls):
+    def signout_success(cls):
         return cls.make('signout_success')
 
     @classmethod
-    def as_signout_failure(cls, message=''):
-        return cls.make('signout_failure', message=message)
+    def as_signout_failure(cls):
+        return {**cls.exception(), 'proto': 'signout_failure'}
 
     @classmethod
     def as_message(cls, status: int, message: _Model):

@@ -11,6 +11,12 @@ class RouteRef:
         self.method, self.path = route.split(':', 1)
 
 class Request:
+    content_length: int
+    """The size of the :param:~body content"""
+    
+    content_type: str
+    """The type of the :param:~body content"""
+    
     body: AttributeDict
     """Carries all essential data required to complement the request"""
 

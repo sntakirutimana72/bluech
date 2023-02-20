@@ -1,3 +1,5 @@
+from ...settings import CONTENT_TYPES
+
 class Models:
     @staticmethod
     def user(**others):
@@ -21,11 +23,23 @@ class Models:
 
 class RequestSpecs:
     @staticmethod
-    def head(proto, content_size=0, content_type='json'):
+    def head(proto: str, content_size=0, content_type=CONTENT_TYPES[0]):
         return {
             'content_length': content_size,
             'content_type': content_type,
             'protocol': proto
+        }
+        
+    @classmethod
+    def for_validators(cls, proto='signin', c_size=342, c_type=CONTENT_TYPES[0]):
+        return {
+            **cls.head(proto, c_size, c_type),
+            'request': {
+                'body': {
+                    'email': 'user_test_email@bluech.eu',
+                    'password': 'test@1234'
+                }
+            }
         }
 
     @classmethod
@@ -34,3 +48,7 @@ class RequestSpecs:
             **cls.head('signin'),
             'request': {'body': {'user': user}}
         }
+        
+    @classmethod
+    def signout(cls):
+        return {**cls.head('signout'), 'request': {}}

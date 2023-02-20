@@ -56,7 +56,6 @@ class Message(MessageExtension, _Model):
 
 class Resource(ResourceExtension, _Model):
     location = pee.CharField(unique=True)
-
     user = pee.ForeignKeyField(User, backref='picture', null=True)
     channel = pee.ForeignKeyField(Channel, backref='attachments', null=True)
     message = pee.ForeignKeyField(Message, backref='attachments', null=True)

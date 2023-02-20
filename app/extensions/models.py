@@ -19,6 +19,18 @@ class Extension(object):
             self.updated_at = dt.datetime.now()
         return super(Extension, self).save(*args, **kwargs)
 
+    @property
+    def name(self):
+        return self.__class__.__name__.lower()
+
+    @staticmethod
+    def to_json():
+        return [('id',)]
+
+    @property
+    def as_json(self):
+        return {}
+
 # noinspection PyAttributeOutsideInit
 class UserExtension(Extension):
     def authenticate(self, password: str):

@@ -48,9 +48,9 @@ class Processor:
             elif self.proto == 'signout':
                 await self.unsubscribe()
         except CustomException as e:
-            await PipeLayer.pump(self.writer, Response.signin_failure(**e.resp))
+            await PipeLayer.pump(self.writer, Response.make(**e.to_json))
         except:
-            await PipeLayer.pump(self.writer, Response.exception())
+            await PipeLayer.pump(self.writer, Response.internal_error())
         self.proto = None
         self.request = None
 
@@ -70,12 +70,12 @@ class Processor:
 
             if self.session is None:
                 if self.proto != 'signin':
-                    raise ProtocolValidationError
+                    raise BadRequest
                 request = Validators.signin(action_req)
             elif self.proto == 'signout':
                 request = {}
             elif self.proto not in ALLOWED_ROUTES:
-                raise ProtocolLookupError
+                raise BadRequest
             else:
                 validator = getattr(Validators, self.proto)
                 request = validator(action_req)

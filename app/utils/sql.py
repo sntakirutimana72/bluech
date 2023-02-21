@@ -5,6 +5,8 @@ __all__ = (
     'ChannelQueryManager',
 )
 
+import peewee as pee
+
 from .exceptions import *
 from ..settings import LOGGING_LEVELS
 from ..models import *
@@ -36,22 +38,21 @@ class MessageQueryManager(SQLQueryManager):
         try:
             message = Message.create(user=user_id, **kwargs)
         except:
-            raise ActiveModelError
-
-        cls._logging(logging_level=LOGGING_LEVELS.MSG_NEW, done_by=user_id)
+            raise ActiveRecordError
+        # cls._logging(logging_level=LOGGING_LEVELS.MSG_NEW, done_by=user_id)
         return message.id
 
     @classmethod
     def all_messages(cls, user_id: int, **kwargs):
         try:
             messages = Message.get(recipient=user_id, **kwargs).where(Message.status != 'DISABLED')
+        except pee.DoesNotExist:
+            raise ResourceNotFound
         except:
-            raise ActiveModelError
-
+            raise ActiveRecordError
         if not messages:
-            raise NoResourcesFound
-
-        cls._logging(logging_level=LOGGING_LEVELS.MSG_ALL, done_by=user_id)
+            raise ResourceNotFound
+        # cls._logging(logging_level=LOGGING_LEVELS.MSG_ALL, done_by=user_id)
         return messages
 
     @classmethod
@@ -59,24 +60,20 @@ class MessageQueryManager(SQLQueryManager):
         try:
             cn = Message.update(**kwargs).where(Message.sender == user_id and Message.id == pk)
         except:
-            raise ActiveModelError
-
+            raise ActiveRecordError
         if cn is None:
-            raise NoResourcesFound
-
-        cls._logging(logging_level=LOGGING_LEVELS.MSG_EDIT, done_by=user_id)
+            raise ResourceNotFound
+        # cls._logging(logging_level=LOGGING_LEVELS.MSG_EDIT, done_by=user_id)
 
     @classmethod
     def remove_message(cls, user_id: int, pk: int):
         try:
             cn = Message.delete().where(Message.sender == user_id and Message.id == pk and Message.status != 'DELETED')
         except:
-            raise ActiveModelError
-
+            raise ActiveRecordError
         if cn is None:
-            raise NoResourcesFound
-
-        cls._logging(logging_level=LOGGING_LEVELS.MSG_DEL, done_by=user_id)
+            raise ResourceNotFound
+        # cls._logging(logging_level=LOGGING_LEVELS.MSG_DEL, done_by=user_id)
 
 class UserQueryManager(SQLQueryManager):
     @classmethod
@@ -91,7 +88,7 @@ class UserQueryManager(SQLQueryManager):
         except ResourceNotChanged as ex:
             raise ex
         except:
-            raise ActiveModelError
+            raise ActiveRecordError
 
         cls._logging(logging_level=LOGGING_LEVELS.USER_EDIT_MAME, done_by=pk)
 
@@ -113,7 +110,7 @@ class UserQueryManager(SQLQueryManager):
                         .join(Member)
                         .where(Channel.created_by == pk or Member.channel == Channel and Member.user == pk))
         except:
-            raise ActiveModelError
+            raise ActiveRecordError
 
         cls._logging(logging_level=LOGGING_LEVELS.USERS_ALL, done_by=pk)
         return users + list(channels)
@@ -124,7 +121,7 @@ class ChannelQueryManager(SQLQueryManager):
         try:
             channel = Channel.create(created_by=user_id, **kwargs)
         except:
-            raise ActiveModelError
+            raise ActiveRecordError
 
         cls._logging(logging_level=LOGGING_LEVELS.CHANNEL_NEW, done_by=user_id)
         return channel.id
@@ -141,13 +138,11 @@ class ChannelQueryManager(SQLQueryManager):
                             Channel.created_by == user_id or (Member.user == user_id and Member.is_channel_admin)))
             results = list(query)
         except:
-            raise ActiveModelError
-
+            raise ActiveRecordError
         if not results:
             raise Unauthorized
-
         member = Member.create(channel=pk, **kwargs)
-        cls._logging(logging_level=LOGGING_LEVELS.MEMBER_ADD, done_by=user_id)
+        # cls._logging(logging_level=LOGGING_LEVELS.MEMBER_ADD, done_by=user_id)
         return member.as_json()
 
     @classmethod
@@ -166,7 +161,7 @@ class ChannelQueryManager(SQLQueryManager):
                 raise
             member.delete_instance()
         except:
-            raise ActiveModelError
+            raise ActiveRecordError
 
         cls._logging(logging_level=LOGGING_LEVELS.MEMBER_DEL, done_by=user_id)
 
@@ -178,7 +173,7 @@ class ChannelQueryManager(SQLQueryManager):
                 raise
             member.delete_instance()
         except:
-            raise ActiveModelError
+            raise ActiveRecordError
 
         cls._logging(logging_level=LOGGING_LEVELS.CHANNEL_EXIT, done_by=member_id)
 
@@ -190,6 +185,6 @@ class ChannelQueryManager(SQLQueryManager):
                 raise
             channel.delete_instance()
         except:
-            raise ActiveModelError
+            raise ActiveRecordError
 
         cls._logging(logging_level=LOGGING_LEVELS.CHANNEL_DEL, done_by=user_id)

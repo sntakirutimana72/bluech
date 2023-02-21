@@ -4,6 +4,7 @@ import typing as yi
 from .serializers import PayloadJSONSerializer
 from .repositories import RepositoriesHub
 from .interfaces import AttributeDict
+from .exceptions import CustomException
 from ..models import *
 
 class ChannelLayer:
@@ -43,49 +44,26 @@ class TasksLayer:
 
 class Response:
     @staticmethod
-    def make(proto: str, status=200, **kwargs):
-        return {'proto': proto, 'status': status, **kwargs}
-
-    # noinspection PyProtectedMember
-    @classmethod
-    def as_resource(cls, proto: str, status: int, resource: _Model):
-        return cls.make(proto, status=status, **{resource.name: resource.as_json})
+    def make(status=200, **kwargs):
+        return {'status': status, **kwargs}
 
     @classmethod
-    def exception(cls, message='Internal Error', status=500):
-        return cls.make('error', status=status, message=message)
+    def as_resource(cls, resource: _Model, status=200, **options):
+        return cls.make(body={resource.name: resource.as_json})
+    
+    @classmethod
+    def internal_error(cls, **options):
+        if not options:
+            options = CustomException().to_json
+        return cls.make(**options)
 
     @classmethod
     def signin_success(cls, user):
-        return cls.as_resource('signin_success', 200, user)
-
-    @classmethod
-    def signin_failure(cls, message: str, status=401):
-        return cls.make('signin_failure', status=status, message=message)
+        return cls.as_resource(user, proto='signin_success')
 
     @classmethod
     def signout_success(cls):
-        return cls.make('signout_success')
-
-    @classmethod
-    def signout_failure(cls):
-        return {**cls.exception(), 'proto': 'signout_failure'}
-
-    @classmethod
-    def as_message(cls, status: int, message: _Model):
-        return cls.as_resource('message', status, message)
-
-    @classmethod
-    def as_message_edited(cls, status: int, message: _Model):
-        return cls.as_resource('message_edited', status, message)
-
-    @classmethod
-    def as_my_nickname_changed(cls, status: int, user: _Model):
-        return cls.as_resource('my_nickname_changed', status, user)
-
-    @classmethod
-    def as_nickname_changed(cls, status: int, resource: _Model):
-        return cls.as_resource('nickname_changed', status, resource)
+        return cls.make(proto='signout_success')
 
 class PipeLayer:
     @staticmethod

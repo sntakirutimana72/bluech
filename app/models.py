@@ -17,7 +17,7 @@ from app.extensions.models import *
 
 MembershipThroughModel = pee.DeferredThroughModel()
 
-class _Model(pee.Model):
+class _Model(MetaExtension, pee.Model):
     created_at = pee.DateTimeField(default=dt.datetime.now)
     updated_at = pee.DateTimeField(null=True)
 

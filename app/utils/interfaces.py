@@ -13,10 +13,10 @@ class RouteRef:
 class Request:
     content_length: int
     """The size of the :param:~body content"""
-    
+
     content_type: str
     """The type of the :param:~body content"""
-    
+
     body: AttributeDict
     """Carries all essential data required to complement the request"""
 
@@ -34,9 +34,7 @@ class Request:
 
     def __init__(self, route: str, req: dict[str, Any]):
         self.route_ref = RouteRef(route)
-
-        for name, value in req.items():
-            setattr(self, name, value)
+        [setattr(self, *props) for props in req.items()]
 
     @property
     def route_path(self) -> str:

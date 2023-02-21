@@ -1,4 +1,5 @@
 __all__ = (
+    'MetaExtension',
     'ChannelExtension',
     'UserExtension',
     'MemberExtension',
@@ -12,16 +13,21 @@ import datetime as dt
 
 from ..policies.secure_password import PasswordHasherPolicy
 
+class MetaExtension(object):
+    @classmethod
+    def cls_name(cls):
+        return cls.__name__.lower()
+
+    @property
+    def name(self):
+        return self.cls_name()
+
 # noinspection PyAttributeOutsideInit
 class Extension(object):
     def save(self, *args, **kwargs):
         if self._pk:
             self.updated_at = dt.datetime.now()
         return super(Extension, self).save(*args, **kwargs)
-
-    @property
-    def name(self):
-        return self.__class__.__name__.lower()
 
     @staticmethod
     def to_json():

@@ -28,7 +28,7 @@ class SessionQueryManager(SQLQueryManager):
     @classmethod
     def signout(cls, user_id: int):
         # cls._logging(logging_level=LOGGING_LEVELS.LOGOUT, done_by=user_id)
-        print(f'user_id = f{user_id}')
+        ...
 
 class MessageQueryManager(SQLQueryManager):
     @classmethod

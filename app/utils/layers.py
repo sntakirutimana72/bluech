@@ -68,7 +68,7 @@ class Response:
         return cls.make('signout_success')
 
     @classmethod
-    def as_signout_failure(cls):
+    def signout_failure(cls):
         return {**cls.exception(), 'proto': 'signout_failure'}
 
     @classmethod

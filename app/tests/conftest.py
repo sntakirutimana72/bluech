@@ -4,6 +4,7 @@ import asyncio as io
 
 from ..utils.db_connect import db_connector, drop_schema
 from ..settings import DB_CONFIGS
+from .. import models
 
 @pytest.fixture(scope='session')
 def event_loop():
@@ -22,3 +23,11 @@ def configure_db():
     conn = db_connector('test')
     yield conn
     conn.close()
+
+@pytest.fixture(scope='class', autouse=True)
+def purge_db():
+    yield
+    for model_cls in map(models.__dict__.get, models.__all__):
+        if model_cls.cls_name() in ('_model', 'activity'):
+            continue
+        model_cls.delete().execute()

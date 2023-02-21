@@ -7,7 +7,7 @@ from ..support.mocks.clients import AppClientSpec
 @pytest.mark.usefixtures('server')
 class SessionTestCases(PyTestCase):
     client: AppClientSpec
-    
+
     @classmethod
     def setup_class(cls):
         cls.client = AppClientSpec()
@@ -39,7 +39,7 @@ class TestSigninAndSignoutSuccess(SessionTestCases):
             credentials = {'email': admin.email, 'password': 'test@123'}
             await self.assertResponse(200, 'signin_success', **credentials)
             await self.client.disconnect()
-    
+
     @pytest.mark.asyncio
     async def test_signout_success(self):
         with InstantUse.admin_user() as admin:

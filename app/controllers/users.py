@@ -4,10 +4,10 @@ from ..utils.layers import TasksLayer
 
 class Users(Base):
     async def _patch(self):
-        """Edit user display name"""
+        """Edit user nickname"""
         pk = self.user_id
-        UserQueryManager.edit_user_display_name(pk, self._request.body.display_name)
-        await TasksLayer.build(self._request.protocol, pk)
+        UserQueryManager.edit_nickname(pk, self._request.body.user.nickname)
+        await TasksLayer.build('nickname_edited', pk)
 
     async def _put(self):
         """Change user profile picture"""

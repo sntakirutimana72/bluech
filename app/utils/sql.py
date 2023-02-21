@@ -77,20 +77,16 @@ class MessageQueryManager(SQLQueryManager):
 
 class UserQueryManager(SQLQueryManager):
     @classmethod
-    def edit_user_display_name(cls, pk: int, display_name: str):
+    def edit_nickname(cls, pk: int, nickname: str):
         try:
             user: User = User.get_by_id(pk)
-            if user.display_name == display_name:
+            if user.nickname == nickname:
                 raise ResourceNotChanged
-
-            user.display_name = display_name
+            user.nickname = nickname
             user.save()
-        except ResourceNotChanged as ex:
-            raise ex
         except:
             raise ActiveRecordError
-
-        cls._logging(logging_level=LOGGING_LEVELS.USER_EDIT_MAME, done_by=pk)
+        # cls._logging(logging_level=LOGGING_LEVELS.USER_EDIT_MAME, done_by=pk)
 
     @classmethod
     def edit_user_profile_picture(cls, pk: int, data: bytes, extension: str):

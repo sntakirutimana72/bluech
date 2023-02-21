@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.11]
+        python-version: [3.10]
     services:
       postgres:
         image: postgres:12-alpine
@@ -31,6 +31,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install --no-cache-dir -r requirements.txt
     
-      - name: Test with Pytest
+      - name: Run specs
         run: |
-          python -m pytest -v --disable-warnings
+          python -m pytest --disable-warnings

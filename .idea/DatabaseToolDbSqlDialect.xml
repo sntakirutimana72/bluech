@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DatabaseToolDbSqlDialect">
+    <option name="dialects">
+      <map>
+        <entry key="$PROJECT_DIR$/app/schema.sql" value="MySQL" />
+      </map>
+    </option>
+  </component>
+</project>

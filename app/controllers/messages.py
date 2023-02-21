@@ -1,32 +1,28 @@
 from .base import Base
-from ..utils import sql
-from ..utils.pipe import create_response_task
+from ..utils.sql import MessageQueryManager
+from ..utils.layers import TasksLayer
 
 class Messages(Base):
-
     async def _post(self):
         """Create a new message"""
-        message_id = sql.new_message(self.user_id, **self._request.body)
-        await create_response_task(self._request.protocol, message_id)
+        message_id = MessageQueryManager.new_message(self.user_id, **self._request.body)
+        await TasksLayer.build(self._request.protocol, message_id)
 
     async def _get(self):
         """Fetch all messages that I'm part of"""
-        await create_response_task(self._request.protocol, None, **{
-            'recipient': self.user_id,
-            'sender': self._request.sender
-        })
+        await TasksLayer.build(self._request.protocol, None, recipient=self.user_id)
 
     async def _patch(self):
         """Edit an existing in service message"""
         message_id = self._request.params.message_id
-        sql.edit_message(self.user_id, message_id, **self._request.body)
-        await create_response_task(self._request.protocol, message_id)
+        MessageQueryManager.edit_message(self.user_id, message_id, **self._request.body)
+        await TasksLayer.build(self._request.protocol, message_id)
 
     async def _delete(self):
         """Delete a message by setting its status to `DISABLED|DELETED`"""
         message_id = self._request.params.message_id
-        sql.remove_message(self.user_id, message_id)
-        await create_response_task(self._request.protocol, None, **{
+        MessageQueryManager.remove_message(self.user_id, message_id)
+        await TasksLayer.build(self._request.protocol, None, **{
             'message_id': message_id,
             'sender_id': self.user_id
         })

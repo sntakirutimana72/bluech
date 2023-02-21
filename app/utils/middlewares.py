@@ -1,5 +1,6 @@
 from .processor import Processor
 
 async def accept_conn(reader, writer):
-    # Invoke a lifetime copy of the processor to handle communication on both ends.
+    # Start the processing phase of the client connection
+    # Initiate an instance of Processor
     Processor(reader, writer)

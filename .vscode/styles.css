@@ -1,0 +1,15 @@
+.explorer-viewlet { 
+  font-family: "Fira Code" !important; 
+  font-weight: bold; 
+}
+
+.split-view-view > .sidebar > .content > .viewlet {
+  font-family: "Source Code Pro" !important;
+}
+
+.split-view-view > .sidebar > .title > .title-label > h2 {
+  font-family: "Source Code Pro" !important;
+  font-weight: bold;
+  font-size: 14px;
+  font-style: italic;
+}

@@ -1,72 +1,89 @@
-from asyncio import StreamReader, StreamWriter, create_task
+import asyncio as io
+import schema as sc
 
 from .interfaces import AttributeDict, Request
-from .shareables import channels_Q
-from .channels import Channel
-from .pipe import fetch, pump, create_response_task
-from .response import Response
+from .repositories import RepositoriesHub
+from .layers import ChannelLayer, Response, PipeLayer, TasksLayer
 from .validators import Validators
-from .exceptions import ProtocolLookupError, ProtocolValidationError, CustomException
+from .exceptions import *
 from .dispatch import dispatch
 from ..settings import ALLOWED_ROUTES
 
+# noinspection PyBroadException
 class Processor:
+    proto: str | None
 
-    def __init__(self, reader: StreamReader, writer: StreamWriter):
-        self._reader = reader
-        self._writer = writer
-        self._session: AttributeDict | None = None
-        self._request: Request | None = None
+    def __init__(self, reader: io.StreamReader, writer: io.StreamWriter):
+        self.reader = reader
+        self.writer = writer
+        self.session: AttributeDict | None = None
+        self.request: Request | None = None
 
-        create_task(self._in_stream())
+        io.create_task(self.gather())
 
-    async def _in_registry(self, user):
-        self._session = AttributeDict({'user_id': user.id, 'is_group': False})
-        channel = Channel(self._writer, user)
-        channels_q = channels_Q()
+    async def subscribe(self, user):
+        user_id = user.id
+        self.session = AttributeDict({'user_id': user_id, 'is_group': False})
+        channel_layer = ChannelLayer(self.writer, user_id)
+        await RepositoriesHub.channels_repository.push(channel_layer)
+        await PipeLayer.pump(self.writer, Response.signin_success(user))
+        await TasksLayer.build('users', user_id)
 
-        await channels_q.push(channel)
-        await pump(self._writer, Response.as_signin_success(user))
-        await create_response_task('users', user.id)
+    async def unsubscribe(self):
+        user_id = self.session.user_id
+        self.session = None
+        await RepositoriesHub.channels_repository.remove(user_id)
+        await PipeLayer.pump(self.writer, Response.signout_success())
+        await TasksLayer.build('remove_user', user_id)
 
-    async def _in_submission(self, req):
-        self._in_process(req)
-        controller = dispatch(self._request)
+    def resolve(self, request):
+        self.sanitize(request)
+        return dispatch(self.request).exec()
 
-        return await controller.exec()
-
-    async def _in_transition(self, req):
+    async def process(self, request):
         try:
-            result = await self._in_submission(req)
-            if self._session is None:
-                await self._in_registry(result)
-        except CustomException as ex:
-            await pump(self._writer, Response.as_exc(ex))
+            result = await self.resolve(request)
+            if self.session is None:
+                await self.subscribe(result)
+            elif self.proto == 'signout':
+                await self.unsubscribe()
+        except CustomException as e:
+            await PipeLayer.pump(self.writer, Response.signin_failure(**e.resp))
+        except:
+            await PipeLayer.pump(self.writer, Response.exception())
+        self.proto = None
+        self.request = None
 
-        self._request = None
-
-    async def _in_stream(self):
+    async def gather(self):
         try:
             while True:
-                req = await fetch(self._reader)
-                await self._in_transition(req)
-        except Exception as ex:
-            print(ex)
+                request = await PipeLayer.fetch(self.reader)
+                await self.process(request)
+        except:
+            ...
 
-    def _in_process(self, req):
-        validated_req = AttributeDict(Validators.request(req))
-        action_req = validated_req.pop('request')
+    def sanitize(self, request):
+        try:
+            validated_req = AttributeDict(Validators.request(request))
+            action_req = validated_req.pop('request')
+            self.proto = validated_req.pop('protocol')
 
-        if self._session is None:
-            if validated_req.protocol != 'signin':
-                raise ProtocolValidationError
-            req = Validators.signin(action_req)
-        elif validated_req.protocol not in ALLOWED_ROUTES:
-            raise ProtocolLookupError
-        else:
-            validator = getattr(Validators, validated_req.protocol)
-            req = validator(action_req)
+            if self.session is None:
+                if self.proto != 'signin':
+                    raise ProtocolValidationError
+                request = Validators.signin(action_req)
+            elif self.proto == 'signout':
+                request = {}
+            elif self.proto not in ALLOWED_ROUTES:
+                raise ProtocolLookupError
+            else:
+                validator = getattr(Validators, self.proto)
+                request = validator(action_req)
 
-        validated_req |= req
-        validated_req.session = self._session  # pass down the session context
-        self._request = Request(validated_req)
+            validated_req |= request
+            validated_req.session = self.session  # pass down the session context
+            self.request = Request(ALLOWED_ROUTES[self.proto], validated_req)
+        except sc.SchemaError:
+            raise BadRequest
+        except:
+            raise CustomException

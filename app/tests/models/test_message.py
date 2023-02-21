@@ -2,7 +2,7 @@ import unittest
 import pytest
 import peewee as pee
 
-from ..support.helpers import InstantUse
+from ..support.models import InstantUse
 from ...models import Message
 
 @pytest.mark.usefixtures('configure_db', 'message')

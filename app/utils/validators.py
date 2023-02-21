@@ -13,38 +13,38 @@ class Validators:
 
     # :default validator
     @classmethod
-    def request(cls, req): 
+    def request(cls, req):
         return Schema({
             'content_type': cls.enum_type(*CONTENT_TYPES),
             'content_length': int,
             'protocol': str,
             'request': {
-                'body': Or(None, And({str: object}, Use(AttributeDict))),
+                Optional('body'): And({str: object}, Use(AttributeDict)),
                 Optional('params'): And({str: Or(int, str)}, Use(AttributeDict))
             }
         }).validate(req)
-    
+
     # :Session
     #
     # :signin validator
     @staticmethod
-    def signin(req): 
+    def signin(req):
         return Schema({'body': {'user': {'email': str, 'password': str}}}).validate(req)
-        
+
     # :Users
     #
     # :display_name validator
     @staticmethod
-    def display_name(req): 
+    def display_name(req):
         return Schema({'body': {'user': {'display_name': str}}}).validate(req)
-    
+
     # :Users
     #
     # :all_users validator
     @staticmethod
     def edit_profile_pic(req):
         return Schema({'body': {'user': {'picture': str, 'suffix': str}}}).validate(req)
-   
+
     # :Groups
     #
     # :new_group validator
@@ -58,7 +58,7 @@ class Validators:
                 }
             }
         }).validate(req)
-        
+
     # :group_display_name validator
     @staticmethod
     def group_display_name(req):
@@ -66,7 +66,7 @@ class Validators:
             'body': {'group': {'display_name': str}},
             'params': {'id': Or(int, str)}
         }).validate(req)
-        
+
     # :new_member validator
     @staticmethod
     def new_member(req):
@@ -74,7 +74,7 @@ class Validators:
             'body': {'group': {'members': And([{'id': int, 'is_admin': bool}], len)}},
             'params': {'id': Or(int, str)}
         }).validate(req)
-    
+
     # :new_member validator
     @staticmethod
     def remove_member(req):
@@ -82,7 +82,7 @@ class Validators:
             'body': {'group': {'members': And([int], len)}},
             'params': {'id': Or(int, str)}
         }).validate(req)
-    
+
     # :exit_group & :remove_group validator
     @staticmethod
     def exit_or_remove_group(req):
@@ -90,7 +90,7 @@ class Validators:
             'body': None,
             'params': {'id': Or(int, str)}
         }).validate(req)
-    
+
     # :group_privilege validator
     @staticmethod
     def assign_group_privilege(req):
@@ -114,7 +114,7 @@ class Validators:
                 }
             }
         }).validate(req)
-    
+
     # :edit_message validator
     @staticmethod
     def edit_message(req):
@@ -122,7 +122,7 @@ class Validators:
             'body': {'message': {'description': And(str, len)}},
             'params': {'id': int}
         }).validate(req)
-    
+
     # :remove_message validator
     @staticmethod
     def remove_message(req):

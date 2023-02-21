@@ -3,11 +3,11 @@ __all__ = (
     'UsersController',
     'SessionController',
     'MessagesController',
-    'GroupsController',
+    'ChannelsController',
 )
 
 from .base import Base as BaseController
 from .session import Session as SessionController
 from .messages import Messages as MessagesController
 from .users import Users as UsersController
-from .groups import Groups as GroupsController
+from .channels import Channels as ChannelsController

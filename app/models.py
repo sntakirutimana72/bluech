@@ -6,74 +6,64 @@ __all__ = (
     'Resource',
     'Activity',
     'ActivityLog',
+    '_Model'
 )
 
-from pathlib import Path
-from datetime import datetime
-from uuid import uuid4
-from peewee import (
-    Model, DatabaseProxy, ForeignKeyField, CompositeKey,
-    CharField, TextField, DateTimeField, BooleanField,
-    UUIDField, ManyToManyField, DeferredThroughModel
-)
+import datetime as dt
+import uuid as u4
+import peewee as pee
 
-from .utils.interfaces import AttributeDict
+from app.extensions.models import *
 
-MembershipThroughModel = DeferredThroughModel()
+MembershipThroughModel = pee.DeferredThroughModel()
 
-class _Model(Model):
-    created_at = DateTimeField(default=datetime.now)
-    updated_at = DateTimeField(null=True)
+class _Model(MetaExtension, pee.Model):
+    created_at = pee.DateTimeField(default=dt.datetime.now)
+    updated_at = pee.DateTimeField(null=True)
 
     class Meta:
-        database = DatabaseProxy()
+        database = pee.DatabaseProxy()
 
-    def save(self, *args, **kwargs):
-        if self._pk:
-            self.updated_at = datetime.now()
-        return super(_Model, self).save(*args, **kwargs)
+class User(UserExtension, _Model):
+    email = pee.CharField(unique=True, max_length=100)
+    password = pee.CharField(null=False)
+    nickname = pee.CharField(max_length=12, null=False)
 
-class User(_Model):
-    email = CharField(unique=True, max_length=100)
-    password = CharField(null=False)
-    nickname = CharField(max_length=12, null=False)
+class Channel(ChannelExtension, _Model):
+    uuid = pee.UUIDField(unique=True, default=u4.uuid4)
+    nickname = pee.CharField(max_length=12)
+    created_by = pee.ForeignKeyField(User, backref='channels')
+    members = pee.ManyToManyField(User, backref='channels', through_model=MembershipThroughModel)
 
-class Channel(_Model):
-    uuid = UUIDField(unique=True, default=uuid4)
-    nickname = CharField(max_length=12)
-    created_by = ForeignKeyField(User, backref='channels')
-    members = ManyToManyField(User, backref='channels', through_model=MembershipThroughModel)
-
-class Member(_Model):
-    is_admin = BooleanField(default=False)
-    is_creator = BooleanField(default=False)
-    user = ForeignKeyField(User)
-    channel = ForeignKeyField(Channel)
+class Member(MemberExtension, _Model):
+    is_admin = pee.BooleanField(default=False)
+    is_creator = pee.BooleanField(default=False)
+    user = pee.ForeignKeyField(User)
+    channel = pee.ForeignKeyField(Channel)
 
     class Meta:
-        primary_key = CompositeKey('user', 'channel')
+        primary_key = pee.CompositeKey('user', 'channel')
 
 MembershipThroughModel.set_model(Member)
 
-class Message(_Model):
-    sender = ForeignKeyField(User, backref='messages')
-    recipient = ForeignKeyField(User, backref='receipts')
-    description = TextField(null=True)
-    is_edited = BooleanField(default=False)
-    has_attachments = BooleanField(default=False)
-    reply_to = ForeignKeyField('self', backref='replies', null=True)
+class Message(MessageExtension, _Model):
+    sender = pee.ForeignKeyField(User, backref='messages')
+    recipient = pee.ForeignKeyField(User, backref='receipts')
+    description = pee.TextField(null=True)
+    is_edited = pee.BooleanField(default=False)
+    has_attachments = pee.BooleanField(default=False)
+    reply_to = pee.ForeignKeyField('self', backref='replies', null=True)
 
-class Resource(_Model):
-    location = CharField(unique=True)
+class Resource(ResourceExtension, _Model):
+    location = pee.CharField(unique=True)
+    user = pee.ForeignKeyField(User, backref='picture', null=True)
+    channel = pee.ForeignKeyField(Channel, backref='attachments', null=True)
+    message = pee.ForeignKeyField(Message, backref='attachments', null=True)
 
-    user = ForeignKeyField(User, backref='picture', null=True)
-    channel = ForeignKeyField(Channel, backref='attachments', null=True)
-    message = ForeignKeyField(Message, backref='attachments', null=True)
+class Activity(ActivityExtension, _Model):
+    name = pee.CharField(unique=True, max_length=16)
 
-class Activity(_Model):
-    name = CharField(unique=True, max_length=16)
-
-class ActivityLog(_Model):
-    summary = TextField()
-    activity = ForeignKeyField(Activity, backref='logs')
-    doer = ForeignKeyField(User, backref='logs')
+class ActivityLog(ActivityLogExtension, _Model):
+    summary = pee.TextField()
+    activity = pee.ForeignKeyField(Activity, backref='logs')
+    doer = pee.ForeignKeyField(User, backref='logs')

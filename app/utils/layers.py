@@ -1,36 +1,32 @@
 import asyncio as io
 import typing as yi
 
-from .serializers import PayloadJSONSerializer
 from .repositories import RepositoriesHub
 from .interfaces import AttributeDict
 from .exceptions import CustomException
+from ..serializers.commons import PayloadJSONSerializer
+from ..serializers.models import UserSerializer
 from ..models import *
 
 class ChannelLayer:
-    def __init__(self, writer: io.StreamWriter, _id):
-        self._id = _id
-        self._writer = writer
-
-    @property
-    def uid(self) -> int | str:
-        return self._id
+    def __init__(self, writer: io.StreamWriter, uid: int | str):
+        self.uid = uid
+        self.writer = writer
 
     @property
     def is_writable(self):
-        return self._writer is None
+        return self.writer is None
 
     @property
     def resource(self) -> User | Channel:
         if self.is_writable:
-            return User.get_by_id(self._id)
-        return Channel.get_by_id(self._id)
+            return User.get_by_id(self.uid)
+        return Channel.get_by_id(self.uid)
 
-    async def write(self, payload: bytes):
+    async def write(self, payload: dict[str, yi.Any]):
         if not self.is_writable:
             raise
-        self._writer.write(payload)
-        await self._writer.drain()
+        await PipeLayer.pump(self.writer, payload)
 
 class TasksLayer:
     @staticmethod
@@ -48,10 +44,6 @@ class Response:
         return {'status': status, **kwargs}
 
     @classmethod
-    def as_resource(cls, resource: _Model, status=200, **options):
-        return cls.make(body={resource.name: resource.as_json})
-    
-    @classmethod
     def internal_error(cls, **options):
         if not options:
             options = CustomException().to_json
@@ -59,7 +51,7 @@ class Response:
 
     @classmethod
     def signin_success(cls, user):
-        return cls.as_resource(user, proto='signin_success')
+        return cls.make(user=UserSerializer(user).to_json, proto='signin_success')
 
     @classmethod
     def signout_success(cls):

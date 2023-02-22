@@ -1,7 +1,7 @@
 import json
 import typing as yi
 
-from ..settings import ENCODING
+from app.settings import ENCODING
 
 class PayloadJSONSerializer:
     @staticmethod

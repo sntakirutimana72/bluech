@@ -20,10 +20,10 @@ class SessionTestCases(PyTestCase):
         self.assert_dict_has_key(resp, 'status')
         self.assert_equals(resp['status'], status)
 
-class TestSigninFailure(SessionTestCases):
+class TestSigninAndSignoutFailure(SessionTestCases):
     @pytest.mark.asyncio
     async def test_bad_request(self):
-        await self.assertResponse(400, 'signin_failure')
+        await self.assertResponse(400, 'invalid_request')
         await self.client.disconnect()
 
     @pytest.mark.asyncio

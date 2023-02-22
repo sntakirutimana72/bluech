@@ -4,7 +4,7 @@ from ..utils.sql import SessionQueryManager
 class Session(Base):
     async def _post(self):
         """ Signin """
-        return SessionQueryManager.signin(**self._request.body.user)
+        return SessionQueryManager.signin(**self.request.body.user)
 
     async def _delete(self):
         """ Signout """

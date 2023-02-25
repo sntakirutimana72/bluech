@@ -1,4 +1,5 @@
-import asyncio
+import asyncio as io
+import typing as ty
 
 from ..utils.interfaces import Request
 
@@ -14,9 +15,9 @@ class Base(object):
     def session(self):
         return self.request.session
 
-    def _executor(self):
-        exec_name = f'_{self.request.method.lower()}'
-        return getattr(self, exec_name)
+    def get_handler(self) -> ty.Type[io.Future]:
+        handler = f'_{self.request.method.lower()}'
+        return getattr(self, handler)
 
-    def exec(self) -> asyncio.Future:
-        return self._executor()()
+    def exec(self):
+        return self.get_handler()()

@@ -57,6 +57,10 @@ class Response:
     def signout_success(cls):
         return cls.make(proto='signout_success')
 
+    @classmethod
+    def edit_username_success(cls, user):
+        return cls.make(user=UserSerializer(user).to_json, proto='edit_username_success')
+
 class PipeLayer:
     @staticmethod
     async def fetch(reader: io.StreamReader):

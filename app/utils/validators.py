@@ -4,7 +4,6 @@ from .interfaces import AttributeDict
 from ..settings import CONTENT_TYPES
 
 class Validators:
-
     @staticmethod
     def enum_type(*enums):
         def validate(initial):
@@ -33,10 +32,10 @@ class Validators:
 
     # :Users
     #
-    # :display_name validator
+    # :nickname validator
     @staticmethod
-    def display_name(req):
-        return Schema({'body': {'user': {'display_name': str}}}).validate(req)
+    def edit_username(req):
+        return Schema({'body': {'user': {'nickname': str}}}).validate(req)
 
     # :Users
     #

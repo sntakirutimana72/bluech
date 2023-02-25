@@ -27,14 +27,14 @@ class Processor:
         channel_layer = ChannelLayer(self.writer, user_id)
         await RepositoriesHub.channels_repository.push(channel_layer)
         await PipeLayer.pump(self.writer, Response.signin_success(user))
-        await TasksLayer.build('users', user_id)
+        await TasksLayer.build('connected', user_id)
 
     async def unsubscribe(self):
         user_id = self.session.user_id
         self.session = None
         await RepositoriesHub.channels_repository.remove(user_id)
         await PipeLayer.pump(self.writer, Response.signout_success())
-        await TasksLayer.build('remove_user', user_id)
+        await TasksLayer.build('disconnected', user_id)
 
     def resolve(self, request):
         self.sanitize(request)
@@ -68,14 +68,10 @@ class Processor:
             action_req = validated_req.pop('request')
             self.proto = validated_req.pop('protocol')
 
-            if self.session is None:
-                if self.proto != 'signin':
-                    raise BadRequest
-                request = Validators.signin(action_req)
+            if (self.proto not in ALLOWED_ROUTES) or (not self.session and self.proto != 'signin'):
+                raise BadRequest
             elif self.proto == 'signout':
                 request = {}
-            elif self.proto not in ALLOWED_ROUTES:
-                raise BadRequest
             else:
                 validator = getattr(Validators, self.proto)
                 request = validator(action_req)

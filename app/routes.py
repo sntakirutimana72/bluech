@@ -4,10 +4,10 @@ from .controllers import *
 route_patterns = [
     # session
     router(['signin', 'signout'], SessionController),
+    # users
+    router(['edit_username'], UsersController),
     # messages
-    # router('messages', MessagesController),
-    # # users
-    # router('users', UsersController),
+    # router(['edit_'], MessagesController),
     # # groups
     # router('channels', ChannelsController),
 ]

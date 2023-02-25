@@ -48,6 +48,10 @@ class AppClientSpec(ClientMockSpec):
         await self.send(RequestSpecs.signout())
         return await self.receive()
 
+    async def edit_username(self):
+        await self.send(RequestSpecs.edit_username())
+        return await self.receive()
+
 class ConnectivityClientSpec(ClientMockSpec):
     async def connect(self, host='localhost', port=8080):
         return await super().connect(host, port)

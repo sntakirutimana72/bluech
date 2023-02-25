@@ -7,7 +7,7 @@ class TestRequestValidator(PyTestCase):
     @classmethod
     def setup_class(cls):
         cls.request = RequestSpecs.for_validators()
-        
+
     def test_with_minimal_expected_arguments(self):
         validated = Val.request(self.request)
         self.assert_isinstanceof(validated, dict)
@@ -38,7 +38,7 @@ class TestRequestValidator(PyTestCase):
             Val.request(raw)
 
     def test_with_invalid_request(self):
-        raw = {**self.request}
+        raw = self.request.copy()
         raw['request'] = [4, 8]
 
         with self.assert_raises():
@@ -59,7 +59,7 @@ class TestRequestValidator(PyTestCase):
             Val.request(raw)
 
     def test_with_invalid_content_type(self):
-        raw = {**self.request}
+        raw = self.request.copy()
         raw['content_type'] = 'INVALID CONTENT TYPE'
 
         with self.assert_raises():
@@ -73,7 +73,7 @@ class TestRequestValidator(PyTestCase):
             Val.request(raw)
 
     def test_with_invalid_content_length(self):
-        raw = {**self.request}
+        raw = self.request.copy()
         raw['content_length'] = 17.5
 
         with self.assert_raises():
@@ -87,7 +87,7 @@ class TestRequestValidator(PyTestCase):
             Val.request(raw)
 
     def test_with_invalid_protocol(self):
-        raw = {**self.request}
+        raw = self.request.copy()
         raw['protocol'] = None
 
         with self.assert_raises():
@@ -115,6 +115,8 @@ class TestSessionValidators(PyTestCase):
         with self.assert_raises():
             Val.signin({'body': 'INVALID DATA STRUCTURE'})
 
+
+# noinspection PyTypedDict
 class TestUserValidators(PyTestCase):
     def _assert_for_all(self, obj):
         self.assert_isinstanceof(obj, dict)
@@ -122,18 +124,18 @@ class TestUserValidators(PyTestCase):
         self.assert_dict_has_key(obj['body'], 'user')
         self.assert_isinstanceof(obj['body']['user'], dict)
 
-    def test_display_name_with_valid_schema(self):
-        schema = {'body': {'user': {'display_name': 'NEW DISPLAY NAME'}}}
-        self._assert_for_all(Val.display_name(schema))
+    def test_nickname_with_valid_schema(self):
+        schema = {'body': {'user': {'nickname': 'NEW NICKNAME'}}}
+        self._assert_for_all(Val.edit_username(schema))
 
-    def test_display_name_with_invalid_schema(self):
-        schema = {'body': {'display_name': 11}}
+    def test_nickname_with_invalid_schema(self):
+        schema = {'body': {'nickname': 11}}
         with self.assert_raises():
-            Val.display_name(schema)
+            Val.edit_username(schema)
 
-        schema['body'] = {'user': {'display_name': 26}}
+        schema['body'] = {'user': {'nickname': 26}}
         with self.assert_raises():
-            Val.display_name(schema)
+            Val.edit_username(schema)
 
     def test_edit_profile_pic_with_valid_schema(self):
         schema = {'body': {'user': {'picture': 'kdasji392iotfpng80438q', 'suffix': 'png'}}}
@@ -188,7 +190,7 @@ class TestGroupValidators(PyTestCase):
         del schema['body']['group']['params']
         with self.assert_raises():
             Val.group_display_name(schema)
-        # with invalid :dispaly_name
+        # with invalid :nickname
         schema['body']['group']['params'] = {'id': 'dsaee251fdsbgt4'}
         schema['body']['group']['display_name'] = 342432
         with self.assert_raises():

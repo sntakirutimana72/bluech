@@ -6,7 +6,7 @@ class Users(Base):
     async def _patch(self):
         """Edit user nickname"""
         pk = self.user_id
-        UserQueryManager.edit_nickname(pk, self.request.body.user.nickname)
+        UserQueryManager.edit_nickname(pk, self.request.body['user']['nickname'])
         await TasksLayer.build('edit_username_success', pk)
 
     async def _put(self):

@@ -15,7 +15,7 @@ class ChannelLayer:
 
     @property
     def is_writable(self):
-        return self.writer is None
+        return bool(self.writer)
 
     @property
     def resource(self) -> User | Channel:
@@ -40,7 +40,7 @@ class TasksLayer:
 
 class Response:
     @staticmethod
-    def make(status=200, **kwargs):
+    def make(status=200, **kwargs) -> dict[str, yi.Any]:
         return {'status': status, **kwargs}
 
     @classmethod

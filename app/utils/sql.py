@@ -76,8 +76,8 @@ class MessageQueryManager(SQLQueryManager):
         # cls._logging(logging_level=LOGGING_LEVELS.MSG_DEL, done_by=user_id)
 
 class UserQueryManager(SQLQueryManager):
-    @classmethod
-    def edit_nickname(cls, pk: int, nickname: str):
+    @staticmethod
+    def edit_nickname(pk: int, nickname: str):
         try:
             user: User = User.get_by_id(pk)
             if user.nickname == nickname:

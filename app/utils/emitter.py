@@ -24,13 +24,14 @@ class Responder:
         ...
 
     @staticmethod
-    async def edit_username(**options):
-        with Hub.tasks_repository.mutex:
-            with Hub.channels_repository.mutex:
+    async def edit_username_success(**options):
+        async with Hub.tasks_repository.mutex:
+            async with Hub.channels_repository.mutex:
                 channel: ChannelLayer = Hub.channels_repository.items.get(options['id'])
                 if channel is None:
                     return
                 response = Response.edit_username_success(channel.resource)
+        await channel.write(response)
 
     @classmethod
     async def pulse(cls):
@@ -38,7 +39,7 @@ class Responder:
             try:
                 task = await Hub.tasks_repository.fetch()
                 if task:
-                    proto = task.prop('proto')
+                    proto = task.pop('proto')
                     handler = cls.get_handler(proto)
                     await handler(**task)
             except:

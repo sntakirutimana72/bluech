@@ -48,8 +48,8 @@ class AppClientSpec(ClientMockSpec):
         await self.send(RequestSpecs.signout())
         return await self.receive()
 
-    async def edit_username(self):
-        await self.send(RequestSpecs.edit_username())
+    async def edit_username(self, **options):
+        await self.send({**RequestSpecs.edit_username(), **options})
         return await self.receive()
 
 class ConnectivityClientSpec(ClientMockSpec):

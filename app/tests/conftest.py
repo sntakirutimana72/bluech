@@ -2,6 +2,7 @@ import pytest
 import platform
 import asyncio as io
 
+from .support.models import create_user
 from ..utils.db_connect import db_connector, drop_schema
 from ..settings import DB_CONFIGS
 from .. import models
@@ -31,3 +32,10 @@ def purge_db():
         if model_cls.cls_name() in ('_model', 'activity'):
             continue
         model_cls.delete().execute()
+
+@pytest.fixture(scope='class')
+def user(request):
+    _user = create_user()
+    request.cls.user = _user
+    yield _user
+    _user.delete_instance()

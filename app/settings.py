@@ -20,7 +20,7 @@ ALLOWED_ROUTES = AttributeDict({
     'remove_message': 'DELETE:/messages/<id int>',
     # For users
     'edit_username': 'PATCH:/users/<id int>',                        # (edit display name)
-    'edit_profile_pic': 'PUT:/users/<id int>',                       # (change profile picture)
+    'change_user_avatar': 'PUT:/users/<id int>',                       # (change profile picture)
     'all_users': 'GET:/users',                                       # (fetch all users)
     # For groups
     'new_group': 'POST:/groups',                                     # (create group)
@@ -85,4 +85,8 @@ LOGGING_LEVELS = AttributeDict({
 ENCODING = 'utf-8'
 #
 # :=>content-types
-CONTENT_TYPES = ('json', 'text',)
+CONTENT_TYPES = [
+    'application/json',
+    'text/plain',
+    r'image\/(png | jpg | jpeg | gif)'
+]

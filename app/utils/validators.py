@@ -5,16 +5,20 @@ from ..settings import CONTENT_TYPES
 
 class Validators:
     @staticmethod
-    def enum_type(*enums):
-        def validate(initial):
-            return initial in enums
-        return validate
+    def strict_content_types(raw_type: str):
+        client_types = raw_type.replace(' ', '').rstrip(';')
+        if not (CONTENT_TYPES[0] in client_types and CONTENT_TYPES[1] in client_types):
+            return False
+        for content_type in client_types:
+            if content_type not in CONTENT_TYPES:
+                return False
+        return True
 
     # :default validator
     @classmethod
     def request(cls, req):
         return Schema({
-            'content_type': cls.enum_type(*CONTENT_TYPES),
+            'content_type': cls.strict_content_types,
             'content_length': int,
             'protocol': str,
             'request': {
@@ -41,7 +45,7 @@ class Validators:
     #
     # :all_users validator
     @staticmethod
-    def edit_profile_pic(req):
+    def change_user_avatar(req):
         return Schema({'body': {'user': {'picture': str, 'suffix': str}}}).validate(req)
 
     # :Groups

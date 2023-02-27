@@ -1,8 +1,13 @@
 import pytest
+import pathlib
 
 from ..support.mocks.servers import AppServerSpec
 from ..support.mocks.clients import AppClientSpec
 from ..support.unittests import PyTestCase
+
+@pytest.fixture(scope='class')
+def tmp_assets_folder():
+    yield
 
 @pytest.fixture(scope='class')
 def server(event_loop):
@@ -18,11 +23,16 @@ class ControllerTestCases(PyTestCase):
     @classmethod
     def setup_class(cls):
         cls.client = AppClientSpec()
+        cls.signedIn = False
 
     async def assertSigninSuccess(self, **user):
+        if self.signedIn:
+            return
+        
         resp = await self.client.login(**user)
         self.assertResponse(200, 'signin_success', resp)
         self.assert_dict_has_key(resp, 'user')
+        self.signedIn = True
         return resp
 
     def assertResponse(self, status: int, proto: str, resp):

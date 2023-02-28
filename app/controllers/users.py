@@ -1,6 +1,8 @@
+import asyncio as io
+
 from .base import Base
 from ..utils.sql import UserQueryManager
-from ..utils.layers import TasksLayer
+from ..utils.layers import TasksLayer, PipeLayer
 
 class Users(Base):
     async def _patch(self):
@@ -9,11 +11,11 @@ class Users(Base):
         UserQueryManager.edit_nickname(pk, self.request.body['user']['nickname'])
         await TasksLayer.build('edit_username_success', pk)
 
-    async def _put(self):
+    async def _put(self, reader: io.StreamReader):
         """Change user profile picture"""
         pk = self.user_id
-        body = self.request.body
-        UserQueryManager.change_avatar(pk, body.data, body.extension)
+        await PipeLayer.download_avatar(reader, **self.request.body['user'])
+        UserQueryManager.change_avatar(pk)
         await TasksLayer.build(self.request.protocol, pk)
 
     async def _get(self):

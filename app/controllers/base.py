@@ -20,4 +20,4 @@ class Base(object):
         return getattr(self, handler)
 
     def exec(self):
-        return self.get_handler()()
+        return self.get_handler()

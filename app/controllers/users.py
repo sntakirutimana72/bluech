@@ -13,7 +13,7 @@ class Users(Base):
         """Change user profile picture"""
         pk = self.user_id
         body = self.request.body
-        UserQueryManager.edit_user_profile_picture(pk, body.data, body.extension)
+        UserQueryManager.change_avatar(pk, body.data, body.extension)
         await TasksLayer.build(self.request.protocol, pk)
 
     async def _get(self):

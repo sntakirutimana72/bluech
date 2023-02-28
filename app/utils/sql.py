@@ -89,7 +89,7 @@ class UserQueryManager(SQLQueryManager):
         # cls._logging(logging_level=LOGGING_LEVELS.USER_EDIT_MAME, done_by=pk)
 
     @classmethod
-    def edit_user_profile_picture(cls, pk: int, data: bytes, extension: str):
+    def change_avatar(cls, pk: int, data: bytes, extension: str):
         with open(f'{pk!r}-user-profile-picture.{extension!r}', 'rb') as fd:
             fd.write(data)
             fd.flush()

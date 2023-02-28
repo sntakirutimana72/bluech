@@ -38,7 +38,10 @@ class Processor:
 
     def resolve(self, request):
         self.sanitize(request)
-        return dispatch(self.request).exec()
+        handler = dispatch(self.request).exec()
+        if self.proto == 'change_user_avatar':
+            return handler(self.reader)
+        return handler()
 
     async def process(self, request):
         try:

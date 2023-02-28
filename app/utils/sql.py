@@ -89,11 +89,9 @@ class UserQueryManager(SQLQueryManager):
         # cls._logging(logging_level=LOGGING_LEVELS.USER_EDIT_MAME, done_by=pk)
 
     @classmethod
-    def change_avatar(cls, pk: int, data: bytes, extension: str):
-        with open(f'{pk!r}-user-profile-picture.{extension!r}', 'rb') as fd:
-            fd.write(data)
-            fd.flush()
-        cls._logging(logging_level=LOGGING_LEVELS.USER_EDIT_PIC, done_by=pk)
+    def change_avatar(cls, pk: int):
+        # cls._logging(logging_level=LOGGING_LEVELS.USER_EDIT_PIC, done_by=pk)
+        ...  # simply the action since the user avatar has already persisted while in dowload
 
     @classmethod
     def all_users(cls, pk: int):

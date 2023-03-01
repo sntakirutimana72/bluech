@@ -73,11 +73,11 @@ class PipeLayer:
             current_stem = complete_path.stem
             complete_path = complete_path.with_stem(f'{current_stem}.copy')
         return complete_path, complete_path.exists()
-    
+
     @staticmethod
-    def download_buffer(overal_size: int, buffer=1024):
-        return overal_size if overal_size < buffer else buffer
-    
+    def download_buffer(overall_size: int, buffer=1024):
+        return overall_size if overall_size < buffer else buffer
+
     @classmethod
     async def download(cls, pipe: io.StreamReader, **options):
         content_size: int = options['content_size']
@@ -88,8 +88,8 @@ class PipeLayer:
         try:
             async with aio.open(download_path, 'wb') as pointer:
                 while remaining_content_size > 0:
-                    chunck = await pipe.read(buffer_size)
-                    await pointer.write(chunck)
+                    chunk = await pipe.read(buffer_size)
+                    await pointer.write(chunk)
                     remaining_content_size -= buffer_size
                     if buffer_size > remaining_content_size:
                         buffer_size = remaining_content_size
@@ -102,13 +102,13 @@ class PipeLayer:
                 actual_path = download_path.with_stem(original_stem)
                 await aios.remove(actual_path)  # remove pre-existing first
                 await aios.rename(download_path, actual_path)  # rename the copy as the original
-                
+
     @classmethod
     async def download_avatar(cls, pipe: io.StreamReader, **options):
         profile_images_path = './assets/profile/images'
         is_done = await cls.download(pipe, parent_dir=profile_images_path, **options)
         return is_done
-        
+
     @staticmethod
     async def fetch(reader: io.StreamReader):
         content_size = await reader.read(4)

@@ -1,13 +1,11 @@
 import pytest
 import pathlib
+import requests
 
 from ..support.mocks.servers import AppServerSpec
 from ..support.mocks.clients import AppClientSpec
 from ..support.unittests import PyTestCase
-
-@pytest.fixture(scope='class')
-def tmp_assets_folder():
-    yield
+from ...settings import APP_NAME
 
 @pytest.fixture(scope='class')
 def server(event_loop):
@@ -15,6 +13,29 @@ def server(event_loop):
     event_loop.run_until_complete(server.initiate())
     yield
     event_loop.run_until_complete(server.terminate())
+    
+@pytest.fixture(scope='class')
+def demo_avatar(request):
+    url = 'https://www.w3schools.com/howto/img_avatar.png'
+    resp = requests.get(url, stream=True)
+    if resp.status_code == 200:
+        request.cls.avatar = resp.raw
+    
+@pytest.fixture(scope='class')
+def prog_path(tmp_path_factory):
+    return tmp_path_factory.mktemp(f'AppData/{APP_NAME}')
+
+@pytest.fixture(scope='class')
+def assets_path(prog_path):
+    return prog_path.mkdir('assets')
+
+@pytest.fixture(scope='class')
+def images_path(assets_path):
+    return assets_path.mkdir('images')
+
+@pytest.fixture(scope='class')
+def avatars_path(images_path):
+    return images_path.mkdir('avatars')
 
 @pytest.mark.usefixtures('server')
 class ControllerTestCases(PyTestCase):

@@ -14,7 +14,8 @@ from ..models import *
 class SQLQueryManager(object):
     @staticmethod
     def logger(level: int, doer: int | User, **options):
-        return ActivityLog.create(level=level, done_by=doer, **options)
+        activity = Activity.get(Activity.level == level)
+        return ActivityLog.create(activity=activity, doer=doer, **options)
 
 class SessionQueryManager(SQLQueryManager):
     @classmethod

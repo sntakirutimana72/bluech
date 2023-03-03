@@ -1,4 +1,8 @@
 from .utils.interfaces import AttributeDict
+from .utils.working_dirs import WorkingDirs
+
+# :APP_NAME
+APP_NAME = 'bluech'
 
 # Server environment
 ##
@@ -90,3 +94,20 @@ CONTENT_TYPES = [
     'text/plain',
     r'image\/(png | jpg | jpeg | gif)'
 ]
+
+# Working dirs
+#
+#  :INSTALLED
+INSTALLED_PATH = WorkingDirs.installed()
+
+# :APPDATA
+APPDATA_PATH = WorkingDirs.app_data(APP_NAME)
+
+# :ASSETS_PATH
+ASSETS_PATH = WorkingDirs.glabal_assets(APPDATA_PATH)
+
+# :IMAGES_PATH
+IMAGES_PATH = WorkingDirs.image_assets(ASSETS_PATH)
+
+# :AVATARS_PATH
+AVATARS_PATH = WorkingDirs.avatar_assets(IMAGES_PATH)

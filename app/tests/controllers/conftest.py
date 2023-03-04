@@ -26,7 +26,7 @@ def demo_avatar(request):
     resp = requests.get(url, stream=True)
     if resp.status_code == 200:
         request.cls.avatar = AttributeDict({
-            'content': resp.raw.content,
+            'content': resp.content,
             'size': int(resp.headers['Content-Length'])
         })
 

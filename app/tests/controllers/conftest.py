@@ -1,11 +1,17 @@
 import pytest
-import pathlib
 import requests
+import pathlib as plib
 
 from ..support.mocks.servers import AppServerSpec
 from ..support.mocks.clients import AppClientSpec
 from ..support.unittests import PyTestCase
+from ...utils.interfaces import AttributeDict
 from ...settings import APP_NAME
+
+def make_dir(base_path: plib.Path, sub_dir: str):
+    new_path = base_path / sub_dir
+    new_path.mkdir()
+    return new_path
 
 @pytest.fixture(scope='class')
 def server(event_loop):
@@ -13,33 +19,37 @@ def server(event_loop):
     event_loop.run_until_complete(server.initiate())
     yield
     event_loop.run_until_complete(server.terminate())
-    
+
 @pytest.fixture(scope='class')
 def demo_avatar(request):
     url = 'https://www.w3schools.com/howto/img_avatar.png'
     resp = requests.get(url, stream=True)
     if resp.status_code == 200:
-        request.cls.avatar = resp.raw
-    
+        request.cls.avatar = AttributeDict({
+            'content': resp.raw.content,
+            'size': int(resp.headers['Content-Length'])
+        })
+
 @pytest.fixture(scope='class')
 def prog_path(tmp_path_factory):
     return tmp_path_factory.mktemp(f'AppData/{APP_NAME}')
 
 @pytest.fixture(scope='class')
 def assets_path(prog_path):
-    return prog_path.mkdir('assets')
+    return make_dir(prog_path, 'assets')
 
 @pytest.fixture(scope='class')
 def images_path(assets_path):
-    return assets_path.mkdir('images')
+    return make_dir(assets_path, 'images')
 
 @pytest.fixture(scope='class')
 def avatars_path(images_path):
-    return images_path.mkdir('avatars')
+    return make_dir(images_path, 'avatars')
 
 @pytest.mark.usefixtures('server')
 class ControllerTestCases(PyTestCase):
     client: AppClientSpec
+    signedIn: bool
 
     @classmethod
     def setup_class(cls):
@@ -49,7 +59,6 @@ class ControllerTestCases(PyTestCase):
     async def assertSigninSuccess(self, **user):
         if self.signedIn:
             return
-        
         resp = await self.client.login(**user)
         self.assertResponse(200, 'signin_success', resp)
         self.assert_dict_has_key(resp, 'user')

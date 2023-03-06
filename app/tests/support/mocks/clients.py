@@ -53,9 +53,10 @@ class AppClientSpec(ClientMockSpec):
         return await self.receive()
     
     async def change_user_avatar(self, **options):
-        permission = await self.send({**RequestSpecs.change_user_avatar()})
-        if permission == '':
-            ...
+        content: bytes = options.pop('content')
+        await self.send({**RequestSpecs.change_user_avatar(), **options})
+        self.writer.write(content)
+        await self.writer.drain()
         return await self.receive()
 
 class ConnectivityClientSpec(ClientMockSpec):

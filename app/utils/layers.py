@@ -9,6 +9,7 @@ from .interfaces import AttributeDict
 from .exceptions import CustomException
 from ..serializers.commons import PayloadJSONSerializer
 from ..serializers.models import UserSerializer
+from ..settings import AVATARS_PATH
 from ..models import *
 
 class ChannelLayer:
@@ -80,7 +81,7 @@ class PipeLayer:
 
     @classmethod
     async def download(cls, pipe: io.StreamReader, **options):
-        content_size: int = options['content_size']
+        content_size: int = options['content_length']
         remaining_content_size = content_size
         buffer_size = cls.download_buffer(content_size)
         download_path, is_overwrite = cls.get_download_path(plib.Path('~'), '')
@@ -105,8 +106,7 @@ class PipeLayer:
 
     @classmethod
     async def download_avatar(cls, pipe: io.StreamReader, **options):
-        profile_images_path = './assets/profile/images'
-        is_done = await cls.download(pipe, parent_dir=profile_images_path, **options)
+        is_done = await cls.download(pipe, parent_dir=AVATARS_PATH, **options)
         return is_done
 
     @staticmethod

@@ -73,7 +73,7 @@ class Processor:
 
             if (self.proto not in ALLOWED_ROUTES) or (not self.session and self.proto != 'signin'):
                 raise BadRequest
-            elif self.proto == 'signout':
+            elif self.proto in ('signout', 'change_user_avatar'):
                 request = {}
             else:
                 validator = getattr(Validators, self.proto)

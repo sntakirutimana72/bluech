@@ -41,6 +41,13 @@ class Validators:
     def edit_username(req):
         return Schema({'body': {'user': {'nickname': str}}}).validate(req)
 
+    # :Users
+    #
+    # :all_users validator
+    @staticmethod
+    def change_user_avatar(req):
+        return Schema({'body': {'user': {'picture': str, 'suffix': str}}}).validate(req)
+
     # :Groups
     #
     # :new_group validator

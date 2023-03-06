@@ -137,6 +137,24 @@ class TestUserValidators(PyTestCase):
         with self.assert_raises():
             Val.edit_username(schema)
 
+    def test_edit_profile_pic_with_valid_schema(self):
+        schema = {'body': {'user': {'picture': 'kdasji392iotfpng80438q', 'suffix': 'png'}}}
+        self._assert_for_all(Val.edit_profile_pic(schema))
+
+    def test_edit_profile_pic_with_invalid_schema(self):
+        # with :picture as anything else other than `string`
+        schema = {'body': {'user': {'picture': 545465, 'suffix': 'png'}}}
+        with self.assert_raises():
+            Val.edit_profile_pic(schema)
+        # with :extension as anything else other than `string`
+        schema['body']['user'] = {'picture': '545465', 'suffix': None}
+        with self.assert_raises():
+            Val.edit_profile_pic(schema)
+        # With an extra key that is not countered for
+        schema['body']['user']['length'] = 66
+        with self.assert_raises():
+            Val.edit_profile_pic(schema)
+
 class TestGroupValidators(PyTestCase):
     def test_new_group_with_valid_schema(self):
         # with members

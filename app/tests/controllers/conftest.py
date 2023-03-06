@@ -6,6 +6,7 @@ from ..support.mocks.servers import AppServerSpec
 from ..support.mocks.clients import AppClientSpec
 from ..support.unittests import PyTestCase
 from ...utils.interfaces import AttributeDict
+from ...models import User
 from ...settings import APP_NAME
 
 def make_dir(base_path: plib.Path, sub_dir: str):
@@ -21,13 +22,14 @@ def server(event_loop):
     event_loop.run_until_complete(server.terminate())
 
 @pytest.fixture(scope='class')
-def demo_avatar(request):
+def user_avatar(request):
     url = 'https://www.w3schools.com/howto/img_avatar.png'
     resp = requests.get(url, stream=True)
     if resp.status_code == 200:
         request.cls.avatar = AttributeDict({
             'content': resp.content,
-            'size': int(resp.headers['Content-Length'])
+            'content_type': resp.headers['Content-Type'],
+            'content_length': int(resp.headers['Content-Length'])
         })
 
 @pytest.fixture(scope='class')
@@ -50,6 +52,8 @@ def avatars_path(images_path):
 class ControllerTestCases(PyTestCase):
     client: AppClientSpec
     signedIn: bool
+    user: User
+    avatar: AttributeDict
 
     @classmethod
     def setup_class(cls):

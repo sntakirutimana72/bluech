@@ -1,5 +1,11 @@
 import pytest
 import asyncio as io
+import itertools
+
+a = [1, 50]
+b = [2, 2000]
+
+for a, b in itertools.arr
 
 from .conftest import ControllerTestCases
 
@@ -24,8 +30,9 @@ class TestChangeUsername(ControllerTestCases):
         self.assert_dict_has_key(resp, 'user')
         await self.client.disconnect()
         
-@pytest.mark.usefixtures('user')
+@pytest.mark.usefixtures('user', 'user_avatar')
 class TestChangeAvatar(ControllerTestCases):
     @pytest.mark.asyncio
     async def test_with_bad_request(self):
         await self.assertSigninSuccess(email=self.user.email, password='test@123')
+        resp = await self.client.change_user_avatar(**self.avatar)

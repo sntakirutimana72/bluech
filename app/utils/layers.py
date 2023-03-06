@@ -10,6 +10,7 @@ from .exceptions import CustomException
 from ..serializers.commons import PayloadJSONSerializer
 from ..serializers.models import UserSerializer
 from ..models import *
+from ..settings import AVATARS_PATH
 
 class ChannelLayer:
     def __init__(self, writer: io.StreamWriter, uid: int | str):
@@ -80,7 +81,7 @@ class PipeLayer:
 
     @classmethod
     async def download(cls, pipe: io.StreamReader, **options):
-        content_size: int = options['content_size']
+        content_size: int = options['content_length']
         remaining_content_size = content_size
         buffer_size = cls.download_buffer(content_size)
         download_path, is_overwrite = cls.get_download_path(plib.Path('~'), '')

@@ -67,24 +67,29 @@ class Response:
 
 class PipeLayer:
     @staticmethod
-    def get_download_path(parent_dir: plib.Path, file_path: str):
-        complete_path = parent_dir / file_path
+    def get_download_path(parent_dir: plib.Path, filename: str):
+        complete_path = parent_dir / filename
         is_overwrite = complete_path.exists()
         if is_overwrite:
             current_stem = complete_path.stem
             complete_path = complete_path.with_stem(f'{current_stem}.copy')
         return complete_path, complete_path.exists()
+    
+    @staticmethod
+    def get_filename(stem: str, content_type: str):
+        suffix = content_type.split('/')[1].lower()
+        return f'{stem}.{suffix}'
 
     @staticmethod
     def download_buffer(overall_size: int, buffer=1024):
         return overall_size if overall_size < buffer else buffer
 
     @classmethod
-    async def download(cls, pipe: io.StreamReader, **options):
-        content_size: int = options['content_length']
+    async def download(cls, pipe: io.StreamReader, **kwargs):
+        content_size: int = kwargs.pop('content_length')
         remaining_content_size = content_size
         buffer_size = cls.download_buffer(content_size)
-        download_path, is_overwrite = cls.get_download_path(plib.Path('~'), '')
+        download_path, is_overwrite = cls.get_download_path(**kwargs)
         # download_retrial = 5
         try:
             async with aio.open(download_path, 'wb') as pointer:
@@ -105,9 +110,12 @@ class PipeLayer:
                 await aios.rename(download_path, actual_path)  # rename the copy as the original
 
     @classmethod
-    async def download_avatar(cls, pipe: io.StreamReader, **options):
-        is_done = await cls.download(pipe, parent_dir=AVATARS_PATH, **options)
-        return is_done
+    async def download_avatar(cls, pipe: io.StreamReader, **kwargs):
+        content_type = kwargs.pop('content_type')
+        user_id = kwargs.pop('user_id')
+        kwargs['filename'] = cls.get_filename(f'avatar_{user_id}', content_type)
+        done = await cls.download(pipe, parent_dir=AVATARS_PATH, **kwargs)
+        return done
 
     @staticmethod
     async def fetch(reader: io.StreamReader):

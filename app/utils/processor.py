@@ -11,8 +11,6 @@ from ..settings import ALLOWED_ROUTES
 
 # noinspection PyBroadException
 class Processor:
-    proto: str | None
-
     def __init__(self, reader: io.StreamReader, writer: io.StreamWriter):
         self.reader = reader
         self.writer = writer
@@ -36,52 +34,48 @@ class Processor:
         await PipeLayer.pump(self.writer, Response.signout_success())
         await TasksLayer.build('disconnected', user_id)
 
-    def resolve(self, request):
-        self.sanitize(request)
+    def resolve(self, raw_req):
+        self.sanitize(raw_req)
         handler = dispatch(self.request).exec()
-        if self.proto == 'change_user_avatar':
-            return handler(self.reader)
         return handler()
 
-    async def process(self, request):
+    async def process(self, raw_req):
         try:
-            result = await self.resolve(request)
+            result = await self.resolve(raw_req)
             if self.session is None:
                 await self.subscribe(result)
-            elif self.proto == 'signout':
+            elif self.request.protocol == 'signout':
                 await self.unsubscribe()
         except CustomException as e:
             await PipeLayer.pump(self.writer, Response.make(**e.to_json))
         except:
             await PipeLayer.pump(self.writer, Response.internal_error())
-        self.proto = None
         self.request = None
 
     async def gather(self):
         try:
             while True:
-                request = await PipeLayer.fetch(self.reader)
-                await self.process(request)
+                raw_req = await PipeLayer.fetch(self.reader)
+                await self.process(raw_req)
         except:
             ...
 
-    def sanitize(self, request):
+    def sanitize(self, raw_req):
         try:
-            validated_req = AttributeDict(Validators.request(request))
+            validated_req = AttributeDict(Validators.request(raw_req))
             action_req = validated_req.pop('request')
-            self.proto = validated_req.pop('protocol')
-
-            if (self.proto not in ALLOWED_ROUTES) or (not self.session and self.proto != 'signin'):
+            proto = validated_req['protocol']
+            request_after = {}
+            
+            if (proto not in ALLOWED_ROUTES) or (not self.session and proto != 'signin'):
                 raise BadRequest
-            elif self.proto in ('signout', 'change_user_avatar'):
-                request = {}
-            else:
-                validator = getattr(Validators, self.proto)
-                request = validator(action_req)
+            elif hasattr(Validators, proto):
+                request_after = getattr(Validators, proto)(action_req)
 
-            validated_req |= request
+            validated_req |= request_after
+            validated_req.processor = self
             validated_req.session = self.session  # pass down the session context
-            self.request = Request(ALLOWED_ROUTES[self.proto], validated_req)
+            self.request = Request(ALLOWED_ROUTES[proto], validated_req)
         except sc.SchemaError:
             raise BadRequest
         except:

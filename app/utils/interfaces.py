@@ -31,6 +31,8 @@ class Request:
 
     session: AttributeDict
     """Holds the current connection metadata & authenticity"""
+    
+    processor: property
 
     def __init__(self, route: str, req: dict[str, Any]):
         self.route_ref = RouteRef(route)

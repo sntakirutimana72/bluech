@@ -14,6 +14,10 @@ class Users(Base):
     async def _put(self, reader: io.StreamReader):
         """Change user profile picture"""
         pk = self.user_id
+        options = {
+            'user_id': pk,
+            ''
+        }
         await PipeLayer.download_avatar(reader, **self.request.body['user'])
         UserQueryManager.change_avatar(pk)
         await TasksLayer.build(self.request.protocol, pk)

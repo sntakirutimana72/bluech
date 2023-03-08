@@ -27,10 +27,20 @@ class Responder:
     async def edit_username_success(**options):
         async with Hub.tasks_repository.mutex:
             async with Hub.channels_repository.mutex:
-                channel: ChannelLayer = Hub.channels_repository.items.get(options['id'])
+                channel: ChannelLayer | None = Hub.channels_repository.items.get(options['id'])
                 if channel is None:
                     return
                 response = Response.edit_username_success(channel.resource)
+        await channel.write(response)
+        
+    @staticmethod
+    async def change_user_avatar_success(**options):
+        async with Hub.tasks_repository.mutex:
+            async with Hub.channels_repository.mutex:
+                channel: ChannelLayer | None = Hub.channels_repository.items.get(options['id'])
+                if channel is None:
+                    return
+                response = Response.change_user_avatar_success(channel.resource)
         await channel.write(response)
 
     @classmethod

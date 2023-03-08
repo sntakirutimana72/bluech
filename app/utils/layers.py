@@ -64,6 +64,10 @@ class Response:
     @classmethod
     def edit_username_success(cls, user):
         return cls.make(user=UserSerializer(user).to_json, proto='edit_username_success')
+    
+    @classmethod
+    def change_user_avatar_success(cls, user):
+        return cls.make(user=UserSerializer(user).to_json, proto='change_avatar_success')
 
 class PipeLayer:
     @staticmethod

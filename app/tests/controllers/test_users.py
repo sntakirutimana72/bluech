@@ -1,5 +1,4 @@
 import pytest
-import asyncio as io
 
 from .conftest import ControllerTestCases
 
@@ -23,7 +22,7 @@ class TestChangeUsername(ControllerTestCases):
         self.assertResponse(200, 'edit_username_success', resp)
         self.assert_dict_has_key(resp, 'user')
         await self.client.disconnect()
-        
+
 @pytest.mark.usefixtures('user')
 class TestChangeAvatar(ControllerTestCases):
     @pytest.mark.asyncio

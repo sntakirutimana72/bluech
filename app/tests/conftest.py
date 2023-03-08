@@ -26,27 +26,27 @@ def configure_db():
     conn = db_connector('test')
     yield conn
     conn.close()
-    
+
 def make_dir(base_path: plib.Path, sub_dir: str):
     new_path = base_path / sub_dir
     new_path.mkdir()
     return new_path
-    
-@pytest.fixture(scope='module')
+
+@pytest.fixture(scope='session', autouse=True)
 def prog_path(tmp_path_factory, mocker):
     prog = tmp_path_factory.mktemp(f'AppData/{APP_NAME}')
     mocker.path('app.utils.working_dirs.WorkingDirs.app_data', return_value=prog)
     return prog
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='session', autouse=True)
 def assets_path(prog_path):
     return make_dir(prog_path, 'assets')
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='session', autouse=True)
 def images_path(assets_path):
     return make_dir(assets_path, 'images')
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='session', autouse=True)
 def avatars_path(images_path):
     return make_dir(images_path, 'avatars')
 

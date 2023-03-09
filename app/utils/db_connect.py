@@ -40,7 +40,7 @@ def db_connector(scope='development'):
     # Ensure schema exists
     create_schema(schema, **options)
     # Create a db instance with specific configurations
-    database = pee.PostgresqlDatabase(schema, autorollback=True, **options)
+    database = pee.PostgresqlDatabase(schema, **options)
     # Initiate db instance connection
     database.connect(reuse_if_open=True)
     # Contain all models into one re-usable variable

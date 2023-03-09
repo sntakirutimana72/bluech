@@ -26,5 +26,7 @@ class TestChangeUsername(ControllerTestCases):
 @pytest.mark.usefixtures('user')
 class TestChangeAvatar(ControllerTestCases):
     @pytest.mark.asyncio
-    async def test_with_bad_request(self):
+    async def test_with_bad_request(self, avatars_path, user_avatar):
         await self.assertSigninSuccess(email=self.user.email, password='test@123')
+        resp = await self.client.change_user_avatar(**user_avatar)
+        print(resp)

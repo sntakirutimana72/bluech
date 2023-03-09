@@ -5,7 +5,7 @@ route_patterns = [
     # session
     router(['signin', 'signout'], SessionController),
     # users
-    router(['edit_username'], UsersController),
+    router(['edit_username', 'change_user_avatar'], UsersController),
     # messages
     # router(['edit_'], MessagesController),
     # # groups

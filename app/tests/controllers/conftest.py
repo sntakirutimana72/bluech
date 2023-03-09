@@ -14,12 +14,12 @@ def server(event_loop):
     yield
     event_loop.run_until_complete(server.terminate())
 
-@pytest.fixture(scope='class')
-def user_avatar(request):
+@pytest.fixture
+def user_avatar():
     url = 'https://www.w3schools.com/howto/img_avatar.png'
     resp = requests.get(url, stream=True)
     if resp.status_code == 200:
-        request.cls.avatar = AttributeDict({
+        return AttributeDict({
             'content': resp.content,
             'content_type': resp.headers['Content-Type'],
             'content_length': int(resp.headers['Content-Length'])

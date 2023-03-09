@@ -32,21 +32,21 @@ def make_dir(base_path: plib.Path, sub_dir: str):
     new_path.mkdir()
     return new_path
 
-@pytest.fixture(scope='session', autouse=True)
+@pytest.fixture
 def prog_path(tmp_path_factory, mocker):
-    prog = tmp_path_factory.mktemp(f'AppData/{APP_NAME}')
-    mocker.path('app.utils.working_dirs.WorkingDirs.app_data', return_value=prog)
+    prog = tmp_path_factory.mktemp(f'appdata_{APP_NAME}')
+    mocker.patch('app.utils.working_dirs.WorkingDirs.app_data', return_value=prog)
     return prog
 
-@pytest.fixture(scope='session', autouse=True)
+@pytest.fixture
 def assets_path(prog_path):
     return make_dir(prog_path, 'assets')
 
-@pytest.fixture(scope='session', autouse=True)
+@pytest.fixture
 def images_path(assets_path):
     return make_dir(assets_path, 'images')
 
-@pytest.fixture(scope='session', autouse=True)
+@pytest.fixture
 def avatars_path(images_path):
     return make_dir(images_path, 'avatars')
 

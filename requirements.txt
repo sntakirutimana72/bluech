@@ -1,8 +1,9 @@
 bcrypt==4.0.1
-peewee==3.15.4
+peewee==3.16.0
 schema==0.7.5
-pytest==7.2.1
+pytest==7.2.2
 pytest-asyncio==0.20.3
 psycopg2-binary==2.9.5
 aiofiles==23.1.0
 requests==2.28.2
+pytest-mock==3.10.0

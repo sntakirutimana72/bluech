@@ -6,9 +6,7 @@ from ..settings import CONTENT_TYPES
 class Validators:
     @staticmethod
     def strict_content_types(raw_type: str):
-        client_types = raw_type.replace(' ', '').rstrip(';')
-        if not (CONTENT_TYPES[0] in client_types and CONTENT_TYPES[1] in client_types):
-            return False
+        client_types = raw_type.replace(' ', '').split(';')
         for content_type in client_types:
             if content_type not in CONTENT_TYPES:
                 return False

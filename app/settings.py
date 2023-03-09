@@ -80,7 +80,7 @@ LOGGING_LEVELS = AttributeDict({
     'GROUP_DEL': 12,
     'GROUP_PRIV_ASSIGN': 13,
     'MEMBER_ADD': 14,
-    'MEMBER_DEL': 15    
+    'MEMBER_DEL': 15
 })
 
 # System Configurations
@@ -91,8 +91,7 @@ ENCODING = 'utf-8'
 # :=>content-types
 CONTENT_TYPES = [
     'application/json',
-    'text/plain',
-    r'image\/(png | jpg | jpeg | gif)'
+    *[f'image/{sx}' for sx in ('png', 'jpg', 'jpeg', 'gif')]
 ]
 
 # Working dirs

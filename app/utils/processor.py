@@ -1,5 +1,6 @@
 import asyncio as io
 import schema as sc
+import traceback as tc
 
 from .interfaces import AttributeDict, Request
 from .repositories import RepositoriesHub
@@ -49,6 +50,7 @@ class Processor:
         except CustomException as e:
             await PipeLayer.pump(self.writer, Response.make(**e.to_json))
         except:
+            print(tc.print_exc())
             await PipeLayer.pump(self.writer, Response.internal_error())
         self.request = None
 
@@ -66,7 +68,7 @@ class Processor:
             action_req = validated_req.pop('request')
             proto = validated_req['protocol']
             request_after = {}
-            
+
             if (proto not in ALLOWED_ROUTES) or (not self.session and proto != 'signin'):
                 raise BadRequest
             elif hasattr(Validators, proto):

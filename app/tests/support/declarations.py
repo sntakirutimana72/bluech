@@ -59,10 +59,10 @@ class RequestSpecs:
             **cls.head('edit_username'),
             'request': {'body': {'user': {'nickname': 'new nickname'}}}
         }
-        
+
     @classmethod
     def change_user_avatar(cls):
         return {
             **cls.head('change_user_avatar'),
-            'request': {'body': {'user': {''}}}
+            'request': {}
         }

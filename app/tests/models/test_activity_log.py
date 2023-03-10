@@ -25,5 +25,5 @@ class ActivityLogTestCases(unittest.TestCase):
             self.log.save()
 
     def test_backrefs(self):
-        self.assertTrue(self.user.logs.exists())
+        self.assertTrue(self.user.activities.exists())
         self.assertTrue(self.activity.logs.exists())

@@ -66,4 +66,4 @@ class Activity(ActivityExtension, _Model):
 class ActivityLog(ActivityLogExtension, _Model):
     summary = pee.TextField()
     activity = pee.ForeignKeyField(Activity, backref='logs')
-    doer = pee.ForeignKeyField(User, null=True, backref='logs')
+    doer = pee.ForeignKeyField(User, null=True, backref='activities')

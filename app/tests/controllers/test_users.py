@@ -1,4 +1,5 @@
 import pytest
+import os
 
 from .conftest import ControllerTestCases
 
@@ -29,4 +30,6 @@ class TestChangeAvatar(ControllerTestCases):
     async def test_with_bad_request(self, avatars_path, user_avatar):
         await self.assertSigninSuccess(email=self.user.email, password='test@123')
         resp = await self.client.change_user_avatar(**user_avatar)
-        print(resp)
+        print(os.listdir(avatars_path))
+        self.assertResponse(200, 'change_avatar_success', resp)
+        await self.client.disconnect()

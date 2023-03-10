@@ -30,6 +30,7 @@ def configure_db():
 def make_dir(base_path: plib.Path, sub_dir: str):
     new_path = base_path / sub_dir
     new_path.mkdir()
+    print(new_path, new_path.exists())
     return new_path
 
 @pytest.fixture

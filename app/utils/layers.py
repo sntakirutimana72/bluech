@@ -3,6 +3,7 @@ import typing as yi
 import pathlib as plib
 import aiofiles as aio
 import aiofiles.os as aios
+import traceback
 
 from .repositories import RepositoriesHub
 from .interfaces import AttributeDict
@@ -64,7 +65,7 @@ class Response:
     @classmethod
     def edit_username_success(cls, user):
         return cls.make(user=UserSerializer(user).to_json, proto='edit_username_success')
-    
+
     @classmethod
     def change_user_avatar_success(cls, user):
         return cls.make(user=UserSerializer(user).to_json, proto='change_avatar_success')
@@ -72,13 +73,15 @@ class Response:
 class PipeLayer:
     @staticmethod
     def get_download_path(parent_dir: plib.Path, filename: str):
+        print(parent_dir)
+        print(parent_dir.exists())
         complete_path = parent_dir / filename
         is_overwrite = complete_path.exists()
         if is_overwrite:
             current_stem = complete_path.stem
             complete_path = complete_path.with_stem(f'{current_stem}.copy')
         return complete_path, complete_path.exists()
-    
+
     @staticmethod
     def get_filename(stem: str, content_type: str):
         suffix = content_type.split('/')[1].lower()
@@ -94,7 +97,6 @@ class PipeLayer:
         remaining_content_size = content_size
         buffer_size = cls.download_buffer(content_size)
         download_path, is_overwrite = cls.get_download_path(**kwargs)
-        # download_retrial = 5
         try:
             async with aio.open(download_path, 'wb') as pointer:
                 while remaining_content_size > 0:

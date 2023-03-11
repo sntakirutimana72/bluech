@@ -30,14 +30,12 @@ def configure_db():
 def make_dir(base_path: plib.Path, sub_dir: str):
     new_path = base_path / sub_dir
     new_path.mkdir()
-    print(new_path, new_path.exists())
     return new_path
 
 @pytest.fixture
-def prog_path(tmp_path_factory, mocker):
+def prog_path(tmp_path_factory):
     prog = tmp_path_factory.mktemp(f'appdata_{APP_NAME}')
-    mocker.patch('app.utils.working_dirs.WorkingDirs.app_data', return_value=prog)
-    return prog
+    yield prog
 
 @pytest.fixture
 def assets_path(prog_path):

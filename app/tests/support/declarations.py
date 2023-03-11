@@ -15,7 +15,7 @@ class Models:
 
     @staticmethod
     def activity(**others):
-        return {'name': 'login', **others}
+        return {'level': 1, **others}
 
     @staticmethod
     def activity_log(**others):
@@ -29,7 +29,7 @@ class RequestSpecs:
             'content_type': content_type,
             'protocol': proto
         }
-        
+
     @classmethod
     def for_validators(cls, proto='signin', c_size=342, c_type=CONTENT_TYPES[0]):
         return {
@@ -48,7 +48,21 @@ class RequestSpecs:
             **cls.head('signin'),
             'request': {'body': {'user': user}}
         }
-        
+
     @classmethod
     def signout(cls):
         return {**cls.head('signout'), 'request': {}}
+
+    @classmethod
+    def edit_username(cls):
+        return {
+            **cls.head('edit_username'),
+            'request': {'body': {'user': {'nickname': 'new nickname'}}}
+        }
+
+    @classmethod
+    def change_user_avatar(cls):
+        return {
+            **cls.head('change_user_avatar'),
+            'request': {}
+        }

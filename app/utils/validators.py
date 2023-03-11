@@ -4,18 +4,19 @@ from .interfaces import AttributeDict
 from ..settings import CONTENT_TYPES
 
 class Validators:
-
     @staticmethod
-    def enum_type(*enums):
-        def validate(initial):
-            return initial in enums
-        return validate
+    def strict_content_types(raw_type: str):
+        client_types = raw_type.replace(' ', '').split(';')
+        for content_type in client_types:
+            if content_type not in CONTENT_TYPES:
+                return False
+        return True
 
     # :default validator
     @classmethod
     def request(cls, req):
         return Schema({
-            'content_type': cls.enum_type(*CONTENT_TYPES),
+            'content_type': cls.strict_content_types,
             'content_length': int,
             'protocol': str,
             'request': {
@@ -33,17 +34,10 @@ class Validators:
 
     # :Users
     #
-    # :display_name validator
+    # :nickname validator
     @staticmethod
-    def display_name(req):
-        return Schema({'body': {'user': {'display_name': str}}}).validate(req)
-
-    # :Users
-    #
-    # :all_users validator
-    @staticmethod
-    def edit_profile_pic(req):
-        return Schema({'body': {'user': {'picture': str, 'suffix': str}}}).validate(req)
+    def edit_username(req):
+        return Schema({'body': {'user': {'nickname': str}}}).validate(req)
 
     # :Groups
     #

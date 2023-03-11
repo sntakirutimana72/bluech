@@ -16,7 +16,7 @@ class ActivityTestCases(unittest.TestCase):
         with self.assertRaises(pee.IntegrityError):
             create_activity()
 
-    def test_length_restriction(self):
+    def test_datatype_integrity(self):
         with self.assertRaises(pee.DataError):
-            self.activity.name = 'LOGOUT' * 5
+            self.activity.level = 'LOGOUT'
             self.activity.save()

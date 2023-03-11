@@ -1,97 +1,129 @@
 import asyncio as io
 import typing as yi
+import pathlib as plib
+import aiofiles as aio
+import aiofiles.os as aios
 
-from .serializers import PayloadJSONSerializer
 from .repositories import RepositoriesHub
 from .interfaces import AttributeDict
+from .exceptions import CustomException
+from ..serializers.commons import PayloadJSONSerializer
+from ..serializers.models import UserSerializer
+from ..settings import AVATARS_PATH
 from ..models import *
 
 class ChannelLayer:
-    def __init__(self, writer: io.StreamWriter, _id):
-        self._id = _id
-        self._writer = writer
-
-    @property
-    def uid(self) -> int | str:
-        return self._id
+    def __init__(self, writer: io.StreamWriter, uid: int | str):
+        self.uid = uid
+        self.writer = writer
 
     @property
     def is_writable(self):
-        return self._writer is None
+        return bool(self.writer)
 
     @property
     def resource(self) -> User | Channel:
         if self.is_writable:
-            return User.get_by_id(self._id)
-        return Channel.get_by_id(self._id)
+            return User.get_by_id(self.uid)
+        return Channel.get_by_id(self.uid)
 
-    async def write(self, payload: bytes):
+    async def write(self, payload: dict[str, yi.Any]):
         if not self.is_writable:
             raise
-        self._writer.write(payload)
-        await self._writer.drain()
+        await PipeLayer.pump(self.writer, payload)
 
 class TasksLayer:
     @staticmethod
-    def _new(proto, _id, **options):
+    def new(proto, _id, **options):
         new_task = AttributeDict({**options, 'proto': proto, 'id': _id})
         return new_task
 
     @classmethod
     async def build(cls, proto, resource_id, **options):
-        await RepositoriesHub.tasks_repository.push(cls._new(proto, resource_id, **options))
+        await RepositoriesHub.tasks_repository.push(cls.new(proto, resource_id, **options))
 
 class Response:
     @staticmethod
-    def make(proto: str, status=200, **kwargs):
-        return {'proto': proto, 'status': status, **kwargs}
-
-    # noinspection PyProtectedMember
-    @classmethod
-    def as_resource(cls, proto: str, status: int, resource: _Model):
-        return cls.make(proto, status=status, **{resource.name: resource.as_json})
+    def make(status=200, **kwargs) -> dict[str, yi.Any]:
+        return {'status': status, **kwargs}
 
     @classmethod
-    def exception(cls, message='Internal Error', status=500):
-        return cls.make('error', status=status, message=message)
+    def internal_error(cls, **options):
+        if not options:
+            options = CustomException().to_json
+        return cls.make(**options)
 
     @classmethod
     def signin_success(cls, user):
-        return cls.as_resource('signin_success', 200, user)
-
-    @classmethod
-    def signin_failure(cls, message: str, status=401):
-        return cls.make('signin_failure', status=status, message=message)
+        return cls.make(user=UserSerializer(user).to_json, proto='signin_success')
 
     @classmethod
     def signout_success(cls):
-        return cls.make('signout_success')
+        return cls.make(proto='signout_success')
 
     @classmethod
-    def signout_failure(cls):
-        return {**cls.exception(), 'proto': 'signout_failure'}
+    def edit_username_success(cls, user):
+        return cls.make(user=UserSerializer(user).to_json, proto='edit_username_success')
 
     @classmethod
-    def as_message(cls, status: int, message: _Model):
-        return cls.as_resource('message', status, message)
-
-    @classmethod
-    def as_message_edited(cls, status: int, message: _Model):
-        return cls.as_resource('message_edited', status, message)
-
-    @classmethod
-    def as_my_nickname_changed(cls, status: int, user: _Model):
-        return cls.as_resource('my_nickname_changed', status, user)
-
-    @classmethod
-    def as_nickname_changed(cls, status: int, resource: _Model):
-        return cls.as_resource('nickname_changed', status, resource)
+    def change_user_avatar_success(cls, user):
+        return cls.make(user=UserSerializer(user).to_json, proto='change_avatar_success')
 
 class PipeLayer:
     @staticmethod
+    def get_download_path(parent_dir: plib.Path, filename: str):
+        complete_path = parent_dir / filename
+        is_overwrite = complete_path.exists()
+        if is_overwrite:
+            current_stem = complete_path.stem
+            complete_path = complete_path.with_stem(f'{current_stem}.copy')
+        return complete_path, complete_path.exists()
+
+    @staticmethod
+    def get_filename(stem: str, content_type: str):
+        suffix = content_type.split('/')[1].lower()
+        return f'{stem}.{suffix}'
+
+    @staticmethod
+    def download_buffer(overall_size: int, buffer=1024):
+        return overall_size if overall_size < buffer else buffer
+
+    @classmethod
+    async def download(cls, pipe: io.StreamReader, **kwargs):
+        content_size: int = kwargs.pop('content_length')
+        remaining_content_size = content_size
+        buffer_size = cls.download_buffer(content_size)
+        download_path, is_overwrite = cls.get_download_path(**kwargs)
+        try:
+            async with aio.open(download_path, 'wb') as pointer:
+                while remaining_content_size > 0:
+                    chunk = await pipe.read(buffer_size)
+                    await pointer.write(chunk)
+                    remaining_content_size -= buffer_size
+                    if buffer_size > remaining_content_size:
+                        buffer_size = remaining_content_size
+        except:
+            if is_overwrite and download_path.exists():
+                await aios.remove(download_path)
+        else:
+            if is_overwrite:
+                original_stem = download_path.stem.rstrip('.copy')
+                actual_path = download_path.with_stem(original_stem)
+                await aios.remove(actual_path)  # remove pre-existing first
+                await aios.rename(download_path, actual_path)  # rename the copy as the original
+
+    @classmethod
+    async def download_avatar(cls, pipe: io.StreamReader, **kwargs):
+        content_type = kwargs.pop('content_type')
+        user_id = kwargs.pop('user_id')
+        kwargs['filename'] = cls.get_filename(f'avatar_{user_id}', content_type)
+        done = await cls.download(pipe, parent_dir=AVATARS_PATH, **kwargs)
+        return done
+
+    @staticmethod
     async def fetch(reader: io.StreamReader):
         content_size = await reader.read(4)
-        buffer_size = 1028
+        buffer_size = 1024
         content_size = int(content_size.decode())
 
         if content_size < buffer_size:

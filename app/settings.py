@@ -1,4 +1,8 @@
 from .utils.interfaces import AttributeDict
+from .utils.working_dirs import WorkingDirs
+
+# :APP_NAME
+APP_NAME = 'bluech'
 
 # Server environment
 ##
@@ -20,7 +24,7 @@ ALLOWED_ROUTES = AttributeDict({
     'remove_message': 'DELETE:/messages/<id int>',
     # For users
     'edit_username': 'PATCH:/users/<id int>',                        # (edit display name)
-    'edit_profile_pic': 'PUT:/users/<id int>',                       # (change profile picture)
+    'change_user_avatar': 'PUT:/users/<id int>',                       # (change profile picture)
     'all_users': 'GET:/users',                                       # (fetch all users)
     # For groups
     'new_group': 'POST:/groups',                                     # (create group)
@@ -76,7 +80,7 @@ LOGGING_LEVELS = AttributeDict({
     'GROUP_DEL': 12,
     'GROUP_PRIV_ASSIGN': 13,
     'MEMBER_ADD': 14,
-    'MEMBER_DEL': 15    
+    'MEMBER_DEL': 15
 })
 
 # System Configurations
@@ -85,4 +89,24 @@ LOGGING_LEVELS = AttributeDict({
 ENCODING = 'utf-8'
 #
 # :=>content-types
-CONTENT_TYPES = ('json', 'text',)
+CONTENT_TYPES = [
+    'application/json',
+    *[f'image/{sx}' for sx in ('png', 'jpg', 'jpeg', 'gif')]
+]
+
+# Working dirs
+#
+#  :INSTALLED
+INSTALLED_PATH = WorkingDirs.installed()
+
+# :APPDATA
+APPDATA_PATH = WorkingDirs.app_data(APP_NAME)
+
+# :ASSETS_PATH
+ASSETS_PATH = WorkingDirs.global_assets(APPDATA_PATH)
+
+# :IMAGES_PATH
+IMAGES_PATH = WorkingDirs.image_assets(ASSETS_PATH)
+
+# :AVATARS_PATH
+AVATARS_PATH = WorkingDirs.avatar_assets(IMAGES_PATH)

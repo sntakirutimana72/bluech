@@ -2,17 +2,15 @@ __all__ = (
     'CustomException',
     'Unauthorized',
     'BadRequest',
-    'DataTypingError',
-    'ProtocolLookupError',
-    'ProtocolValidationError',
+    'ActiveRecordError',
     'ResourceNotChanged',
-    'ActiveModelError',
-    'NoResourcesFound'
+    'ResourceNotFound'
 )
 
 class CustomException(BaseException):
     code = 500
-    message = ''
+    message = 'Internal Error'
+    proto = 'internal_error'
 
     def __init__(self):
         super().__init__(self.message)
@@ -21,37 +19,34 @@ class CustomException(BaseException):
         return f'{self.code} ~ {super().__str__()}'
 
     @property
-    def resp(self):
+    def to_json(self):
         return {
             'status': self.code,
-            'message': self.message
+            'message': self.message,
+            'proto': self.proto
         }
 
 class Unauthorized(CustomException):
     code = 401
     message = 'Unauthorized'
+    proto = 'signin_failure'
 
 class BadRequest(CustomException):
     code = 400
     message = 'Bad Request'
+    proto = 'invalid_request'
 
-class DataTypingError(CustomException):
-    message = 'Must be one of `json` | `text`'
-
-class ProtocolValidationError(CustomException):
-    code = 403
-
-class ProtocolLookupError(CustomException):
-    code = 404
-
-class ActiveModelError(CustomException):
+class ActiveRecordError(CustomException):
     code = 501
-    message = 'DB Model operation failure'
+    message = 'Active Record operation failure'
+    proto = 'active_record_error'
 
-class NoResourcesFound(CustomException):
+class ResourceNotFound(CustomException):
     code = 404
-    message = 'Not Found'
+    message = 'Resource Not Found'
+    proto = 'resource_not_found'
 
 class ResourceNotChanged(CustomException):
     code = 304
     message = 'Resource was already up to date.'
+    proto = 'resource_not_changed'

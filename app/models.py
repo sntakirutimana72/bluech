@@ -61,9 +61,9 @@ class Resource(ResourceExtension, _Model):
     message = pee.ForeignKeyField(Message, backref='attachments', null=True)
 
 class Activity(ActivityExtension, _Model):
-    name = pee.CharField(unique=True, max_length=16)
+    level = pee.IntegerField(unique=True)
 
 class ActivityLog(ActivityLogExtension, _Model):
     summary = pee.TextField()
     activity = pee.ForeignKeyField(Activity, backref='logs')
-    doer = pee.ForeignKeyField(User, backref='logs')
+    doer = pee.ForeignKeyField(User, null=True, backref='activities')

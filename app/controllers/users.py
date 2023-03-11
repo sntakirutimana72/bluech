@@ -1,21 +1,23 @@
 from .base import Base
 from ..utils.sql import UserQueryManager
-from ..utils.layers import TasksLayer
+from ..utils.layers import TasksLayer, PipeLayer
+from ..utils.commons import filter_dict_items
 
 class Users(Base):
     async def _patch(self):
-        """Edit user display name"""
+        """Edit user nickname"""
         pk = self.user_id
-        UserQueryManager.edit_user_display_name(pk, self._request.body.display_name)
-        await TasksLayer.build(self._request.protocol, pk)
+        UserQueryManager.edit_nickname(pk, self.request.body['user']['nickname'])
+        await TasksLayer.build('edit_username_success', pk)
 
     async def _put(self):
         """Change user profile picture"""
         pk = self.user_id
-        body = self._request.body
-        UserQueryManager.edit_user_profile_picture(pk, body.data, body.extension)
-        await TasksLayer.build(self._request.protocol, pk)
-
-    async def _get(self):
-        """Fetch all current users and groups that you're associated to"""
-        await TasksLayer.build(self._request.protocol, self.user_id)
+        only = ('content_length', 'content_type')
+        options = {
+            'user_id': pk,
+            **filter_dict_items(self.request.__dict__, only=only)
+        }
+        await PipeLayer.download_avatar(self.request.processor.reader, **options)
+        UserQueryManager.change_avatar(pk)
+        await TasksLayer.build('change_user_avatar_success', pk)

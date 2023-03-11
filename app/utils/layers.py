@@ -3,7 +3,6 @@ import typing as yi
 import pathlib as plib
 import aiofiles as aio
 import aiofiles.os as aios
-import traceback
 
 from .repositories import RepositoriesHub
 from .interfaces import AttributeDict
@@ -35,13 +34,13 @@ class ChannelLayer:
 
 class TasksLayer:
     @staticmethod
-    def _new(proto, _id, **options):
+    def new(proto, _id, **options):
         new_task = AttributeDict({**options, 'proto': proto, 'id': _id})
         return new_task
 
     @classmethod
     async def build(cls, proto, resource_id, **options):
-        await RepositoriesHub.tasks_repository.push(cls._new(proto, resource_id, **options))
+        await RepositoriesHub.tasks_repository.push(cls.new(proto, resource_id, **options))
 
 class Response:
     @staticmethod
@@ -73,8 +72,6 @@ class Response:
 class PipeLayer:
     @staticmethod
     def get_download_path(parent_dir: plib.Path, filename: str):
-        print(parent_dir)
-        print(parent_dir.exists())
         complete_path = parent_dir / filename
         is_overwrite = complete_path.exists()
         if is_overwrite:

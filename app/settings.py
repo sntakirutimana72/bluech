@@ -103,7 +103,7 @@ INSTALLED_PATH = WorkingDirs.installed()
 APPDATA_PATH = WorkingDirs.app_data(APP_NAME)
 
 # :ASSETS_PATH
-ASSETS_PATH = WorkingDirs.glabal_assets(APPDATA_PATH)
+ASSETS_PATH = WorkingDirs.global_assets(APPDATA_PATH)
 
 # :IMAGES_PATH
 IMAGES_PATH = WorkingDirs.image_assets(ASSETS_PATH)

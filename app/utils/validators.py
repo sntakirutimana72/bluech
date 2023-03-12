@@ -103,8 +103,7 @@ class Validators:
                 'message': {
                     'recipient': Or(int, str),
                     Optional('description'): And(str, len),
-                    Optional('reply_to'): int,
-                    Optional('attachments'): And([{'media': str, 'name': str, 'suffix': str}], len)
+                    Optional('reply_to'): int
                 }
             }
         }).validate(req)

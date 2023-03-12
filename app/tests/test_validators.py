@@ -136,7 +136,7 @@ class TestUserValidators(PyTestCase):
         schema['body'] = {'user': {'nickname': 26}}
         with self.assert_raises():
             Val.edit_username(schema)
-            
+
 class TestGroupValidators(PyTestCase):
     def test_new_group_with_valid_schema(self):
         # with members
@@ -271,8 +271,7 @@ class TestMessageValidators(PyTestCase):
                 'message': {
                     'recipient': 1,
                     'description': 'NEW_MESSAGE',
-                    'reply_to': 1,
-                    'attachments': [{'media': 'kdsaj048f90egm', 'name': 'report', 'suffix': 'txt'}],
+                    'reply_to': 1
                 }
             }
         }
@@ -282,14 +281,6 @@ class TestMessageValidators(PyTestCase):
         self.assert_true(validated)
         with self.assert_raises(AssertionError):
             self.assert_dict_has_key(validated, 'params')
-
-        # without :multiparts
-        no_attachments = self.full_req.copy()
-        del no_attachments['body']['message']['attachments']
-        validated = Val.new_message(no_attachments)
-        self.assert_isinstanceof(validated, dict)
-        with self.assert_raises(AssertionError):
-            self.assert_dict_has_key(validated['body']['message'], 'attachments')
 
         # without :reply_to
         no_reply_to = self.full_req.copy()

@@ -1,6 +1,6 @@
 from .base import Base
 from ..utils.sql import UserQueryManager
-from ..utils.layers import TasksLayer, PipeLayer
+from ..utils.layers import PipeLayer
 from ..utils.commons import filter_dict_items
 
 class Users(Base):
@@ -8,7 +8,7 @@ class Users(Base):
         """Edit user nickname"""
         pk = self.user_id
         UserQueryManager.edit_nickname(pk, self.request.body['user']['nickname'])
-        await TasksLayer.build('edit_username_success', pk)
+        await self.build_task(resource_id=pk)
 
     async def _put(self):
         """Change user profile picture"""
@@ -20,4 +20,4 @@ class Users(Base):
         }
         await PipeLayer.download_avatar(self.request.processor.reader, **options)
         UserQueryManager.change_avatar(pk)
-        await TasksLayer.build('change_user_avatar_success', pk)
+        await self.build_task(resource_id=pk)

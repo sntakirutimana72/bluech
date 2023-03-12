@@ -35,9 +35,9 @@ class SessionQueryManager(SQLQueryManager):
 
 class MessageQueryManager(SQLQueryManager):
     @classmethod
-    def new_message(cls, user_id: int, **kwargs) -> int:
+    def new_message(cls, **kwargs) -> int:
         try:
-            message = Message.create(user=user_id, **kwargs)
+            message = Message.create(**kwargs)
         except:
             raise ActiveRecordError
         # cls.logger(LOGGING_LEVELS.MSG_NEW, user_id)

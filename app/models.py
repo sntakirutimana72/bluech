@@ -51,7 +51,6 @@ class Message(MessageExtension, _Model):
     recipient = pee.ForeignKeyField(User, backref='receipts')
     description = pee.TextField(null=True)
     is_edited = pee.BooleanField(default=False)
-    has_attachments = pee.BooleanField(default=False)
     reply_to = pee.ForeignKeyField('self', backref='replies', null=True)
 
 class Resource(ResourceExtension, _Model):

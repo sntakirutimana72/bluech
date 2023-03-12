@@ -24,7 +24,7 @@ class Responder:
         ...
 
     @staticmethod
-    async def edit_username_success(**options):
+    async def edit_username(**options):
         async with Hub.tasks_repository.mutex:
             async with Hub.channels_repository.mutex:
                 channel: ChannelLayer | None = Hub.channels_repository.items.get(options['id'])
@@ -32,9 +32,9 @@ class Responder:
                     return
                 response = Response.edit_username_success(channel.resource)
         await channel.write(response)
-        
+
     @staticmethod
-    async def change_user_avatar_success(**options):
+    async def change_user_avatar(**options):
         async with Hub.tasks_repository.mutex:
             async with Hub.channels_repository.mutex:
                 channel: ChannelLayer | None = Hub.channels_repository.items.get(options['id'])

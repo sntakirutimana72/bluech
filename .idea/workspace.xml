@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="53d0fc5e-109e-4ba3-9217-18bcb6d3d79a" name="Changes" comment="Add app dictionary">
+    <list default="true" id="ab7a6d0e-f82a-47ab-b9e8-8974e12ec622" name="Changes" comment="Add app dictionary">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/controllers/messages.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/messages.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/serializers/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/serializers/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/tests/conftest.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/tests/conftest.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/tests/controllers/conftest.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/tests/controllers/conftest.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/tests/models/conftest.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/tests/models/conftest.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/tests/support/declarations.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/tests/support/declarations.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/tests/support/mocks/clients.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/tests/support/mocks/clients.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/tests/controllers/test_messages.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/tests/controllers/test_messages.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/utils/emitter.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/emitter.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/utils/layers.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/layers.py" afterDir="false" />
     </list>

@@ -66,3 +66,10 @@ class RequestSpecs:
             **cls.head('change_user_avatar'),
             'request': {}
         }
+
+    @classmethod
+    def new_message(cls, **kwargs):
+        return {
+            **cls.head('new_message'),
+            'request': {'body': {'message': {'description': 'Hi, friend!', **kwargs}}}
+        }

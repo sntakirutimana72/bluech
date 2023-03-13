@@ -61,3 +61,10 @@ def user(request):
     request.cls.user = _user
     yield _user
     _user.delete_instance()
+
+@pytest.fixture(scope='class')
+def other_user(request):
+    _user = create_user(email='other_user@email')
+    request.cls.other_user = _user
+    yield _user
+    _user.delete_instance()

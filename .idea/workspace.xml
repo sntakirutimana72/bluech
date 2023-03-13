@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="53d0fc5e-109e-4ba3-9217-18bcb6d3d79a" name="Changes" comment="Adjust user avatar test unit" />
+    <list default="true" id="53d0fc5e-109e-4ba3-9217-18bcb6d3d79a" name="Changes" comment="Add app dictionary">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/serializers/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/serializers/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/tests/conftest.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/tests/conftest.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/tests/controllers/conftest.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/tests/controllers/conftest.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/tests/models/conftest.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/tests/models/conftest.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/tests/support/declarations.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/tests/support/declarations.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/tests/support/mocks/clients.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/tests/support/mocks/clients.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/utils/emitter.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/emitter.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/utils/layers.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/layers.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -18,7 +28,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="test-controllers/users" />
+        <entry key="$PROJECT_DIR$" value="develop" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -54,6 +64,89 @@
       <recent name="I:\bluech\app" />
     </key>
   </component>
+  <component name="RunManager">
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="Tox" factoryName="Tox">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="docs" factoryName="Docutils task">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="" />
+      <option name="docutils_input_file" value="" />
+      <option name="docutils_output_file" value="" />
+      <option name="docutils_params" value="" />
+      <option name="docutils_task" value="" />
+      <option name="docutils_open_in_browser" value="false" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="docs" factoryName="Sphinx task">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="" />
+      <option name="docutils_input_file" value="" />
+      <option name="docutils_output_file" value="" />
+      <option name="docutils_params" value="" />
+      <option name="docutils_task" value="" />
+      <option name="docutils_open_in_browser" value="false" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Doctests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <method v="2" />
+    </configuration>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -62,62 +155,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1673428541001</updated>
-    </task>
-    <task id="LOCAL-00030" summary="Refactor &amp; move models' extensions.">
-      <created>1676834649747</created>
-      <option name="number" value="00030" />
-      <option name="presentableId" value="LOCAL-00030" />
-      <option name="project" value="LOCAL" />
-      <updated>1676834649748</updated>
-    </task>
-    <task id="LOCAL-00031" summary="Modify routing system">
-      <created>1676834706685</created>
-      <option name="number" value="00031" />
-      <option name="presentableId" value="LOCAL-00031" />
-      <option name="project" value="LOCAL" />
-      <updated>1676834706685</updated>
-    </task>
-    <task id="LOCAL-00032" summary="Update validators.py">
-      <created>1676834723423</created>
-      <option name="number" value="00032" />
-      <option name="presentableId" value="LOCAL-00032" />
-      <option name="project" value="LOCAL" />
-      <updated>1676834723424</updated>
-    </task>
-    <task id="LOCAL-00033" summary="Update base &amp; session controllers">
-      <created>1676834763927</created>
-      <option name="number" value="00033" />
-      <option name="presentableId" value="LOCAL-00033" />
-      <option name="project" value="LOCAL" />
-      <updated>1676834763927</updated>
-    </task>
-    <task id="LOCAL-00034" summary="Update processing engine and its dependencies.">
-      <created>1676834813593</created>
-      <option name="number" value="00034" />
-      <option name="presentableId" value="LOCAL-00034" />
-      <option name="project" value="LOCAL" />
-      <updated>1676834813593</updated>
-    </task>
-    <task id="LOCAL-00035" summary="Update exceptions.py &amp; interfaces.py">
-      <created>1676834847039</created>
-      <option name="number" value="00035" />
-      <option name="presentableId" value="LOCAL-00035" />
-      <option name="project" value="LOCAL" />
-      <updated>1676834847039</updated>
-    </task>
-    <task id="LOCAL-00036" summary="Add refined test units for :signin_failure protocol">
-      <created>1676834895318</created>
-      <option name="number" value="00036" />
-      <option name="presentableId" value="LOCAL-00036" />
-      <option name="project" value="LOCAL" />
-      <updated>1676834895318</updated>
-    </task>
-    <task id="LOCAL-00037" summary="Update environment dependencies, aka requirements.txt">
-      <created>1676834925800</created>
-      <option name="number" value="00037" />
-      <option name="presentableId" value="LOCAL-00037" />
-      <option name="project" value="LOCAL" />
-      <updated>1676834925800</updated>
     </task>
     <task id="LOCAL-00038" summary="Update test support utilities">
       <created>1676882823696</created>
@@ -406,7 +443,63 @@
       <option name="project" value="LOCAL" />
       <updated>1678456577196</updated>
     </task>
-    <option name="localTasksCounter" value="79" />
+    <task id="LOCAL-00079" summary="Map :new_message to routes">
+      <created>1678623563302</created>
+      <option name="number" value="00079" />
+      <option name="presentableId" value="LOCAL-00079" />
+      <option name="project" value="LOCAL" />
+      <updated>1678623563302</updated>
+    </task>
+    <task id="LOCAL-00080" summary="Add a builder method to base controller">
+      <created>1678623625338</created>
+      <option name="number" value="00080" />
+      <option name="presentableId" value="LOCAL-00080" />
+      <option name="project" value="LOCAL" />
+      <updated>1678623625338</updated>
+    </task>
+    <task id="LOCAL-00081" summary="Update emitter based on new naming protocol">
+      <created>1678623669022</created>
+      <option name="number" value="00081" />
+      <option name="presentableId" value="LOCAL-00081" />
+      <option name="project" value="LOCAL" />
+      <updated>1678623669022</updated>
+    </task>
+    <task id="LOCAL-00082" summary="Remove :has_attachments attribute from Message model">
+      <created>1678623698548</created>
+      <option name="number" value="00082" />
+      <option name="presentableId" value="LOCAL-00082" />
+      <option name="project" value="LOCAL" />
+      <updated>1678623698548</updated>
+    </task>
+    <task id="LOCAL-00083" summary="Refactor message context validators">
+      <created>1678623734933</created>
+      <option name="number" value="00083" />
+      <option name="presentableId" value="LOCAL-00083" />
+      <option name="project" value="LOCAL" />
+      <updated>1678623734933</updated>
+    </task>
+    <task id="LOCAL-00084" summary="Add app dictionary">
+      <created>1678623759409</created>
+      <option name="number" value="00084" />
+      <option name="presentableId" value="LOCAL-00084" />
+      <option name="project" value="LOCAL" />
+      <updated>1678623759409</updated>
+    </task>
+    <task id="LOCAL-00085" summary="Add app dictionary">
+      <created>1678623844169</created>
+      <option name="number" value="00085" />
+      <option name="presentableId" value="LOCAL-00085" />
+      <option name="project" value="LOCAL" />
+      <updated>1678623844169</updated>
+    </task>
+    <task id="LOCAL-00086" summary="Add app dictionary">
+      <created>1678623855845</created>
+      <option name="number" value="00086" />
+      <option name="presentableId" value="LOCAL-00086" />
+      <option name="project" value="LOCAL" />
+      <updated>1678623855845</updated>
+    </task>
+    <option name="localTasksCounter" value="87" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -424,12 +517,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Create utils/emitter.py" />
-    <MESSAGE value="Refactor test units &amp; utilities" />
-    <MESSAGE value="Fix a flaw in layers.py" />
-    <MESSAGE value="Change from classmethod to staticmethod" />
-    <MESSAGE value="Fix a flaw with dict item retrieval" />
-    <MESSAGE value="Code a model handler for :edit_username routine" />
     <MESSAGE value="Add test units for :edit_username" />
     <MESSAGE value="Fix typos" />
     <MESSAGE value="Update conftest.py" />
@@ -449,6 +536,12 @@
     <MESSAGE value="Adjust layers.py" />
     <MESSAGE value="Adjust conftest.py" />
     <MESSAGE value="Adjust user avatar test unit" />
-    <option name="LAST_COMMIT_MESSAGE" value="Adjust user avatar test unit" />
+    <MESSAGE value="Map :new_message to routes" />
+    <MESSAGE value="Add a builder method to base controller" />
+    <MESSAGE value="Update emitter based on new naming protocol" />
+    <MESSAGE value="Remove :has_attachments attribute from Message model" />
+    <MESSAGE value="Refactor message context validators" />
+    <MESSAGE value="Add app dictionary" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add app dictionary" />
   </component>
 </project>

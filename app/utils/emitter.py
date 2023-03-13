@@ -47,8 +47,9 @@ class Responder:
     @staticmethod
     async def new_message(**options):
         async with Hub.channels_repository.mutex:
-            resource: Message = Message.get_by_id(options['resource_id'])
-            channel: ChannelLayer | None = Hub.channels_repository.items.get(resource.recipient)
+            resource: Message = Message.get_by_id(options['id'])
+            rec_id = resource.recipient.id
+            channel: ChannelLayer | None = Hub.channels_repository.items.get(rec_id)
             if channel is None:
                 return
             response = Response.new_message_success(resource)

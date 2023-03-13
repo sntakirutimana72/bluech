@@ -52,3 +52,9 @@ class UserSerializer(ModelSerializer):
         ('email', 'email'),
         ('nickname', 'nickname'),
     )
+
+class NewMessageSerializer(ModelSerializer):
+    fields = (
+        ('id', 'id'),
+        'description',
+    )

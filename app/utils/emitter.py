@@ -2,6 +2,7 @@ import asyncio as io
 
 from .layers import Response, ChannelLayer
 from .repositories import RepositoriesHub as Hub
+from ..models import Message
 
 class Filters:
     @staticmethod
@@ -41,6 +42,16 @@ class Responder:
                 if channel is None:
                     return
                 response = Response.change_user_avatar_success(channel.resource)
+        await channel.write(response)
+
+    @staticmethod
+    async def new_message(**options):
+        async with Hub.channels_repository.mutex:
+            resource: Message = Message.get_by_id(options['resource_id'])
+            channel: ChannelLayer | None = Hub.channels_repository.items.get(resource.recipient)
+            if channel is None:
+                return
+            response = Response.new_message_success(resource)
         await channel.write(response)
 
     @classmethod

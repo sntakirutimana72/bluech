@@ -54,6 +54,10 @@ class Response:
         return cls.make(**options)
 
     @classmethod
+    def new_message_success(cls, message):
+        return cls.make(message=message)
+
+    @classmethod
     def signin_success(cls, user):
         return cls.make(user=UserSerializer(user).to_json, proto='signin_success')
 

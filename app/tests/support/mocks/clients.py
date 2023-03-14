@@ -59,8 +59,8 @@ class AppClientSpec(ClientMockSpec):
         await self.writer.drain()
         return await self.receive()
 
-    async def new_message(self, **kwargs):
-        await self.send(RequestSpecs.new_message(**kwargs))
+    async def post_message(self, params_sid, **kwargs):
+        await self.send(getattr(RequestSpecs, params_sid)(**kwargs))
 
 class ConnectivityClientSpec(ClientMockSpec):
     async def connect(self, host='localhost', port=8080):

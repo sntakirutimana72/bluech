@@ -37,6 +37,11 @@ class ControllerTestCases(PyTestCase):
         cls.client = AppClientSpec()
         cls.signedIn = False
 
+    @classmethod
+    def teardown_class(cls):
+        delattr(cls, 'client')
+        delattr(cls, 'signedIn')
+
     async def assertSigninSuccess(self, **user):
         if self.signedIn:
             return

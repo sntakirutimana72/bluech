@@ -62,6 +62,10 @@ class Response:
         return cls.make(message=MessageSerializer(message).to_json, proto='edit_message')
 
     @classmethod
+    def remove_message_success(cls, user, **kwargs):
+        return cls.make(proto='remove_message', benefactor=UserSerializer(user).to_json, **kwargs)
+
+    @classmethod
     def signin_success(cls, user):
         return cls.make(user=UserSerializer(user).to_json, proto='signin_success')
 

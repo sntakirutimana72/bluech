@@ -21,6 +21,7 @@ class Messages(Base):
 
     async def _delete(self):
         """Delete a message by setting its status to `DISABLED|DELETED`"""
-        msg_id = self.request.params.message_id
-        MessageQueryManager.remove_message(self.user_id, msg_id)
-        await self.build_task(message_id=msg_id, sender_id=self.user_id)
+        sender = self.user_id
+        msg_id = self.request.params.id
+        rec_id = MessageQueryManager.remove_message(sender, msg_id)
+        await self.build_task(resource_id=msg_id, from_=sender, to_=rec_id)

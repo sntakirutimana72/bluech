@@ -69,14 +69,15 @@ class MessageQueryManager(SQLQueryManager):
         # cls.logger(LOGGING_LEVELS.MSG_EDIT, user_id)
 
     @classmethod
-    def remove_message(cls, user_id: int, pk: int):
+    def remove_message(cls, sender: int, pk: int) -> int | str:
         try:
-            cn = Message.delete().where(Message.sender == user_id and Message.id == pk and Message.status != 'DELETED')
+            message = Message.get(Message.sender == sender, Message.id == pk)
+            recipient_id = message.recipient.id
+            message.delete_instance()
         except:
             raise ActiveRecordError
-        if cn is None:
-            raise ResourceNotFound
         # cls.logger(LOGGING_LEVELS.MSG_DEL, user_id)
+        return recipient_id
 
 class UserQueryManager(SQLQueryManager):
     @staticmethod

@@ -119,4 +119,4 @@ class Validators:
     # :remove_message validator
     @staticmethod
     def remove_message(req):
-        return Schema({'body': None, 'params': {'id': int}}).validate(req)
+        return Schema({'params': {'id': int}}).validate(req)

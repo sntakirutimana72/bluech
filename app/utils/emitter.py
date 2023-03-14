@@ -1,8 +1,9 @@
 import asyncio as io
+import traceback as trc
 
 from .layers import Response, ChannelLayer
 from .repositories import RepositoriesHub as Hub
-from ..models import Message
+from ..models import Message, User
 
 class Filters:
     @staticmethod
@@ -66,6 +67,18 @@ class Responder:
             response = Response.edit_message_success(resource)
         await channel.write(response)
 
+    @staticmethod
+    async def remove_message(**options):
+        async with Hub.channels_repository.mutex:
+            msg_id = options['id']
+            items = options['from_'], options['to_']
+            for (i, j) in (items, items[::-1]):
+                channel: ChannelLayer | None = Hub.channels_repository.items.get(i)
+                if channel:
+                    resource = User.get_by_id(j)
+                    response = Response.remove_message_success(resource, message_id=msg_id)
+                    await channel.write(response)
+
     @classmethod
     async def pulse(cls):
         while 1:
@@ -76,5 +89,5 @@ class Responder:
                     handler = cls.get_handler(proto)
                     await handler(**task)
             except:
-                ...
+                print(trc.print_exc())
             await io.sleep(1.25)

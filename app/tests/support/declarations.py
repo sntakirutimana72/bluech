@@ -83,3 +83,10 @@ class RequestSpecs:
                 'params': params
             }
         }
+
+    @classmethod
+    def remove_message(cls, **kwargs):
+        return {
+            **cls.head('remove_message'),
+            'request': kwargs
+        }

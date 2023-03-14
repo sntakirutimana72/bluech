@@ -8,7 +8,7 @@ from .repositories import RepositoriesHub
 from .interfaces import AttributeDict
 from .exceptions import CustomException
 from ..serializers.commons import PayloadJSONSerializer
-from ..serializers.models import UserSerializer, NewMessageSerializer
+from ..serializers.models import UserSerializer, MessageSerializer
 from ..settings import AVATARS_PATH
 from ..models import *
 
@@ -55,7 +55,11 @@ class Response:
 
     @classmethod
     def new_message_success(cls, message):
-        return cls.make(message=NewMessageSerializer(message).to_json, proto='new_message')
+        return cls.make(message=MessageSerializer(message).to_json, proto='new_message')
+
+    @classmethod
+    def edit_message_success(cls, message):
+        return cls.make(message=MessageSerializer(message).to_json, proto='edit_message')
 
     @classmethod
     def signin_success(cls, user):

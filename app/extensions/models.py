@@ -24,6 +24,11 @@ class MetaExtension(object):
 
 # noinspection PyAttributeOutsideInit
 class Extension(object):
+    @classmethod
+    def update(cls, __data=None, **update):
+        update['updated_at'] = dt.datetime.now()
+        return super().update(__data, **update)
+
     def save(self, *args, **kwargs):
         if self._pk:
             self.updated_at = dt.datetime.now()
@@ -44,7 +49,10 @@ class ChannelExtension(Extension):
     ...
 
 class MessageExtension(Extension):
-    ...
+    @classmethod
+    def update(cls, __data=None, **update):
+        update['is_edited'] = True
+        return super().update(__data, **update)
 
 class MemberExtension(Extension):
     ...

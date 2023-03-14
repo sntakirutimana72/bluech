@@ -55,6 +55,17 @@ class Responder:
             response = Response.new_message_success(resource)
         await channel.write(response)
 
+    @staticmethod
+    async def edit_message(**options):
+        async with Hub.channels_repository.mutex:
+            resource: Message = Message.get_by_id(options['id'])
+            rec_id = resource.recipient.id
+            channel: ChannelLayer | None = Hub.channels_repository.items.get(rec_id)
+            if channel is None:
+                return
+            response = Response.edit_message_success(resource)
+        await channel.write(response)
+
     @classmethod
     async def pulse(cls):
         while 1:

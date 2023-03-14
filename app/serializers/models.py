@@ -2,7 +2,7 @@ __all__ = (
     'ModelSerializer',
     'ModelListQuerySerializer',
     'UserSerializer',
-    'NewMessageSerializer',
+    'MessageSerializer',
 )
 
 import peewee as pee
@@ -49,7 +49,7 @@ class UserSerializer(ModelSerializer):
         ('nickname', 'nickname'),
     )
 
-class NewMessageSerializer(ModelSerializer):
+class MessageSerializer(ModelSerializer):
     fields = (
         ('id', 'id'),
         ('description', 'description'),
@@ -62,8 +62,8 @@ class NewMessageSerializer(ModelSerializer):
 
     @property
     def sent_date(self):
-        return self.resource.created_at.strftime('%Y-%b-%d %x')
+        return self.resource.created_at.strftime('%Y-%b-%d %H:%M')
 
     @property
     def last_update(self):
-        return self.resource.updated_at.strftime('%Y-%b-%d %x')
+        return self.resource.updated_at.strftime('%Y-%b-%d %H:%M')

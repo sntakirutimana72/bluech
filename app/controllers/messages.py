@@ -15,8 +15,8 @@ class Messages(Base):
 
     async def _patch(self):
         """Edit an existing in service message"""
-        msg_id = self.request.params.message_id
-        MessageQueryManager.edit_message(self.user_id, msg_id, **self.request.body)
+        msg_id = self.request.params.id
+        MessageQueryManager.edit_message(self.user_id, msg_id, **self.request.body['message'])
         await self.build_task(resource_id=msg_id)
 
     async def _delete(self):

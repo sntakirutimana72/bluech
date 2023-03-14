@@ -8,7 +8,6 @@ __all__ = (
 import peewee as pee
 
 from .exceptions import *
-from ..settings import LOGGING_LEVELS
 from ..models import *
 
 class SQLQueryManager(object):
@@ -57,12 +56,15 @@ class MessageQueryManager(SQLQueryManager):
         return messages
 
     @classmethod
-    def edit_message(cls, user_id: int, pk: int, **kwargs):
+    def edit_message(cls, sender: int, pk: int, **kwargs):
         try:
-            cn = Message.update(**kwargs).where(Message.sender == user_id and Message.id == pk)
+            cn = (Message
+                  .update(**kwargs)
+                  .where((Message.sender == sender) & (Message.id == pk))
+                  .execute())
         except:
             raise ActiveRecordError
-        if cn is None:
+        if not cn:
             raise ResourceNotFound
         # cls.logger(LOGGING_LEVELS.MSG_EDIT, user_id)
 

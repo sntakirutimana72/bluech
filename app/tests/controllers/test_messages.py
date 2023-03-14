@@ -2,7 +2,8 @@ import pytest
 
 from .conftest import ControllerTestCases
 from ..support.mocks.clients import AppClientSpec
-from ..support.models import create_user
+from ..support.models import create_user, create_message
+from ..support.responses import Skeletons
 from ...models import Message
 
 class TestMessagesController(ControllerTestCases):
@@ -13,23 +14,46 @@ class TestMessagesController(ControllerTestCases):
         cls.rec_user = create_user(email='rec@email.eu')
         cls.rec_client = AppClientSpec()
 
+    @classmethod
+    def teardown_class(cls):
+        super().teardown_class()
+        delattr(cls, 'rec_client')
+        delattr(cls, 'user')
+        delattr(cls, 'rec_user')
+
+    async def affirmSigns(self):
+        if self.client.connected:
+            return
+        # signing primary user
+        await self.assertSigninSuccess(email=self.user.email, password='test@123')
+        # signing secondary user
+        await self.assertSignin(self.rec_client, user={'email': self.rec_user.email, 'password': 'test@123'})
+
+    def assertMessageResponse(self, proto: str, edited: bool, user, resp: dict):
+        self.assert_true(Skeletons.new_message(resp))
+        self.assertResponse(200, proto, resp)
+        self.assert_equals(resp['message']['sender']['email'], user.email)
+        self.assert_equals(resp['message']['is_edited'], edited)
+        self.assert_true(Message.select().exists())
+
     @pytest.mark.asyncio
     async def test_new_message_success(self):
-        # signing sender
-        await self.assertSigninSuccess(email=self.user.email, password='test@123')
-        # signing recipient
-        await self.assertSignin(self.rec_client, user={'email': self.rec_user.email, 'password': 'test@123'})
+        await self.affirmSigns()
         # send a message
-        await self.client.new_message(recipient=self.rec_user.id)
+        await self.client.post_message('new_message', recipient=self.rec_user.id)
         # receive message
         resp = await self.rec_client.receive()
         # Then, assert
-        self.assertResponse(200, 'new_message', resp)
-        self.assert_dict_has_key(resp, 'message')
-        self.assert_dict_has_key(resp['message'], 'sender')
-        self.assert_equals(resp['message']['sender']['email'], self.user.email)
-        self.assert_dict_has_key(resp['message'], 'is_edited')
-        self.assert_true(Message.select().exists())
-        # disconnect clients' connections
-        await self.client.disconnect()
-        await self.rec_client.disconnect()
+        self.assertMessageResponse('new_message', False, self.user, resp)
+
+    @pytest.mark.asyncio
+    async def test_edit_message_success(self):
+        await self.affirmSigns()
+        # create a demo message
+        tmp_msg = create_message(recipient=self.user, sender=self.rec_user, description='Hola!')
+        # send a message
+        await self.rec_client.post_message('edit_message', params={'id': tmp_msg.id}, description='Salut!')
+        # receive message
+        resp = await self.client.receive()
+        # Then, assert
+        self.assertMessageResponse('edit_message', True, self.rec_user, resp)

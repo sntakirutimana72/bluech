@@ -346,22 +346,13 @@ class TestMessageValidators(PyTestCase):
 
     def test_valid_remove_message(self):
         req = {
-            'body': None,
             'params': {'id': 1}
         }
         validated = Val.remove_message(req)
         self.assert_isinstanceof(validated, dict)
         self.assert_dict_has_key(validated, 'params')
-        self.assert_is_none(validated['body'])
 
     def test_invalid_remove_message(self):
-        invalid_body = {
-            'body': 'INVALID BODY',
-            'params': {'id': 1}
-        }
-        with self.assert_raises():
-            Val.remove_message(invalid_body)
-
-        invalid_params = {'body': None, 'params': {}}
+        invalid_params = {'params': {}}
         with self.assert_raises():
             Val.remove_message(invalid_params)

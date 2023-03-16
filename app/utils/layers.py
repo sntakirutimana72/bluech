@@ -8,7 +8,7 @@ from .repositories import RepositoriesHub
 from .interfaces import AttributeDict
 from .exceptions import CustomException
 from ..serializers.commons import PayloadJSONSerializer
-from ..serializers.models import UserSerializer
+from ..serializers.models import UserSerializer, MessageSerializer
 from ..settings import AVATARS_PATH
 from ..models import *
 
@@ -39,7 +39,7 @@ class TasksLayer:
         return new_task
 
     @classmethod
-    async def build(cls, proto, resource_id, **options):
+    async def build(cls, proto, resource_id=None, **options):
         await RepositoriesHub.tasks_repository.push(cls.new(proto, resource_id, **options))
 
 class Response:
@@ -52,6 +52,18 @@ class Response:
         if not options:
             options = CustomException().to_json
         return cls.make(**options)
+
+    @classmethod
+    def new_message_success(cls, message):
+        return cls.make(message=MessageSerializer(message).to_json, proto='new_message')
+
+    @classmethod
+    def edit_message_success(cls, message):
+        return cls.make(message=MessageSerializer(message).to_json, proto='edit_message')
+
+    @classmethod
+    def remove_message_success(cls, user, **kwargs):
+        return cls.make(proto='remove_message', benefactor=UserSerializer(user).to_json, **kwargs)
 
     @classmethod
     def signin_success(cls, user):

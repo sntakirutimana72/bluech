@@ -8,7 +8,6 @@ __all__ = (
 import peewee as pee
 
 from .exceptions import *
-from ..settings import LOGGING_LEVELS
 from ..models import *
 
 class SQLQueryManager(object):
@@ -35,9 +34,9 @@ class SessionQueryManager(SQLQueryManager):
 
 class MessageQueryManager(SQLQueryManager):
     @classmethod
-    def new_message(cls, user_id: int, **kwargs) -> int:
+    def new_message(cls, **kwargs) -> int:
         try:
-            message = Message.create(user=user_id, **kwargs)
+            message = Message.create(**kwargs)
         except:
             raise ActiveRecordError
         # cls.logger(LOGGING_LEVELS.MSG_NEW, user_id)
@@ -57,24 +56,28 @@ class MessageQueryManager(SQLQueryManager):
         return messages
 
     @classmethod
-    def edit_message(cls, user_id: int, pk: int, **kwargs):
+    def edit_message(cls, sender: int, pk: int, **kwargs):
         try:
-            cn = Message.update(**kwargs).where(Message.sender == user_id and Message.id == pk)
+            cn = (Message
+                  .update(**kwargs)
+                  .where((Message.sender == sender) & (Message.id == pk))
+                  .execute())
         except:
             raise ActiveRecordError
-        if cn is None:
+        if not cn:
             raise ResourceNotFound
         # cls.logger(LOGGING_LEVELS.MSG_EDIT, user_id)
 
     @classmethod
-    def remove_message(cls, user_id: int, pk: int):
+    def remove_message(cls, sender: int, pk: int) -> int | str:
         try:
-            cn = Message.delete().where(Message.sender == user_id and Message.id == pk and Message.status != 'DELETED')
+            message = Message.get(Message.sender == sender, Message.id == pk)
+            recipient_id = message.recipient.id
+            message.delete_instance()
         except:
             raise ActiveRecordError
-        if cn is None:
-            raise ResourceNotFound
         # cls.logger(LOGGING_LEVELS.MSG_DEL, user_id)
+        return recipient_id
 
 class UserQueryManager(SQLQueryManager):
     @staticmethod

@@ -66,3 +66,27 @@ class RequestSpecs:
             **cls.head('change_user_avatar'),
             'request': {}
         }
+
+    @classmethod
+    def new_message(cls, **kwargs):
+        return {
+            **cls.head('new_message'),
+            'request': {'body': {'message': {'description': 'Hi, friend!', **kwargs}}}
+        }
+
+    @classmethod
+    def edit_message(cls, params: dict[str, str | int], **kwargs):
+        return {
+            **cls.head('edit_message'),
+            'request': {
+                'body': {'message': kwargs},
+                'params': params
+            }
+        }
+
+    @classmethod
+    def remove_message(cls, **kwargs):
+        return {
+            **cls.head('remove_message'),
+            'request': kwargs
+        }

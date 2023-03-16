@@ -52,12 +52,19 @@ def avatars_path(images_path):
 @pytest.fixture(scope='class', autouse=True)
 def purge_db():
     yield
-    for cls in get_attribute_values(models, exceptions=('_Model', 'Activity', 'ActivityLog')):
+    for cls in reversed(tuple(get_attribute_values(models, exceptions=('_Model',)))):
         cls.delete().execute()
 
 @pytest.fixture(scope='class')
 def user(request):
     _user = create_user()
     request.cls.user = _user
+    yield _user
+    _user.delete_instance()
+
+@pytest.fixture(scope='class')
+def other_user(request):
+    _user = create_user(email='other_user@email')
+    request.cls.other_user = _user
     yield _user
     _user.delete_instance()

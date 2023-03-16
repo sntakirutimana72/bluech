@@ -37,13 +37,22 @@ class ControllerTestCases(PyTestCase):
         cls.client = AppClientSpec()
         cls.signedIn = False
 
+    @classmethod
+    def teardown_class(cls):
+        delattr(cls, 'client')
+        delattr(cls, 'signedIn')
+
     async def assertSigninSuccess(self, **user):
         if self.signedIn:
             return
-        resp = await self.client.login(**user)
+        resp = await self.assertSignin(self.client, user)
+        self.signedIn = True
+        return resp
+
+    async def assertSignin(self, client: AppClientSpec, user: dict[str, str]):
+        resp = await client.login(**user)
         self.assertResponse(200, 'signin_success', resp)
         self.assert_dict_has_key(resp, 'user')
-        self.signedIn = True
         return resp
 
     def assertResponse(self, status: int, proto: str, resp):

@@ -2,6 +2,7 @@ import asyncio as io
 import typing as ty
 
 from ..utils.interfaces import Request
+from ..utils.layers import TasksLayer
 
 class Base(object):
     def __init__(self, request: Request):
@@ -21,3 +22,6 @@ class Base(object):
 
     def exec(self):
         return self.get_handler()
+
+    async def build_task(self, **kwargs):
+        await TasksLayer.build(self.request.protocol, **kwargs)

@@ -9,12 +9,13 @@ import peewee as pee
 
 from .exceptions import *
 from ..models import *
+from ..settings import LOGGING_LEVELS
 
 class SQLQueryManager(object):
     @staticmethod
-    def logger(level: int, doer: int | User, **options):
+    def logger(level: int, **options):
         activity = Activity.get(Activity.level == level)
-        return ActivityLog.create(activity=activity, doer=doer, **options)
+        ActivityLog.create(activity=activity, **options)
 
 class SessionQueryManager(SQLQueryManager):
     @classmethod
@@ -24,13 +25,12 @@ class SessionQueryManager(SQLQueryManager):
             user.authenticate(password)
         except:
             raise Unauthorized
-        # cls.logger(LOGGING_LEVELS.LOGIN, user)
+        cls.logger(level=LOGGING_LEVELS.LOGIN, doer=user, summary='login')
         return user
 
     @classmethod
     def signout(cls, user_id: int):
-        # cls.logger(LOGGING_LEVELS.LOGOUT, user_id)
-        ...
+        cls.logger(level=LOGGING_LEVELS.LOGOUT, doer=user_id, summary='logout')
 
 class MessageQueryManager(SQLQueryManager):
     @classmethod

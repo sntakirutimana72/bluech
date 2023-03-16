@@ -12,9 +12,8 @@ def resource(request):
     yield _resource
     _resource.delete_instance()
 
-@pytest.mark.usefixtures('configure_db', 'channel', 'message', 'resource')
+@pytest.mark.usefixtures('channel', 'message', 'resource')
 class ResourceTestCases(unittest.TestCase):
-
     def _assert_backrefs(self, state=False):
         self.assertIs(self.user.picture.exists(), state)
         self.assertIs(self.channel.attachments.exists(), state)

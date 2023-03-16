@@ -48,8 +48,7 @@ MembershipThroughModel.set_model(Member)
 
 class Message(MessageExtension, _Model):
     sender = pee.ForeignKeyField(User, backref='messages')
-    recipient = pee.ForeignKeyField(User, null=True, backref='receipts')
-    channel = pee.ForeignKeyField(Channel, null=True, backref='chats')
+    recipient = pee.ForeignKeyField(User, backref='receipts')
     description = pee.TextField(null=True)
     is_edited = pee.BooleanField(default=False)
     reply_to = pee.ForeignKeyField('self', backref='replies', null=True)

@@ -1,7 +1,6 @@
 import pytest
 
 from .conftest import ControllerTestCases
-from ..support.models import InstantUse
 
 class SessionTestCases(ControllerTestCases):
     async def assertSession(self, status: int, proto: str, **user):
@@ -23,18 +22,13 @@ class TestSigninAndSignoutFailure(SessionTestCases):
 class TestSigninAndSignoutSuccess(SessionTestCases):
     @pytest.mark.asyncio
     async def test_signin_success(self):
-        with InstantUse.admin_user() as admin:
-            credentials = {'email': admin.email, 'password': 'test@123'}
-            await self.assertSigninSuccess(**credentials)
-            await self.client.disconnect()
+        await self.assertSigninSuccess(email=self.user.email, password='test@123')
+        await self.client.disconnect()
 
     @pytest.mark.asyncio
     async def test_signout_success(self):
-        with InstantUse.admin_user() as admin:
-            # signing in
-            credentials = {'email': admin.email, 'password': 'test@123'}
-            await self.assertSigninSuccess(**credentials)
-            # signing out
-            resp = await self.client.logout()
-            self.assertResponse(200, 'signout_success', resp)
-            await self.client.disconnect()
+        await self.assertSigninSuccess(email=self.user.email, password='test@123')
+        # signing out
+        resp = await self.client.logout()
+        self.assertResponse(200, 'signout_success', resp)
+        await self.client.disconnect()

@@ -15,7 +15,7 @@ class Models:
 
     @staticmethod
     def activity(**others):
-        return {'level': 1, **others}
+        return {'level': 1111, **others}
 
     @staticmethod
     def activity_log(**others):

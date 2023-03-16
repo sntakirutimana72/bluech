@@ -4,7 +4,6 @@ import os
 import app.utils.layers as aul
 from .conftest import ControllerTestCases
 
-@pytest.mark.usefixtures('user')
 class TestChangeUsername(ControllerTestCases):
     @pytest.mark.asyncio
     async def test_failure(self):
@@ -25,7 +24,6 @@ class TestChangeUsername(ControllerTestCases):
         self.assert_dict_has_key(resp, 'user')
         await self.client.disconnect()
 
-@pytest.mark.usefixtures('user')
 class TestChangeAvatar(ControllerTestCases):
     @pytest.mark.asyncio
     async def test_successful_change(self, avatars_path, user_avatar, mocker):

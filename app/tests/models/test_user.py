@@ -5,7 +5,7 @@ import pytest
 from ..support.models import create_user
 from ...models import User
 
-@pytest.mark.usefixtures('configure_db', 'user')
+@pytest.mark.usefixtures('user')
 class UserTestCases(unit.TestCase):
     def test_password_has_been_hashed(self):
         self.assertNotEqual(self.user.password, 'test@123')

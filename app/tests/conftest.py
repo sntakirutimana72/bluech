@@ -52,7 +52,7 @@ def avatars_path(images_path):
 @pytest.fixture(scope='class', autouse=True)
 def purge_db():
     yield
-    for cls in reversed(tuple(get_attribute_values(models, exceptions=('_Model',)))):
+    for cls in reversed(tuple(get_attribute_values(models, exceptions=('_Model', 'Activity')))):
         cls.delete().execute()
 
 @pytest.fixture(scope='class')

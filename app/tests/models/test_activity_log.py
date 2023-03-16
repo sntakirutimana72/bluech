@@ -12,9 +12,8 @@ def log(request, activity, user):
     yield _log
     _log.delete_instance()
 
-@pytest.mark.usefixtures('configure_db', 'log')
+@pytest.mark.usefixtures('log')
 class ActivityLogTestCases(unittest.TestCase):
-
     def test_is_valid(self):
         self.assertTrue(ActivityLog.select().exists())
         self.assertIsInstance(self.log, ActivityLog)

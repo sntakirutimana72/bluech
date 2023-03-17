@@ -80,22 +80,23 @@ class MessageQueryManager(SQLQueryManager):
         return recipient_id
 
 class UserQueryManager(SQLQueryManager):
-    @staticmethod
-    def edit_nickname(pk: int, nickname: str):
+    @classmethod
+    def edit_nickname(cls, pk: int, nickname: str):
         try:
             user: User = User.get_by_id(pk)
             if user.nickname == nickname:
                 raise ResourceNotChanged
             user.nickname = nickname
             user.save()
+        except ResourceNotChanged:
+            raise ResourceNotChanged
         except:
             raise ActiveRecordError
-        # cls.logger(LOGGING_LEVELS.USER_EDIT_MAME, pk)
+        cls.logger(level=LOGGING_LEVELS.USER_EDIT_NICKNAME, doer=pk, summary='change user nickname')
 
     @classmethod
     def change_avatar(cls, pk: int):
-        # cls.logger(LOGGING_LEVELS.USER_EDIT_PIC, pk)
-        ...  # simply the action since the user avatar has already persisted while in dowload
+        cls.logger(level=LOGGING_LEVELS.USER_EDIT_PIC, doer=pk, summary='change user avatar')
 
     @classmethod
     def all_users(cls, pk: int):

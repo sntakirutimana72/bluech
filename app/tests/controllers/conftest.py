@@ -6,7 +6,7 @@ from ..support.mocks.clients import AppClientSpec
 from ..support.unittests import PyTestCase
 from ..support.models import create_user
 from ...utils.interfaces import AttributeDict
-from ...models import User, Activity
+from ...models import User, Activity, ActivityLog
 from ...settings import LOGGING_LEVELS
 
 @pytest.fixture(scope='module', autouse=True)
@@ -60,10 +60,10 @@ class ControllerTestCases(PyTestCase):
         return resp
 
     async def assertSignin(self, client: AppClientSpec, user: dict[str, str]):
-        # og_count = Activity.select().count()
+        old_count = ActivityLog.select().count()
         resp = await client.login(**user)
         self.assertResponse(200, 'signin_success', resp)
-        # self.assert_equals(Activity.select().count(), og_count + 1)
+        self.assert_equals(ActivityLog.select().count(), old_count + 1)
         self.assert_dict_has_key(resp, 'user')
         return resp
 

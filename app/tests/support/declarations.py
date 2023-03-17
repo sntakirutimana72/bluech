@@ -54,10 +54,10 @@ class RequestSpecs:
         return {**cls.head('signout'), 'request': {}}
 
     @classmethod
-    def edit_username(cls):
+    def edit_username(cls, **kwargs):
         return {
             **cls.head('edit_username'),
-            'request': {'body': {'user': {'nickname': 'new nickname'}}}
+            'request': {'body': {'user': {'nickname': 'new nickname', **kwargs}}}
         }
 
     @classmethod

@@ -49,7 +49,7 @@ class AppClientSpec(ClientMockSpec):
         return await self.receive()
 
     async def edit_username(self, **options):
-        await self.send({**RequestSpecs.edit_username(), **options})
+        await self.send({**RequestSpecs.edit_username(**options)})
         return await self.receive()
 
     async def change_user_avatar(self, **options):

@@ -18,6 +18,6 @@ class Users(Base):
             'user_id': pk,
             **filter_dict_items(self.request.__dict__, only=only)
         }
-        await PipeLayer.download_avatar(self.request.processor.reader, **options)
+        await PipeLayer.download_avatar(self.processor.reader, **options)
         UserQueryManager.change_avatar(pk)
         await self.build_task(resource_id=pk)

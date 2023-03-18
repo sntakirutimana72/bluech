@@ -1,6 +1,5 @@
 import asyncio as io
 import traceback as trc
-import typing as ty
 
 from .layers import Response
 from .repositories import RepositoriesHub as Hub
@@ -9,14 +8,14 @@ from ..models import Message, User
 
 class Filters:
     @staticmethod
-    def other_participants(except_recently):
+    def other_participants(only: list):
         for channel in Hub.channels_repository:
-            if channel.uid != except_recently:
+            if channel.uid in only:
                 yield channel
 
     @staticmethod
-    def other_ids(participants: ty.Iterable):
-        return [p.uid for p in participants]
+    def other_ids(only: list):
+        return [p.uid for p in Hub.channels_repository if p.uid in only]
 
 class Responder:
     @classmethod
@@ -28,22 +27,19 @@ class Responder:
         async with Hub.channels_repository.mutex:
             ssid = options['id']
             if channel := Hub.channels_repository.items.get(ssid):
-                participants = Filters.other_participants(channel.uid)
-
-                if ids := Filters.other_ids(participants):
-                    users_query = UserQueryManager.all_users(ssid, ids)
+                if options['ids']:
+                    users_query = UserQueryManager.all_users(ssid, options['ids'])
                     await channel.write(Response.all_users(users_query))
 
                     con_response = Response.connected(channel.resource)
-                    for p_channel in participants:
+                    for p_channel in Filters.other_participants(options['ids']):
                         await p_channel.write(con_response)
 
     @staticmethod
     async def signout(**options):
         async with Hub.channels_repository.mutex:
-            ssid = options['ssid']
-            discon_response = Response.disconnected(ssid)
-            for channel in Filters.other_participants(ssid):
+            discon_response = Response.disconnected(options['ssid'])
+            for channel in Filters.other_participants(options['ids']):
                 await channel.write(discon_response)
 
     @staticmethod

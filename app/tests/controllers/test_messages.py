@@ -12,6 +12,7 @@ class TestMessagesController(ControllerTestCases):
         super().setup_class()
         cls.rec_user = create_user(email='rec@email.eu')
         cls.rec_client = AppClientSpec()
+        cls.test_countdown = {'left': 2}
 
     @classmethod
     def teardown_class(cls):
@@ -29,6 +30,18 @@ class TestMessagesController(ControllerTestCases):
         await self.assertSigninSuccess(email=self.user.email, password='test@123')
         # signing secondary user
         await self.assertSignin(self.rec_client, user={'email': self.rec_user.email, 'password': 'test@123'})
+
+        res = await self.client.receive()
+        resp = await self.rec_client.receive()
+        self.assertResponse(200, 'connected', res)
+        self.assertResponse(200, 'all_users', resp)
+
+    async def ensureSignout(self):
+        if self.test_countdown['left'] == 0:
+            await self.client.disconnect()
+            await self.rec_client.disconnect()
+        else:
+            self.test_countdown['left'] -= 1
 
     def assertMessageResponse(self, proto: str, edited: bool, user, resp: dict):
         self.assert_true(Skeletons.new_message(resp))
@@ -49,6 +62,7 @@ class TestMessagesController(ControllerTestCases):
         await self.client.post_message('new_message', recipient=self.rec_user.id)
         resp = await self.rec_client.receive()
         self.assertMessageResponse('new_message', False, self.user, resp)
+        await self.ensureSignout()
 
     @pytest.mark.asyncio
     async def test_edit_message_success(self):
@@ -57,6 +71,7 @@ class TestMessagesController(ControllerTestCases):
         await self.rec_client.post_message('edit_message', params={'id': msg.id}, description='Salut!')
         resp = await self.client.receive()
         self.assertMessageResponse('edit_message', True, self.rec_user, resp)
+        await self.ensureSignout()
 
     @pytest.mark.asyncio
     async def test_remove_message_success(self):
@@ -68,3 +83,4 @@ class TestMessagesController(ControllerTestCases):
             self.assertRemove(user.id, msg_id, resp)
         msg = Message.get_or_none(Message.id == msg_id)
         self.assert_is_none(msg)
+        await self.ensureSignout()

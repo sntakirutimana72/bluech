@@ -8,7 +8,7 @@ from .repositories import RepositoriesHub
 from .interfaces import AttributeDict
 from .exceptions import CustomException
 from ..serializers.commons import PayloadJSONSerializer
-from ..serializers.models import UserSerializer, MessageSerializer
+from ..serializers.models import *
 from ..settings import AVATARS_PATH
 from ..models import *
 
@@ -28,9 +28,8 @@ class ChannelLayer:
         return Channel.get_by_id(self.uid)
 
     async def write(self, payload: dict[str, yi.Any]):
-        if not self.is_writable:
-            raise
-        await PipeLayer.pump(self.writer, payload)
+        if self.is_writable:
+            await PipeLayer.pump(self.writer, payload)
 
 class TasksLayer:
     @staticmethod
@@ -54,6 +53,10 @@ class Response:
         return cls.make(**options)
 
     @classmethod
+    def respond_with_user_serializer(cls, user: User, **kwargs):
+        return cls.make(user=UserSerializer(user).to_json, **kwargs)
+
+    @classmethod
     def new_message_success(cls, message):
         return cls.make(message=MessageSerializer(message).to_json, proto='new_message')
 
@@ -67,7 +70,7 @@ class Response:
 
     @classmethod
     def signin_success(cls, user):
-        return cls.make(user=UserSerializer(user).to_json, proto='signin_success')
+        return cls.respond_with_user_serializer(user, proto='signin_success')
 
     @classmethod
     def signout_success(cls):
@@ -75,11 +78,23 @@ class Response:
 
     @classmethod
     def edit_username_success(cls, user):
-        return cls.make(user=UserSerializer(user).to_json, proto='edit_username_success')
+        return cls.respond_with_user_serializer(user, proto='edit_username_success')
 
     @classmethod
     def change_user_avatar_success(cls, user):
-        return cls.make(user=UserSerializer(user).to_json, proto='change_avatar_success')
+        return cls.respond_with_user_serializer(user, proto='change_avatar_success')
+
+    @classmethod
+    def connected(cls, user):
+        return cls.respond_with_user_serializer(user, proto='connected')
+
+    @classmethod
+    def disconnected(cls, user_id):
+        return cls.make(ssid=user_id, proto='disconnected')
+
+    @classmethod
+    def all_users(cls, users_query):
+        return cls.make(users=UserListQuerySerializer(users_query).to_json, proto='all_users')
 
 class PipeLayer:
     @staticmethod

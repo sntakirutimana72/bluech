@@ -39,6 +39,10 @@ class AppClientSpec(ClientMockSpec):
         incoming = await PipeLayer.fetch(self.reader)
         return incoming
 
+    async def disconnect(self):
+        await self.logout()
+        await super().disconnect()
+
     async def login(self, **credentials):
         await self.connect()
         await self.send(RequestSpecs.signin(**credentials))

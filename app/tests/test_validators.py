@@ -115,7 +115,6 @@ class TestSessionValidators(PyTestCase):
         with self.assert_raises():
             Val.signin({'body': 'INVALID DATA STRUCTURE'})
 
-
 # noinspection PyTypedDict
 class TestUserValidators(PyTestCase):
     def _assert_for_all(self, obj):
@@ -137,132 +136,7 @@ class TestUserValidators(PyTestCase):
         with self.assert_raises():
             Val.edit_username(schema)
 
-class TestGroupValidators(PyTestCase):
-    def test_new_group_with_valid_schema(self):
-        # with members
-        schema = {'body': {'group': {'name': 'NEW GROUP', 'members': [{'id': 1, 'is_admin': False}]}}}
-        self.assert_true(Val.new_group(schema))
-        # without members
-        del schema['body']['group']['members']
-        self.assert_true(Val.new_group(schema))
-
-    def test_new_group_with_invalid_schema(self):
-        # with invalid :members
-        schema = {'body': {'group': {'name': 'NEW GROUP', 'members': []}}}
-        with self.assert_raises():
-            Val.new_group(schema)
-        # with invalid :name
-        schema['body']['group']['name'] = None
-        with self.assert_raises():
-            Val.new_group(schema)
-
-    def test_group_display_name_with_valid_schema(self):
-        schema = {
-            'body': {'group': {'display_name': 'NEW GROUP'}},
-            'params': {'id': 1}
-        }
-        self.assert_true(Val.group_display_name(schema))
-
-    def test_group_display_name_with_invalid_schema(self):
-        # with invalid :params
-        schema = {'body': {'group': {'display_name': 'NEW GROUP', 'params': {'id': None}}}}
-        with self.assert_raises():
-            Val.group_display_name(schema)
-        # without :params
-        del schema['body']['group']['params']
-        with self.assert_raises():
-            Val.group_display_name(schema)
-        # with invalid :nickname
-        schema['body']['group']['params'] = {'id': 'dsaee251fdsbgt4'}
-        schema['body']['group']['display_name'] = 342432
-        with self.assert_raises():
-            Val.group_display_name(schema)
-        # without :display_name
-        del schema['body']['group']['display_name']
-        with self.assert_raises():
-            Val.group_display_name(schema)
-
-    def test_valid_assign_group_privilege(self):
-        req = {
-            'body': {'group': {'member': {'id': 1, 'is_admin': False}}},
-            'params': {'id': 'dksaj0382porjsdv9e'}
-        }
-        validated = Val.assign_group_privilege(req)
-        self.assert_isinstanceof(validated, dict)
-        self.assert_dict_has_key(validated, 'body')
-        self.assert_dict_has_key(validated, 'params')
-
-    def test_invalid_assign_group_privilege(self):
-        req = {
-            'body': {'group': {'member': {'id': 1}}},
-            'params': {'id': 'dksaj0382porjsdv9e'}
-        }
-        with self.assert_raises():
-            Val.assign_group_privilege(req)
-
-    def test_new_member_with_valid_schema(self):
-        # with members
-        schema = {
-            'body': {'group': {'members': [{'id': 1, 'is_admin': False}]}},
-            'params': {'id': 'kopert9834534i'}
-        }
-        validated = Val.new_member(schema)
-
-        self.assert_true(validated)
-        self.assert_isinstanceof(validated['body']['group']['members'], list)
-
-    def test_new_member_with_invalid_schema(self):
-        # with invalid :members
-        schema = {
-            'body': {'group': {'members': [{'id': 1, 'is_admin': 5}]}},
-            'params': {'id': 'kopert9834534i'}
-        }
-        with self.assert_raises():
-            Val.new_group(schema)
-        # with empty :members
-        schema['body']['group']['members'] = []
-        with self.assert_raises():
-            Val.new_group(schema)
-        # without :members
-        del schema['body']['group']['members']
-        with self.assert_raises():
-            Val.new_group(schema)
-        # with invalid :params
-        schema['body']['group']['members'] = [{'id': 1, 'is_admin': False}, {'id': 2, 'is_admin': True}]
-        schema['body']['group']['params'] = {'id': None}
-        with self.assert_raises():
-            Val.new_group(schema)
-        # without :params
-        del schema['body']['group']['params']
-        with self.assert_raises():
-            Val.new_group(schema)
-
-    def test_valid_remove_member(self):
-        schema = {
-            'body': {'group': {'members': [11]}},
-            'params': {'id': 'dksj438pjgD='}
-        }
-        validated = Val.remove_member(schema)
-
-        self.assert_true(validated)
-        self.assert_isinstanceof(validated, dict)
-
-    def test_invalid_remove_member(self):
-        # invalid :members
-        schema = {
-            'body': {'group': {'members': ['11']}},
-            'params': {'id': 'dksj438pjgD='}
-        }
-        with self.assert_raises():
-            Val.remove_member(schema)
-        # invalid :members
-        schema = {
-            'body': {'group': {'members': ['11']}},
-            'params': {'id': 'dksj438pjgD='}
-        }
-        with self.assert_raises():
-            Val.remove_member(schema)
-
+# noinspection PyTypedDict
 class TestMessageValidators(PyTestCase):
     @classmethod
     def setup_class(cls):

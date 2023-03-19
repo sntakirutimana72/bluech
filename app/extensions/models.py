@@ -1,10 +1,7 @@
 __all__ = (
     'MetaExtension',
-    'ChannelExtension',
     'UserExtension',
-    'MemberExtension',
     'MessageExtension',
-    'ResourceExtension',
     'ActivityExtension',
     'ActivityLogExtension',
 )
@@ -45,20 +42,11 @@ class UserExtension(Extension):
             self.password = hashed_password
         return super(UserExtension, self).save(*args, **kwargs)
 
-class ChannelExtension(Extension):
-    ...
-
 class MessageExtension(Extension):
     @classmethod
     def update(cls, __data=None, **update):
         update['is_edited'] = True
         return super().update(__data, **update)
-
-class MemberExtension(Extension):
-    ...
-
-class ResourceExtension(Extension):
-    ...
 
 class ActivityExtension(Extension):
     ...

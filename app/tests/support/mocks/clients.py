@@ -69,15 +69,3 @@ class AppClientSpec(ClientMockSpec):
     async def get_all_messages(self, recipient: int, page=1):
         await self.send(RequestSpecs.all_messages(recipient, page))
         return await self.receive()
-
-class ConnectivityClientSpec(ClientMockSpec):
-    async def connect(self, host='localhost', port=8080):
-        return await super().connect(host, port)
-
-    async def send(self, data: bytes):
-        self.writer.write(data)
-        await self.writer.drain()
-
-    async def receive(self):
-        data = await self.reader.read()
-        return data

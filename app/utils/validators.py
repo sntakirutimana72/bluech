@@ -39,60 +39,6 @@ class Validators:
     def edit_username(req):
         return Schema({'body': {'user': {'nickname': str}}}).validate(req)
 
-    # :Groups
-    #
-    # :new_group validator
-    @staticmethod
-    def new_group(req):
-        return Schema({
-            'body': {
-                'group': {
-                    'name': str,
-                    Optional('members'): And([{'id': int, 'is_admin': bool}], len)
-                }
-            }
-        }).validate(req)
-
-    # :group_display_name validator
-    @staticmethod
-    def group_display_name(req):
-        return Schema({
-            'body': {'group': {'display_name': str}},
-            'params': {'id': Or(int, str)}
-        }).validate(req)
-
-    # :new_member validator
-    @staticmethod
-    def new_member(req):
-        return Schema({
-            'body': {'group': {'members': And([{'id': int, 'is_admin': bool}], len)}},
-            'params': {'id': Or(int, str)}
-        }).validate(req)
-
-    # :new_member validator
-    @staticmethod
-    def remove_member(req):
-        return Schema({
-            'body': {'group': {'members': And([int], len)}},
-            'params': {'id': Or(int, str)}
-        }).validate(req)
-
-    # :exit_group & :remove_group validator
-    @staticmethod
-    def exit_or_remove_group(req):
-        return Schema({
-            'body': None,
-            'params': {'id': Or(int, str)}
-        }).validate(req)
-
-    # :group_privilege validator
-    @staticmethod
-    def assign_group_privilege(req):
-        return Schema({
-            'body': {'group': {'member': {'id': int, 'is_admin': bool}}},
-            'params': {'id': Or(int, str)}
-        }).validate(req)
-
     # :Messages
     #
     # :new_message validator

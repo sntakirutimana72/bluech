@@ -5,8 +5,6 @@ __all__ = (
     'ChannelQueryManager',
 )
 
-import peewee as pee
-
 from .exceptions import *
 from ..models import *
 from ..settings import LOGGING_LEVELS
@@ -43,17 +41,21 @@ class MessageQueryManager(SQLQueryManager):
         return message.id
 
     @classmethod
-    def all_messages(cls, user_id: int, **kwargs):
+    def all_messages(cls, current_user: int, recipient: int, page: int):
         try:
-            messages = Message.get(recipient=user_id, **kwargs).where(Message.status != 'DISABLED')
-        except pee.DoesNotExist:
-            raise ResourceNotFound
+            query = (Message
+                     .select()
+                     .where(
+                        ((Message.sender == current_user) & (Message.recipient == recipient))
+                        |
+                        ((Message.sender == recipient) & (Message.recipient == current_user))
+                     )
+                     .order_by(Message.created_at.desc())
+                     .paginate(page, 25))
         except:
             raise ActiveRecordError
-        if not messages:
-            raise ResourceNotFound
-        cls.logger(LOGGING_LEVELS.MSG_ALL, doer=user_id, summary='Get all messages')
-        return messages
+        cls.logger(LOGGING_LEVELS.MSG_ALL, doer=current_user, summary='Get all messages')
+        return query
 
     @classmethod
     def edit_message(cls, sender: int, pk: int, **kwargs):

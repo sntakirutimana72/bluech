@@ -27,8 +27,8 @@ class SessionQueryManager(SQLQueryManager):
         return user
 
     @classmethod
-    def signout(cls, user_id: int):
-        cls.logger(LOGGING_LEVELS.LOGOUT, doer=user_id, summary='logout')
+    def signout(cls, current_user: int):
+        cls.logger(LOGGING_LEVELS.LOGOUT, doer=current_user, summary='logout')
 
 class MessageQueryManager(SQLQueryManager):
     @classmethod
@@ -58,34 +58,34 @@ class MessageQueryManager(SQLQueryManager):
         return query
 
     @classmethod
-    def edit_message(cls, sender: int, pk: int, **kwargs):
+    def edit_message(cls, current_user: int, pk: int, **kwargs):
         try:
             cn = (Message
                   .update(**kwargs)
-                  .where((Message.sender == sender) & (Message.id == pk))
+                  .where((Message.sender == current_user) & (Message.id == pk))
                   .execute())
         except:
             raise ActiveRecordError
         if not cn:
             raise ResourceNotFound
-        cls.logger(LOGGING_LEVELS.MSG_EDIT, doer=sender, summary='Edit message')
+        cls.logger(LOGGING_LEVELS.MSG_EDIT, doer=current_user, summary='Edit message')
 
     @classmethod
-    def remove_message(cls, sender: int, pk: int) -> int | str:
+    def remove_message(cls, current_user: int, pk: int) -> int | str:
         try:
-            message = Message.get(Message.sender == sender, Message.id == pk)
+            message = Message.get(Message.sender == current_user, Message.id == pk)
             recipient_id = message.recipient.id
             message.delete_instance()
         except:
             raise ActiveRecordError
-        cls.logger(LOGGING_LEVELS.MSG_DEL, doer=sender, summary='Remove message')
+        cls.logger(LOGGING_LEVELS.MSG_DEL, doer=current_user, summary='Remove message')
         return recipient_id
 
 class UserQueryManager(SQLQueryManager):
     @classmethod
-    def edit_nickname(cls, pk: int, nickname: str):
+    def edit_nickname(cls, current_user: int, nickname: str):
         try:
-            user: User = User.get_by_id(pk)
+            user: User = User.get_by_id(current_user)
             if user.nickname == nickname:
                 raise ResourceNotChanged
             user.nickname = nickname
@@ -94,19 +94,19 @@ class UserQueryManager(SQLQueryManager):
             raise ResourceNotChanged
         except:
             raise ActiveRecordError
-        cls.logger(LOGGING_LEVELS.USER_EDIT_NICKNAME, doer=pk, summary='change user nickname')
+        cls.logger(LOGGING_LEVELS.USER_EDIT_NICKNAME, doer=current_user, summary='change user nickname')
 
     @classmethod
-    def change_avatar(cls, pk: int):
-        cls.logger(LOGGING_LEVELS.USER_EDIT_PIC, doer=pk, summary='change user avatar')
+    def change_avatar(cls, current_user: int):
+        cls.logger(LOGGING_LEVELS.USER_EDIT_PIC, doer=current_user, summary='change user avatar')
 
     @classmethod
-    def all_users(cls, pk, ids):
+    def all_users(cls, current_user: int, ids):
         try:
             query = User.select().where(User.id << ids)
         except:
             raise ActiveRecordError
-        cls.logger(LOGGING_LEVELS.USERS_ALL, doer=pk, summary='Get all users')
+        cls.logger(LOGGING_LEVELS.USERS_ALL, doer=current_user, summary='Get all users')
         return query
 
 class ChannelQueryManager(SQLQueryManager):

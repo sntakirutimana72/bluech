@@ -149,8 +149,8 @@ class PipeLayer:
     @classmethod
     async def download_avatar(cls, pipe: io.StreamReader, **kwargs):
         content_type = kwargs.pop('content_type')
-        user_id = kwargs.pop('user_id')
-        kwargs['filename'] = cls.get_filename(f'avatar_{user_id}', content_type)
+        current_user = kwargs.pop('current_user')
+        kwargs['filename'] = cls.get_filename(f'avatar_{current_user}', content_type)
         done = await cls.download(pipe, parent_dir=AVATARS_PATH, **kwargs)
         return done
 

@@ -25,10 +25,10 @@ class Responder:
     @staticmethod
     async def signin(**options):
         async with Hub.channels_repository.mutex:
-            ssid = options['id']
-            if channel := Hub.channels_repository.items.get(ssid):
+            current_user = options['id']
+            if channel := Hub.channels_repository.items.get(current_user):
                 if options['ids']:
-                    query = UserQueryManager.all_users(ssid, options['ids'])
+                    query = UserQueryManager.all_users(current_user, options['ids'])
                     await channel.write(Response.all_users(query))
 
                     con_response = Response.connected(channel.resource)

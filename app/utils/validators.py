@@ -120,3 +120,9 @@ class Validators:
     @staticmethod
     def remove_message(req):
         return Schema({'params': {'id': int}}).validate(req)
+
+    @staticmethod
+    def all_messages(req):
+        return Schema({
+            'params': {'recipient': int, Optional('page'): int}
+        }).validate(req)

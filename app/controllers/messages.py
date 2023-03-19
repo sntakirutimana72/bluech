@@ -11,7 +11,7 @@ class Messages(Base):
 
     async def _get(self):
         """Fetch all messages that I'm part of"""
-        await self.build_task(recipient=self.user_id)
+        await self.build_task(current_user=self.user_id, **self.request.params)
 
     async def _patch(self):
         """Edit an existing in service message"""

@@ -69,6 +69,13 @@ class Response:
         return cls.make(proto='remove_message', benefactor=UserSerializer(user).to_json, **kwargs)
 
     @classmethod
+    def all_messages(cls, query, current_user):
+        return cls.make(
+            messages=MessageListQuerySerializer(query, current_user=current_user).to_json,
+            proto='all_messages'
+        )
+
+    @classmethod
     def signin_success(cls, user):
         return cls.respond_with_user_serializer(user, proto='signin_success')
 
@@ -93,8 +100,8 @@ class Response:
         return cls.make(ssid=user_id, proto='disconnected')
 
     @classmethod
-    def all_users(cls, users_query):
-        return cls.make(users=UserListQuerySerializer(users_query).to_json, proto='all_users')
+    def all_users(cls, query):
+        return cls.make(users=UserListQuerySerializer(query).to_json, proto='all_users')
 
 class PipeLayer:
     @staticmethod

@@ -3,7 +3,7 @@ import traceback as trc
 
 from .layers import Response
 from .repositories import RepositoriesHub as Hub
-from .sql import UserQueryManager
+from .sql import UserQueryManager, MessageQueryManager
 from ..models import Message, User
 
 class Filters:
@@ -28,8 +28,8 @@ class Responder:
             ssid = options['id']
             if channel := Hub.channels_repository.items.get(ssid):
                 if options['ids']:
-                    users_query = UserQueryManager.all_users(ssid, options['ids'])
-                    await channel.write(Response.all_users(users_query))
+                    query = UserQueryManager.all_users(ssid, options['ids'])
+                    await channel.write(Response.all_users(query))
 
                     con_response = Response.connected(channel.resource)
                     for p_channel in Filters.other_participants(options['ids']):
@@ -84,6 +84,16 @@ class Responder:
                 if channel := Hub.channels_repository.items.get(i):
                     res = User.get_by_id(j)
                     await channel.write(Response.remove_message_success(res, message_id=msg_id))
+
+    @staticmethod
+    async def all_messages(**options):
+        async with Hub.channels_repository.mutex:
+            current_user = options.pop('current_user')
+            options.setdefault('page', 1)
+            del options['id']
+            if channel := Hub.channels_repository.items.get(current_user):
+                query = MessageQueryManager.all_messages(current_user, **options)
+                await channel.write(Response.all_messages(query, current_user))
 
     @classmethod
     async def pulse(cls):

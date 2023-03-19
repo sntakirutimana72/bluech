@@ -7,7 +7,7 @@ route_patterns = [
     # users
     router(['edit_username', 'change_user_avatar'], UsersController),
     # messages
-    router(['new_message', 'edit_message', 'remove_message'], MessagesController),
+    router(['new_message', 'edit_message', 'remove_message', 'all_messages'], MessagesController),
     # # groups
     # router('channels', ChannelsController),
 ]

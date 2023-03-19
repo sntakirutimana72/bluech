@@ -39,6 +39,10 @@ class AppClientSpec(ClientMockSpec):
         incoming = await PipeLayer.fetch(self.reader)
         return incoming
 
+    async def disconnect(self):
+        await self.logout()
+        await super().disconnect()
+
     async def login(self, **credentials):
         await self.connect()
         await self.send(RequestSpecs.signin(**credentials))
@@ -49,7 +53,7 @@ class AppClientSpec(ClientMockSpec):
         return await self.receive()
 
     async def edit_username(self, **options):
-        await self.send({**RequestSpecs.edit_username(), **options})
+        await self.send({**RequestSpecs.edit_username(**options)})
         return await self.receive()
 
     async def change_user_avatar(self, **options):
@@ -61,6 +65,10 @@ class AppClientSpec(ClientMockSpec):
 
     async def post_message(self, params_sid, **kwargs):
         await self.send(getattr(RequestSpecs, params_sid)(**kwargs))
+
+    async def get_all_messages(self, recipient: int, page=1):
+        await self.send(RequestSpecs.all_messages(recipient, page))
+        return await self.receive()
 
 class ConnectivityClientSpec(ClientMockSpec):
     async def connect(self, host='localhost', port=8080):

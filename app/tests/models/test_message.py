@@ -5,9 +5,8 @@ import peewee as pee
 from ..support.models import InstantUse
 from ...models import Message
 
-@pytest.mark.usefixtures('configure_db', 'message')
+@pytest.mark.usefixtures('message')
 class MessageTestCases(unittest.TestCase):
-
     def test_valid_message(self):
         self.assertIsInstance(self.message, Message)
 

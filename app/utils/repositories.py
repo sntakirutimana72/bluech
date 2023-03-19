@@ -29,6 +29,10 @@ class ChannelsRepository(Repository):
         async with self.mutex:
             self.items = {}
 
+    @property
+    def keys(self):
+        return list(self.items.keys())
+
 class TasksRepository(Repository):
     async def fetch(self) -> dict | None:
         async with self.mutex:

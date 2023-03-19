@@ -5,9 +5,8 @@ import unittest
 from ..support.models import InstantUse, create_member
 from ...models import Channel
 
-@pytest.mark.usefixtures('configure_db', 'channel')
+@pytest.mark.usefixtures('channel')
 class ChannelTestCases(unittest.TestCase):
-
     @property
     def members(self):
         return self.channel.members

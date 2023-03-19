@@ -15,7 +15,7 @@ class Models:
 
     @staticmethod
     def activity(**others):
-        return {'level': 1, **others}
+        return {'level': 1111, **others}
 
     @staticmethod
     def activity_log(**others):
@@ -54,10 +54,10 @@ class RequestSpecs:
         return {**cls.head('signout'), 'request': {}}
 
     @classmethod
-    def edit_username(cls):
+    def edit_username(cls, **kwargs):
         return {
             **cls.head('edit_username'),
-            'request': {'body': {'user': {'nickname': 'new nickname'}}}
+            'request': {'body': {'user': {'nickname': 'new nickname', **kwargs}}}
         }
 
     @classmethod
@@ -89,4 +89,13 @@ class RequestSpecs:
         return {
             **cls.head('remove_message'),
             'request': kwargs
+        }
+
+    @classmethod
+    def all_messages(cls, recipient: int, page: int):
+        return {
+            **cls.head('all_messages'),
+            'request': {
+                'params': {'recipient': recipient, 'page': page}
+            }
         }

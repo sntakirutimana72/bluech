@@ -8,7 +8,7 @@ from .repositories import RepositoriesHub
 from .interfaces import AttributeDict
 from .exceptions import CustomException
 from ..serializers.commons import PayloadJSONSerializer
-from ..serializers.models import UserSerializer, MessageSerializer
+from ..serializers.models import *
 from ..settings import AVATARS_PATH
 from ..models import *
 
@@ -28,9 +28,8 @@ class ChannelLayer:
         return Channel.get_by_id(self.uid)
 
     async def write(self, payload: dict[str, yi.Any]):
-        if not self.is_writable:
-            raise
-        await PipeLayer.pump(self.writer, payload)
+        if self.is_writable:
+            await PipeLayer.pump(self.writer, payload)
 
 class TasksLayer:
     @staticmethod
@@ -54,6 +53,10 @@ class Response:
         return cls.make(**options)
 
     @classmethod
+    def respond_with_user_serializer(cls, user: User, **kwargs):
+        return cls.make(user=UserSerializer(user).to_json, **kwargs)
+
+    @classmethod
     def new_message_success(cls, message):
         return cls.make(message=MessageSerializer(message).to_json, proto='new_message')
 
@@ -66,8 +69,15 @@ class Response:
         return cls.make(proto='remove_message', benefactor=UserSerializer(user).to_json, **kwargs)
 
     @classmethod
+    def all_messages(cls, query, current_user):
+        return cls.make(
+            messages=MessageListQuerySerializer(query, current_user=current_user).to_json,
+            proto='all_messages'
+        )
+
+    @classmethod
     def signin_success(cls, user):
-        return cls.make(user=UserSerializer(user).to_json, proto='signin_success')
+        return cls.respond_with_user_serializer(user, proto='signin_success')
 
     @classmethod
     def signout_success(cls):
@@ -75,11 +85,23 @@ class Response:
 
     @classmethod
     def edit_username_success(cls, user):
-        return cls.make(user=UserSerializer(user).to_json, proto='edit_username_success')
+        return cls.respond_with_user_serializer(user, proto='edit_username_success')
 
     @classmethod
     def change_user_avatar_success(cls, user):
-        return cls.make(user=UserSerializer(user).to_json, proto='change_avatar_success')
+        return cls.respond_with_user_serializer(user, proto='change_avatar_success')
+
+    @classmethod
+    def connected(cls, user):
+        return cls.respond_with_user_serializer(user, proto='connected')
+
+    @classmethod
+    def disconnected(cls, user_id):
+        return cls.make(ssid=user_id, proto='disconnected')
+
+    @classmethod
+    def all_users(cls, query):
+        return cls.make(users=UserListQuerySerializer(query).to_json, proto='all_users')
 
 class PipeLayer:
     @staticmethod
@@ -127,8 +149,8 @@ class PipeLayer:
     @classmethod
     async def download_avatar(cls, pipe: io.StreamReader, **kwargs):
         content_type = kwargs.pop('content_type')
-        user_id = kwargs.pop('user_id')
-        kwargs['filename'] = cls.get_filename(f'avatar_{user_id}', content_type)
+        current_user = kwargs.pop('current_user')
+        kwargs['filename'] = cls.get_filename(f'avatar_{current_user}', content_type)
         done = await cls.download(pipe, parent_dir=AVATARS_PATH, **kwargs)
         return done
 

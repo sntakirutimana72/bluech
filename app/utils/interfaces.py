@@ -29,11 +29,6 @@ class Request:
     route_ref: RouteRef
     """Resolves the :attr:~protocol in order to determine the right consumers to dispatch"""
 
-    session: AttributeDict
-    """Holds the current connection metadata & authenticity"""
-    
-    processor: property
-
     def __init__(self, route: str, req: dict[str, Any]):
         self.route_ref = RouteRef(route)
         [setattr(self, *props) for props in req.items()]

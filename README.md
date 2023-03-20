@@ -1,63 +1,85 @@
 # bluech
 
-An chatting app designed to handle multi users, threaded, and other complex forms of converstions. It supports media attachements, video & audio calls, text messages, and continuous notifications through its built-in push notification features.
+**bluech** is a chat-app designed to handle multi users, threaded, and other complex forms of chatting. 
+The idea is to support media attachments, video & audio calls, text messages, and continuous notifications through its built-in push notification features.
+Currently, it only supports text messaging and one-on-one single threaded user chat.
 
 
 ## Technologies
 
-### Frameworks
+### Built with
 
-- GIL
-- pyPDF2
-- python-docx
-- Asyncio
-- Sockets
-- PostgreSQL
-- Python
+- Python (v3.10)
+- Postgres
 
 ### Tools & Methods
 
 - Git
 - GitHub
 - Gitflow
-- Heroku
+- docker
 
 
 # Get Started
-
 To get started using this app, you must first
 
-- Have a working computer with of `Linux` or `MS DOS` operating system distribution.
-- Install `vs code` editor. You can install the latest version using this [link]().
-- Install `python >= 3.9` in your local system. You can follow instructions found on this [website]().
+- Have a working computer with of `MS Windows 10` (or above) os.
+- Install `PyCharm` editor. You can install the latest version using this [link]().
+- Install `python==3.10` in your local system. You can follow instructions found on this [website]().
+- Install `postgres` database with a user as `postgres` and password as `postgres`.
 - Clone this project repo using this [link](../../).
-- Start app by running the below commands
+  - Start the app by running the below commands from the terminal:
+    - __For `non-docker` users__
+      ```shell
+        $ cd <PROJECT_DIRECTORY>
+      
+        $ python -m pip install --no-cache-dir -r requirements.txt
+      
+        $ python run.py
+      ```
+    - __For `docker` users__
+      ```shell
+        $ docker build -t bluech .
 
-  - __For `non-docker` users__
-    ```shell
-      $ cd <PROJECT_DIRECTORY>
-      
-      $ python -m pip install -r requirements.txt
-      
-      $ python run.py
-      
-      > run server -p 8090 --debug <BOOLEAN> -d postgresql -u <DB_USER> -pwd <DB_PASSWORD>
-    ```
-  - __For `docker` users__
-    ```shell
-      $ docker build -t bluech:test-run .
+        $ docker run bluech
+  
+        $ docker ps
 
-      $ docker run -it bluech:test-run
+        $ docker exec -it <bluech_IMAGE_UID> /bin/bash
+
+        $ service postgresql start
+  
+        $ su postgres
+  
+        $ psql
+  
+        $ \password postgres;
+        $ \q
+  
+        $ service postgresql reload
       
-      > run server -p 8090 --debug <BOOLEAN> -d postgresql -u <DB_USER> -pwd <DB_PASSWORD>
-    ```
+        $ python3.10 run.py
+      ```
 
 ### Tests
+To run pre-defined test units, run the below from command line
+  + __For `non-docker` users__
+     ```shell  
+       $ pytest -q --disable-warnings
+        
+       OR
+        
+       $ pytest --disable-warnings
+     ```
+  + __For `docker` users__
+     ```shell  
+       $ python3.10 -m pytest -q --disable-warnings
+        
+       OR
+        
+       $ python3.10 -m pytest --disable-warnings
+     ```
 
-To run pre-defined test units, run the below from the app `core shell`
-  ```shell  
-    > run tests
-  ```
 
 ## Authors
 

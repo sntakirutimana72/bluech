@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="53d0fc5e-109e-4ba3-9217-18bcb6d3d79a" name="Changes" comment="Remove unused and unnecessary codebase">
+    <list default="true" id="53d0fc5e-109e-4ba3-9217-18bcb6d3d79a" name="Changes" comment="Update Dockerfile">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CHEATSHEET.md" beforeDir="false" afterPath="$PROJECT_DIR$/CHEATSHEET.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shell.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -151,34 +147,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1673428541001</updated>
-    </task>
-    <task id="LOCAL-00060" summary="Fix typos">
-      <created>1677664942827</created>
-      <option name="number" value="00060" />
-      <option name="presentableId" value="LOCAL-00060" />
-      <option name="project" value="LOCAL" />
-      <updated>1677664942828</updated>
-    </task>
-    <task id="LOCAL-00061" summary="Update conftest.py">
-      <created>1677961927635</created>
-      <option name="number" value="00061" />
-      <option name="presentableId" value="LOCAL-00061" />
-      <option name="project" value="LOCAL" />
-      <updated>1677961927637</updated>
-    </task>
-    <task id="LOCAL-00062" summary="Update conftest.py">
-      <created>1677962218246</created>
-      <option name="number" value="00062" />
-      <option name="presentableId" value="LOCAL-00062" />
-      <option name="project" value="LOCAL" />
-      <updated>1677962218247</updated>
-    </task>
-    <task id="LOCAL-00063" summary="Update conftest.py &amp; test_users.py">
-      <created>1678281197201</created>
-      <option name="number" value="00063" />
-      <option name="presentableId" value="LOCAL-00063" />
-      <option name="project" value="LOCAL" />
-      <updated>1678281197203</updated>
     </task>
     <task id="LOCAL-00064" summary="Update conftests">
       <created>1678368470401</created>
@@ -495,7 +463,35 @@
       <option name="project" value="LOCAL" />
       <updated>1679264928971</updated>
     </task>
-    <option name="localTasksCounter" value="109" />
+    <task id="LOCAL-00109" summary="Create a release note">
+      <created>1679298773092</created>
+      <option name="number" value="00109" />
+      <option name="presentableId" value="LOCAL-00109" />
+      <option name="project" value="LOCAL" />
+      <updated>1679298773093</updated>
+    </task>
+    <task id="LOCAL-00110" summary="Update the README.md file">
+      <created>1679298792649</created>
+      <option name="number" value="00110" />
+      <option name="presentableId" value="LOCAL-00110" />
+      <option name="project" value="LOCAL" />
+      <updated>1679298792649</updated>
+    </task>
+    <task id="LOCAL-00111" summary="Update the CHEATSHEET.md file">
+      <created>1679298805888</created>
+      <option name="number" value="00111" />
+      <option name="presentableId" value="LOCAL-00111" />
+      <option name="project" value="LOCAL" />
+      <updated>1679298805888</updated>
+    </task>
+    <task id="LOCAL-00112" summary="Update Dockerfile">
+      <created>1679298877445</created>
+      <option name="number" value="00112" />
+      <option name="presentableId" value="LOCAL-00112" />
+      <option name="project" value="LOCAL" />
+      <updated>1679298877445</updated>
+    </task>
+    <option name="localTasksCounter" value="113" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -513,10 +509,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Remove :has_attachments attribute from Message model" />
-    <MESSAGE value="Refactor message context validators" />
-    <MESSAGE value="Add app dictionary" />
-    <MESSAGE value="Update functionalities to count for :remove_message routines" />
     <MESSAGE value="Update test support to count for :remove_message routines" />
     <MESSAGE value="Add test unit for :remove_message routines" />
     <MESSAGE value="Update workspace dictionary" />
@@ -538,6 +530,10 @@
     <MESSAGE value="Add :all_messages test unit &amp; refactor pre-existing ones" />
     <MESSAGE value="Update project workspace dictionary" />
     <MESSAGE value="Remove unused and unnecessary codebase" />
-    <option name="LAST_COMMIT_MESSAGE" value="Remove unused and unnecessary codebase" />
+    <MESSAGE value="Create a release note" />
+    <MESSAGE value="Update the README.md file" />
+    <MESSAGE value="Update the CHEATSHEET.md file" />
+    <MESSAGE value="Update Dockerfile" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update Dockerfile" />
   </component>
 </project>

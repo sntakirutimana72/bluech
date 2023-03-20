@@ -5,7 +5,7 @@
   
   docker ps
 
-  docker exec -it 240709f0217a /bin/bash
+  docker exec -it <IMAGE_UID> /bin/bash
 
   service postgresql start
   
@@ -18,7 +18,4 @@
   service postgresql reload
 
   python3.9
-
-  from app.utils.db_connect import db_connector
-  from app.models import *
 ```

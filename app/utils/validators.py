@@ -47,8 +47,8 @@ class Validators:
         return Schema({
             'body': {
                 'message': {
-                    'recipient': Or(int, str),
-                    Optional('description'): And(str, len),
+                    'recipient': int,
+                    'description': And(str, len),
                     Optional('reply_to'): int
                 }
             }

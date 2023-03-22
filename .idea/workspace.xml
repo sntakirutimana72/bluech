@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="53d0fc5e-109e-4ba3-9217-18bcb6d3d79a" name="Changes" comment="Update Dockerfile">
+    <list default="true" id="53d0fc5e-109e-4ba3-9217-18bcb6d3d79a" name="Changes" comment="Map server endpoints specs">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SERVERSPECS.md" beforeDir="false" afterPath="$PROJECT_DIR$/SERVERSPECS.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/utils/validators.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/validators.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -148,13 +149,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1673428541001</updated>
-    </task>
-    <task id="LOCAL-00064" summary="Update conftests">
-      <created>1678368470401</created>
-      <option name="number" value="00064" />
-      <option name="presentableId" value="LOCAL-00064" />
-      <option name="project" value="LOCAL" />
-      <updated>1678368470401</updated>
     </task>
     <task id="LOCAL-00065" summary="Update settings.py">
       <created>1678368489571</created>
@@ -492,7 +486,14 @@
       <option name="project" value="LOCAL" />
       <updated>1679298877445</updated>
     </task>
-    <option name="localTasksCounter" value="113" />
+    <task id="LOCAL-00113" summary="Map server endpoints specs">
+      <created>1679365646911</created>
+      <option name="number" value="00113" />
+      <option name="presentableId" value="LOCAL-00113" />
+      <option name="project" value="LOCAL" />
+      <updated>1679365646911</updated>
+    </task>
+    <option name="localTasksCounter" value="114" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -510,7 +511,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Update test support to count for :remove_message routines" />
     <MESSAGE value="Add test unit for :remove_message routines" />
     <MESSAGE value="Update workspace dictionary" />
     <MESSAGE value="Enable db logging for session controller sql executions" />
@@ -535,6 +535,7 @@
     <MESSAGE value="Update the README.md file" />
     <MESSAGE value="Update the CHEATSHEET.md file" />
     <MESSAGE value="Update Dockerfile" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update Dockerfile" />
+    <MESSAGE value="Map server endpoints specs" />
+    <option name="LAST_COMMIT_MESSAGE" value="Map server endpoints specs" />
   </component>
 </project>

@@ -24,12 +24,13 @@ For all requests to server, the followings are required for successful processin
     }
   ```
   
-### Session Interfaces
+### Session
 
 #### Signin
 + Request
   ```json
     {
+      "protocol": "signin",
       "request": {
         "body": {
           "user": {
@@ -73,6 +74,7 @@ For all requests to server, the followings are required for successful processin
 + Request
   ```json
     {
+      "protocol": "signout",
       "request": {}
     }
   ```
@@ -84,12 +86,13 @@ For all requests to server, the followings are required for successful processin
     }
   ```
   
-### Users' Interfaces
+### User
 
 #### Edit Nickname
 + Request
   ```json
     {
+      "protocol": "edit_username",
       "request": {
         "body": {
           "user": {
@@ -116,10 +119,40 @@ For all requests to server, the followings are required for successful processin
     {
       "proto": "resource_not_changed",
       "status": 304,
-      "user": {
-        "id": "number",
-        "email": "string",
-        "nickname": "string"
+      "message": "Resource was already up to date."
+    }
+  ```
+  
+### Message
+
+#### New Message
++ Request
+  ```json
+    {
+      "protocol": "new_message",
+      "request": {
+        "body": {
+          "message": {
+            "description": "string",
+            "recipient": "number",
+            "reply_to": {"type": "number", "required": false}
+          }
+        }
+      } 
+    }
+  ```
+
+#### Edit Message
++ Request
+  ```json
+    {
+      "protocol": "edit_message",
+      "request": {
+        "body": {
+          "message": {
+            "description": "string"
+          }
+        }
       } 
     }
   ```

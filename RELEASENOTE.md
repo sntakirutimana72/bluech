@@ -2,7 +2,7 @@
 
 + Environment
   - Windows 11
-  - Postgres 13
+  - Postgres 14
   + Python 3.10
     + Dependencies
       - bcrypt==4.0.1

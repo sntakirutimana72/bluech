@@ -141,6 +141,21 @@ For all requests to server, the followings are required for successful processin
       } 
     }
   ```
+  + Response Success
+    ```json
+      {
+        "status": 200,
+        "proto": "new_message",
+        "message": {
+          "id": "number",
+          "description": "string",
+          "is_edited": "boolean",
+          "sender": "number",
+          "sent_date": "string",
+          "last_update": "string"
+        } 
+      }
+    ```
 
 #### Edit Message
 + Request
@@ -149,10 +164,73 @@ For all requests to server, the followings are required for successful processin
       "protocol": "edit_message",
       "request": {
         "body": {
-          "message": {
-            "description": "string"
-          }
-        }
+          "message": {"description": "string"}
+        },
+        "params": {"id": "number"}
+      } 
+    }
+  ```
++ Response Success
+  ```json
+    {
+      "status": 200,
+      "proto": "edit_message",
+      "message": {
+        "id": "number",
+        "description": "string",
+        "is_edited": true,
+        "sender": "number",
+        "sent_date": "string",
+        "last_update": "string"
+      } 
+    }
+  ```
+  
+#### All Messages per Chatroom
++ Request
+  ```json
+    {
+      "protocol": "all_messages",
+      "request": {
+        "params": {"recipient": "number", "page": {"type": "number", "required": false}}
+      } 
+    }
+  ```
++ Response Success
+  ```json
+    {
+      "status": 200,
+      "proto": "all_messages",
+      "messages": [{
+        "id": "number",
+        "description": "string",
+        "is_edited": "boolean",
+        "sender": "number",
+        "sent_date": "string",
+        "last_update": "string"
+      }] 
+    }
+  ```
+  
+#### Remove Message
++ Request
+  ```json
+    {
+      "protocol": "remove_message",
+      "request": {
+        "params": {"id": "number"}
+      } 
+    }
+  ```
++ Response Success
+  ```json
+    {
+      "status": 200,
+      "proto": "remove_message",
+      "benefactor": {
+        "id": "number",
+        "email": "string",
+        "nickname": "string"
       } 
     }
   ```

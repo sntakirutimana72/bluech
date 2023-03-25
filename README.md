@@ -79,6 +79,8 @@ To run pre-defined test units, run the below from command line
         
        $ python3.10 -m pytest --disable-warnings
      ```
+    
+For more details, read the [server endpoints specs](SERVERSPECS.md)
 
 
 ## Authors

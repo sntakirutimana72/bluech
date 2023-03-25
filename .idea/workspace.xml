@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="53d0fc5e-109e-4ba3-9217-18bcb6d3d79a" name="Changes" comment="Map server endpoints specs">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SERVERSPECS.md" beforeDir="false" afterPath="$PROJECT_DIR$/SERVERSPECS.md" afterDir="false" />
+    <list default="true" id="53d0fc5e-109e-4ba3-9217-18bcb6d3d79a" name="Changes" comment="Update SERVERSPECS.md with `message` requests &amp; responses.">
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -148,13 +147,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1673428541001</updated>
-    </task>
-    <task id="LOCAL-00065" summary="Update settings.py">
-      <created>1678368489571</created>
-      <option name="number" value="00065" />
-      <option name="presentableId" value="LOCAL-00065" />
-      <option name="project" value="LOCAL" />
-      <updated>1678368489571</updated>
     </task>
     <task id="LOCAL-00066" summary="Update routes.py">
       <created>1678368515954</created>
@@ -492,7 +484,14 @@
       <option name="project" value="LOCAL" />
       <updated>1679365646911</updated>
     </task>
-    <option name="localTasksCounter" value="114" />
+    <task id="LOCAL-00114" summary="Update SERVERSPECS.md with `message` requests &amp; responses.">
+      <created>1679779524339</created>
+      <option name="number" value="00114" />
+      <option name="presentableId" value="LOCAL-00114" />
+      <option name="project" value="LOCAL" />
+      <updated>1679779524341</updated>
+    </task>
+    <option name="localTasksCounter" value="115" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -510,7 +509,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Add test unit for :remove_message routines" />
     <MESSAGE value="Update workspace dictionary" />
     <MESSAGE value="Enable db logging for session controller sql executions" />
     <MESSAGE value="Enable db logging for user controller sql executions" />
@@ -535,6 +533,7 @@
     <MESSAGE value="Update the CHEATSHEET.md file" />
     <MESSAGE value="Update Dockerfile" />
     <MESSAGE value="Map server endpoints specs" />
-    <option name="LAST_COMMIT_MESSAGE" value="Map server endpoints specs" />
+    <MESSAGE value="Update SERVERSPECS.md with `message` requests &amp; responses." />
+    <option name="LAST_COMMIT_MESSAGE" value="Update SERVERSPECS.md with `message` requests &amp; responses." />
   </component>
 </project>

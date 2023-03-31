@@ -230,3 +230,26 @@ class TestMessageValidators(PyTestCase):
         invalid_params = {'params': {}}
         with self.assert_raises():
             Val.remove_message(invalid_params)
+
+    def test_valid_all_messages(self):
+        req = {'params': {'recipient': 1}}
+        Val.all_messages(req)
+
+        req_with_page = req.copy()
+        req_with_page['params']['page'] = 2
+        Val.all_messages(req_with_page)
+
+    def test_all_messages_with_body_prop(self):
+        req = {'params': {'recipient': 1}, 'body': None}
+        with self.assert_raises():
+            Val.all_messages(req)
+
+    def test_all_messages_with_invalid_recip(self):
+        req = {'params': {'recipient': '11'}}
+        with self.assert_raises():
+            Val.all_messages(req)
+
+    def test_all_messages_with_invalid_page(self):
+        req = {'params': {'recipient': 1, 'page': 1.5}}
+        with self.assert_raises():
+            Val.all_messages(req)

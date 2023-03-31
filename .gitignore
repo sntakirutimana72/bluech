@@ -1,0 +1,15 @@
+# compiled cache files
+__pycache__
+
+# databases
+*.sqlite3
+*.sqlite
+*.db
+
+# credentials
+*pems
+*secrets
+*credentials
+
+# dev environment variables
+.env

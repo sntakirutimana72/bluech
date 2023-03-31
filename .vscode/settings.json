@@ -1,0 +1,8 @@
+{
+  "vscode_custom_css.imports": [
+    "file:///C:/Users/steven.ntakirutimana/Projects/bluech/.vscode/styles.css"
+  ],
+  "python.analysis.typeCheckingMode": "basic",
+  "terminal.integrated.fontSize": 15,
+  "terminal.integrated.fontFamily": "Anonymous Pro"
+}

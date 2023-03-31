@@ -1,0 +1,544 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="53d0fc5e-109e-4ba3-9217-18bcb6d3d79a" name="Changes" comment="Update README.md">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SERVERSPECS.md" beforeDir="false" afterPath="$PROJECT_DIR$/SERVERSPECS.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/tests/test_validators.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/tests/test_validators.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/utils/exceptions.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/exceptions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/utils/validators.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/validators.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Unit Test" />
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="develop" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectId" id="2KAs4wTtPZA9WCezYDEkuZfHC7W" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Git.Branch.Popup.ShowAllRemotes&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.fonts.default&quot;,
+    &quot;settings.editor.splitter.proportion&quot;: &quot;0.27919912&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="I:\bluech\app\serializers" />
+      <recent name="I:\bluech\app\tests\support" />
+      <recent name="I:\bluech\app\tests\support\models" />
+      <recent name="I:\bluech\app" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="Tox" factoryName="Tox">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="docs" factoryName="Docutils task">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="" />
+      <option name="docutils_input_file" value="" />
+      <option name="docutils_output_file" value="" />
+      <option name="docutils_params" value="" />
+      <option name="docutils_task" value="" />
+      <option name="docutils_open_in_browser" value="false" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="docs" factoryName="Sphinx task">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="" />
+      <option name="docutils_input_file" value="" />
+      <option name="docutils_output_file" value="" />
+      <option name="docutils_params" value="" />
+      <option name="docutils_task" value="" />
+      <option name="docutils_open_in_browser" value="false" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Doctests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="53d0fc5e-109e-4ba3-9217-18bcb6d3d79a" name="Changes" comment="" />
+      <created>1673428541001</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1673428541001</updated>
+    </task>
+    <task id="LOCAL-00067" summary="Update validators.py &amp; commons.py">
+      <created>1678368553285</created>
+      <option name="number" value="00067" />
+      <option name="presentableId" value="LOCAL-00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1678368553285</updated>
+    </task>
+    <task id="LOCAL-00068" summary="Adjust db connector">
+      <created>1678368578651</created>
+      <option name="number" value="00068" />
+      <option name="presentableId" value="LOCAL-00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1678368578651</updated>
+    </task>
+    <task id="LOCAL-00069" summary="Adjust processing mechanisms">
+      <created>1678368596322</created>
+      <option name="number" value="00069" />
+      <option name="presentableId" value="LOCAL-00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1678368596322</updated>
+    </task>
+    <task id="LOCAL-00070" summary="Update testing declarations">
+      <created>1678368619159</created>
+      <option name="number" value="00070" />
+      <option name="presentableId" value="LOCAL-00070" />
+      <option name="project" value="LOCAL" />
+      <updated>1678368619159</updated>
+    </task>
+    <task id="LOCAL-00071" summary="Add more logic to the test_user_avatar unit">
+      <created>1678368648618</created>
+      <option name="number" value="00071" />
+      <option name="presentableId" value="LOCAL-00071" />
+      <option name="project" value="LOCAL" />
+      <updated>1678368648618</updated>
+    </task>
+    <task id="LOCAL-00072" summary="Update environment dependencies">
+      <created>1678368668203</created>
+      <option name="number" value="00072" />
+      <option name="presentableId" value="LOCAL-00072" />
+      <option name="project" value="LOCAL" />
+      <updated>1678368668203</updated>
+    </task>
+    <task id="LOCAL-00073" summary="Fix bugs">
+      <created>1678454052213</created>
+      <option name="number" value="00073" />
+      <option name="presentableId" value="LOCAL-00073" />
+      <option name="project" value="LOCAL" />
+      <updated>1678454052213</updated>
+    </task>
+    <task id="LOCAL-00074" summary="Update backrefs">
+      <created>1678454083598</created>
+      <option name="number" value="00074" />
+      <option name="presentableId" value="LOCAL-00074" />
+      <option name="project" value="LOCAL" />
+      <updated>1678454083614</updated>
+    </task>
+    <task id="LOCAL-00075" summary="Adjust models declarations">
+      <created>1678454111423</created>
+      <option name="number" value="00075" />
+      <option name="presentableId" value="LOCAL-00075" />
+      <option name="project" value="LOCAL" />
+      <updated>1678454111423</updated>
+    </task>
+    <task id="LOCAL-00076" summary="Adjust layers.py">
+      <created>1678456546029</created>
+      <option name="number" value="00076" />
+      <option name="presentableId" value="LOCAL-00076" />
+      <option name="project" value="LOCAL" />
+      <updated>1678456546029</updated>
+    </task>
+    <task id="LOCAL-00077" summary="Adjust conftest.py">
+      <created>1678456558439</created>
+      <option name="number" value="00077" />
+      <option name="presentableId" value="LOCAL-00077" />
+      <option name="project" value="LOCAL" />
+      <updated>1678456558439</updated>
+    </task>
+    <task id="LOCAL-00078" summary="Adjust user avatar test unit">
+      <created>1678456577196</created>
+      <option name="number" value="00078" />
+      <option name="presentableId" value="LOCAL-00078" />
+      <option name="project" value="LOCAL" />
+      <updated>1678456577196</updated>
+    </task>
+    <task id="LOCAL-00079" summary="Map :new_message to routes">
+      <created>1678623563302</created>
+      <option name="number" value="00079" />
+      <option name="presentableId" value="LOCAL-00079" />
+      <option name="project" value="LOCAL" />
+      <updated>1678623563302</updated>
+    </task>
+    <task id="LOCAL-00080" summary="Add a builder method to base controller">
+      <created>1678623625338</created>
+      <option name="number" value="00080" />
+      <option name="presentableId" value="LOCAL-00080" />
+      <option name="project" value="LOCAL" />
+      <updated>1678623625338</updated>
+    </task>
+    <task id="LOCAL-00081" summary="Update emitter based on new naming protocol">
+      <created>1678623669022</created>
+      <option name="number" value="00081" />
+      <option name="presentableId" value="LOCAL-00081" />
+      <option name="project" value="LOCAL" />
+      <updated>1678623669022</updated>
+    </task>
+    <task id="LOCAL-00082" summary="Remove :has_attachments attribute from Message model">
+      <created>1678623698548</created>
+      <option name="number" value="00082" />
+      <option name="presentableId" value="LOCAL-00082" />
+      <option name="project" value="LOCAL" />
+      <updated>1678623698548</updated>
+    </task>
+    <task id="LOCAL-00083" summary="Refactor message context validators">
+      <created>1678623734933</created>
+      <option name="number" value="00083" />
+      <option name="presentableId" value="LOCAL-00083" />
+      <option name="project" value="LOCAL" />
+      <updated>1678623734933</updated>
+    </task>
+    <task id="LOCAL-00084" summary="Add app dictionary">
+      <created>1678623759409</created>
+      <option name="number" value="00084" />
+      <option name="presentableId" value="LOCAL-00084" />
+      <option name="project" value="LOCAL" />
+      <updated>1678623759409</updated>
+    </task>
+    <task id="LOCAL-00085" summary="Add app dictionary">
+      <created>1678623844169</created>
+      <option name="number" value="00085" />
+      <option name="presentableId" value="LOCAL-00085" />
+      <option name="project" value="LOCAL" />
+      <updated>1678623844169</updated>
+    </task>
+    <task id="LOCAL-00086" summary="Add app dictionary">
+      <created>1678623855845</created>
+      <option name="number" value="00086" />
+      <option name="presentableId" value="LOCAL-00086" />
+      <option name="project" value="LOCAL" />
+      <updated>1678623855845</updated>
+    </task>
+    <task id="LOCAL-00087" summary="Update functionalities to count for :remove_message routines">
+      <created>1678838131375</created>
+      <option name="number" value="00087" />
+      <option name="presentableId" value="LOCAL-00087" />
+      <option name="project" value="LOCAL" />
+      <updated>1678838131376</updated>
+    </task>
+    <task id="LOCAL-00088" summary="Update test support to count for :remove_message routines">
+      <created>1678838159969</created>
+      <option name="number" value="00088" />
+      <option name="presentableId" value="LOCAL-00088" />
+      <option name="project" value="LOCAL" />
+      <updated>1678838159969</updated>
+    </task>
+    <task id="LOCAL-00089" summary="Add test unit for :remove_message routines">
+      <created>1678838176532</created>
+      <option name="number" value="00089" />
+      <option name="presentableId" value="LOCAL-00089" />
+      <option name="project" value="LOCAL" />
+      <updated>1678838176532</updated>
+    </task>
+    <task id="LOCAL-00090" summary="Update workspace dictionary">
+      <created>1678838191486</created>
+      <option name="number" value="00090" />
+      <option name="presentableId" value="LOCAL-00090" />
+      <option name="project" value="LOCAL" />
+      <updated>1678838191486</updated>
+    </task>
+    <task id="LOCAL-00091" summary="Enable db logging for session controller sql executions">
+      <created>1679007090975</created>
+      <option name="number" value="00091" />
+      <option name="presentableId" value="LOCAL-00091" />
+      <option name="project" value="LOCAL" />
+      <updated>1679007090976</updated>
+    </task>
+    <task id="LOCAL-00092" summary="Enable db logging for user controller sql executions">
+      <created>1679083615216</created>
+      <option name="number" value="00092" />
+      <option name="presentableId" value="LOCAL-00092" />
+      <option name="project" value="LOCAL" />
+      <updated>1679083615217</updated>
+    </task>
+    <task id="LOCAL-00093" summary="Optimize controllers">
+      <created>1679171306544</created>
+      <option name="number" value="00093" />
+      <option name="presentableId" value="LOCAL-00093" />
+      <option name="project" value="LOCAL" />
+      <updated>1679171306544</updated>
+    </task>
+    <task id="LOCAL-00094" summary="Optimize processing core functionalities">
+      <created>1679171354946</created>
+      <option name="number" value="00094" />
+      <option name="presentableId" value="LOCAL-00094" />
+      <option name="project" value="LOCAL" />
+      <updated>1679171354946</updated>
+    </task>
+    <task id="LOCAL-00095" summary="Update interfaces abstract">
+      <created>1679171384424</created>
+      <option name="number" value="00095" />
+      <option name="presentableId" value="LOCAL-00095" />
+      <option name="project" value="LOCAL" />
+      <updated>1679171384424</updated>
+    </task>
+    <task id="LOCAL-00096" summary="Enable logout protocol while disconnecting">
+      <created>1679171422049</created>
+      <option name="number" value="00096" />
+      <option name="presentableId" value="LOCAL-00096" />
+      <option name="project" value="LOCAL" />
+      <updated>1679171422049</updated>
+    </task>
+    <task id="LOCAL-00097" summary="Optimize emitter functionalities">
+      <created>1679176117734</created>
+      <option name="number" value="00097" />
+      <option name="presentableId" value="LOCAL-00097" />
+      <option name="project" value="LOCAL" />
+      <updated>1679176117734</updated>
+    </task>
+    <task id="LOCAL-00098" summary="Adjust to count for regression flaws">
+      <created>1679176145908</created>
+      <option name="number" value="00098" />
+      <option name="presentableId" value="LOCAL-00098" />
+      <option name="project" value="LOCAL" />
+      <updated>1679176145908</updated>
+    </task>
+    <task id="LOCAL-00099" summary="Test emissions chronology">
+      <created>1679228974157</created>
+      <option name="number" value="00099" />
+      <option name="presentableId" value="LOCAL-00099" />
+      <option name="project" value="LOCAL" />
+      <updated>1679228974158</updated>
+    </task>
+    <task id="LOCAL-00100" summary="Add :all_messages to routes">
+      <created>1679260169544</created>
+      <option name="number" value="00100" />
+      <option name="presentableId" value="LOCAL-00100" />
+      <option name="project" value="LOCAL" />
+      <updated>1679260169544</updated>
+    </task>
+    <task id="LOCAL-00101" summary="Add :all_messages to validators">
+      <created>1679260203176</created>
+      <option name="number" value="00101" />
+      <option name="presentableId" value="LOCAL-00101" />
+      <option name="project" value="LOCAL" />
+      <updated>1679260203176</updated>
+    </task>
+    <task id="LOCAL-00102" summary="Update :all_messages sql handler">
+      <created>1679260255142</created>
+      <option name="number" value="00102" />
+      <option name="presentableId" value="LOCAL-00102" />
+      <option name="project" value="LOCAL" />
+      <updated>1679260255142</updated>
+    </task>
+    <task id="LOCAL-00103" summary="Update emitter logic to count for :all_messages protocol">
+      <created>1679260310629</created>
+      <option name="number" value="00103" />
+      <option name="presentableId" value="LOCAL-00103" />
+      <option name="project" value="LOCAL" />
+      <updated>1679260310630</updated>
+    </task>
+    <task id="LOCAL-00104" summary="Update :all_messages logic in controller">
+      <created>1679260351557</created>
+      <option name="number" value="00104" />
+      <option name="presentableId" value="LOCAL-00104" />
+      <option name="project" value="LOCAL" />
+      <updated>1679260351558</updated>
+    </task>
+    <task id="LOCAL-00105" summary="Add :all_messages data serializers">
+      <created>1679260397616</created>
+      <option name="number" value="00105" />
+      <option name="presentableId" value="LOCAL-00105" />
+      <option name="project" value="LOCAL" />
+      <updated>1679260397616</updated>
+    </task>
+    <task id="LOCAL-00106" summary="Add :all_messages test unit &amp; refactor pre-existing ones">
+      <created>1679260429635</created>
+      <option name="number" value="00106" />
+      <option name="presentableId" value="LOCAL-00106" />
+      <option name="project" value="LOCAL" />
+      <updated>1679260429635</updated>
+    </task>
+    <task id="LOCAL-00107" summary="Update project workspace dictionary">
+      <created>1679260448129</created>
+      <option name="number" value="00107" />
+      <option name="presentableId" value="LOCAL-00107" />
+      <option name="project" value="LOCAL" />
+      <updated>1679260448129</updated>
+    </task>
+    <task id="LOCAL-00108" summary="Remove unused and unnecessary codebase">
+      <created>1679264928971</created>
+      <option name="number" value="00108" />
+      <option name="presentableId" value="LOCAL-00108" />
+      <option name="project" value="LOCAL" />
+      <updated>1679264928971</updated>
+    </task>
+    <task id="LOCAL-00109" summary="Create a release note">
+      <created>1679298773092</created>
+      <option name="number" value="00109" />
+      <option name="presentableId" value="LOCAL-00109" />
+      <option name="project" value="LOCAL" />
+      <updated>1679298773093</updated>
+    </task>
+    <task id="LOCAL-00110" summary="Update the README.md file">
+      <created>1679298792649</created>
+      <option name="number" value="00110" />
+      <option name="presentableId" value="LOCAL-00110" />
+      <option name="project" value="LOCAL" />
+      <updated>1679298792649</updated>
+    </task>
+    <task id="LOCAL-00111" summary="Update the CHEATSHEET.md file">
+      <created>1679298805888</created>
+      <option name="number" value="00111" />
+      <option name="presentableId" value="LOCAL-00111" />
+      <option name="project" value="LOCAL" />
+      <updated>1679298805888</updated>
+    </task>
+    <task id="LOCAL-00112" summary="Update Dockerfile">
+      <created>1679298877445</created>
+      <option name="number" value="00112" />
+      <option name="presentableId" value="LOCAL-00112" />
+      <option name="project" value="LOCAL" />
+      <updated>1679298877445</updated>
+    </task>
+    <task id="LOCAL-00113" summary="Map server endpoints specs">
+      <created>1679365646911</created>
+      <option name="number" value="00113" />
+      <option name="presentableId" value="LOCAL-00113" />
+      <option name="project" value="LOCAL" />
+      <updated>1679365646911</updated>
+    </task>
+    <task id="LOCAL-00114" summary="Update SERVERSPECS.md with `message` requests &amp; responses.">
+      <created>1679779524339</created>
+      <option name="number" value="00114" />
+      <option name="presentableId" value="LOCAL-00114" />
+      <option name="project" value="LOCAL" />
+      <updated>1679779524341</updated>
+    </task>
+    <task id="LOCAL-00115" summary="Update README.md">
+      <created>1679780026920</created>
+      <option name="number" value="00115" />
+      <option name="presentableId" value="LOCAL-00115" />
+      <option name="project" value="LOCAL" />
+      <updated>1679780026920</updated>
+    </task>
+    <option name="localTasksCounter" value="116" />
+    <servers />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.sql" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Enable db logging for session controller sql executions" />
+    <MESSAGE value="Enable db logging for user controller sql executions" />
+    <MESSAGE value="Optimize controllers" />
+    <MESSAGE value="Optimize processing core functionalities" />
+    <MESSAGE value="Update interfaces abstract" />
+    <MESSAGE value="Enable logout protocol while disconnecting" />
+    <MESSAGE value="Optimize emitter functionalities" />
+    <MESSAGE value="Adjust to count for regression flaws" />
+    <MESSAGE value="Test emissions chronology" />
+    <MESSAGE value="Add :all_messages to routes" />
+    <MESSAGE value="Add :all_messages to validators" />
+    <MESSAGE value="Update :all_messages sql handler" />
+    <MESSAGE value="Update emitter logic to count for :all_messages protocol" />
+    <MESSAGE value="Update :all_messages logic in controller" />
+    <MESSAGE value="Add :all_messages data serializers" />
+    <MESSAGE value="Add :all_messages test unit &amp; refactor pre-existing ones" />
+    <MESSAGE value="Update project workspace dictionary" />
+    <MESSAGE value="Remove unused and unnecessary codebase" />
+    <MESSAGE value="Create a release note" />
+    <MESSAGE value="Update the README.md file" />
+    <MESSAGE value="Update the CHEATSHEET.md file" />
+    <MESSAGE value="Update Dockerfile" />
+    <MESSAGE value="Map server endpoints specs" />
+    <MESSAGE value="Update SERVERSPECS.md with `message` requests &amp; responses." />
+    <MESSAGE value="Update README.md" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update README.md" />
+  </component>
+</project>

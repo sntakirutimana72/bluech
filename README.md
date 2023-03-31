@@ -24,9 +24,9 @@ Currently, it only supports text messaging and one-on-one single threaded user c
 To get started using this app, you must first
 
 - Have a working computer with of `MS Windows 10` (or above) os.
-- Install `PyCharm` editor. You can install the latest version using this [link]().
-- Install `python==3.10` in your local system. You can follow instructions found on this [website]().
-- Install `postgres` database with a user as `postgres` and password as `postgres`.
+- Install `PyCharm` IDE. You can install the latest version using this [link](https://www.jetbrains.com/pycharm/download).
+- Install `python==3.10` in your local system. You can follow instructions found on this [website](https://www.python.org/downloads/release/python-3100/).
+- Install `postgres` database with a user as `postgres` and password as `postgres`. ([download](https://www.postgresql.org/download/))
 - Clone this project repo using this [link](../../).
   - Start the app by running the below commands from the terminal:
     - __For `non-docker` users__
@@ -80,7 +80,7 @@ To run pre-defined test units, run the below from command line
        $ python3.10 -m pytest --disable-warnings
      ```
     
-For more details, read the [server endpoints specs](SERVERSPECS.md)
+`For further details, check the following spec documentations` <u>[SERVER ENDPOINTS](SERVERSPECS.md)</u> | <u>[RELEASE NOTE](RELEASENOTE.md)</u>
 
 
 ## Authors

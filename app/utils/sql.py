@@ -2,7 +2,6 @@ __all__ = (
     'SessionQueryManager',
     'MessageQueryManager',
     'UserQueryManager',
-    'ChannelQueryManager',
 )
 
 from .exceptions import *
@@ -108,73 +107,3 @@ class UserQueryManager(SQLQueryManager):
             raise ActiveRecordError
         cls.logger(LOGGING_LEVELS.USERS_ALL, doer=current_user, summary='Get all users')
         return query
-
-class ChannelQueryManager(SQLQueryManager):
-    @classmethod
-    def new_channel(cls, user_id: int, **kwargs):
-        try:
-            channel = Channel.create(created_by=user_id, **kwargs)
-        except:
-            raise ActiveRecordError
-        # cls.logger(LOGGING_LEVELS.CHANNEL_NEW, user_id)
-        return channel.id
-
-    @classmethod
-    def new_member(cls, user_id: int, pk: int, **kwargs):
-        try:
-            query = (Channel
-                     .select()
-                     .join(User)
-                     .switch(Channel)
-                     .join(Member)
-                     .where(Channel.id == pk,
-                            Channel.created_by == user_id or (Member.user == user_id and Member.is_channel_admin)))
-            results = list(query)
-        except:
-            raise ActiveRecordError
-        if not results:
-            raise Unauthorized
-        member = Member.create(channel=pk, **kwargs)
-        # cls.logger(LOGGING_LEVELS.MEMBER_ADD, user_id)
-        return member.as_json()
-
-    @classmethod
-    def remove_member(cls, user_id: int, member_id: int, channel_id: int):
-        try:
-            if user_id == member_id:
-                raise
-
-            admin: Member | None = Member.get(Member.user == user_id, Member.channel == channel_id,
-                                              Member.is_channel_admin)
-            if admin is None:
-                raise
-
-            member: Member | None = Member.get(Member.user == member_id, Member.channel == channel_id)
-            if member is None:
-                raise
-            member.delete_instance()
-        except:
-            raise ActiveRecordError
-        # cls.logger(LOGGING_LEVELS.MEMBER_DEL, user_id)
-
-    @classmethod
-    def exit_channel(cls, member_id: int, channel_id: int):
-        try:
-            member: Member | None = Member.get(Member.user == member_id, Member.channel == channel_id)
-            if member is None or member.is_founder:
-                raise
-            member.delete_instance()
-        except:
-            raise ActiveRecordError
-        # cls.logger(LOGGING_LEVELS.CHANNEL_EXIT, member_id)
-
-    @classmethod
-    def delete_channel(cls, user_id: int, channel_id: int):
-        try:
-            channel: Channel | None = Channel.get(Channel.id == channel_id, Channel.created_by == user_id)
-            if channel is None:
-                raise
-            channel.delete_instance()
-        except:
-            raise ActiveRecordError
-        # cls.logger(LOGGING_LEVELS.CHANNEL_DEL, user_id)

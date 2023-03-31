@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="53d0fc5e-109e-4ba3-9217-18bcb6d3d79a" name="Changes" comment="Update project workspace dictionary">
+    <list default="true" id="53d0fc5e-109e-4ba3-9217-18bcb6d3d79a" name="Changes" comment="Update README.md">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/controllers/messages.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/messages.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/controllers/users.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/users.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/utils/emitter.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/emitter.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/utils/layers.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/layers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/utils/sql.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/sql.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SERVERSPECS.md" beforeDir="false" afterPath="$PROJECT_DIR$/SERVERSPECS.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/tests/test_validators.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/tests/test_validators.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/utils/exceptions.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/exceptions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/utils/validators.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/validators.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -152,62 +152,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1673428541001</updated>
-    </task>
-    <task id="LOCAL-00059" summary="Add test units for :edit_username">
-      <created>1677446813117</created>
-      <option name="number" value="00059" />
-      <option name="presentableId" value="LOCAL-00059" />
-      <option name="project" value="LOCAL" />
-      <updated>1677446813117</updated>
-    </task>
-    <task id="LOCAL-00060" summary="Fix typos">
-      <created>1677664942827</created>
-      <option name="number" value="00060" />
-      <option name="presentableId" value="LOCAL-00060" />
-      <option name="project" value="LOCAL" />
-      <updated>1677664942828</updated>
-    </task>
-    <task id="LOCAL-00061" summary="Update conftest.py">
-      <created>1677961927635</created>
-      <option name="number" value="00061" />
-      <option name="presentableId" value="LOCAL-00061" />
-      <option name="project" value="LOCAL" />
-      <updated>1677961927637</updated>
-    </task>
-    <task id="LOCAL-00062" summary="Update conftest.py">
-      <created>1677962218246</created>
-      <option name="number" value="00062" />
-      <option name="presentableId" value="LOCAL-00062" />
-      <option name="project" value="LOCAL" />
-      <updated>1677962218247</updated>
-    </task>
-    <task id="LOCAL-00063" summary="Update conftest.py &amp; test_users.py">
-      <created>1678281197201</created>
-      <option name="number" value="00063" />
-      <option name="presentableId" value="LOCAL-00063" />
-      <option name="project" value="LOCAL" />
-      <updated>1678281197203</updated>
-    </task>
-    <task id="LOCAL-00064" summary="Update conftests">
-      <created>1678368470401</created>
-      <option name="number" value="00064" />
-      <option name="presentableId" value="LOCAL-00064" />
-      <option name="project" value="LOCAL" />
-      <updated>1678368470401</updated>
-    </task>
-    <task id="LOCAL-00065" summary="Update settings.py">
-      <created>1678368489571</created>
-      <option name="number" value="00065" />
-      <option name="presentableId" value="LOCAL-00065" />
-      <option name="project" value="LOCAL" />
-      <updated>1678368489571</updated>
-    </task>
-    <task id="LOCAL-00066" summary="Update routes.py">
-      <created>1678368515954</created>
-      <option name="number" value="00066" />
-      <option name="presentableId" value="LOCAL-00066" />
-      <option name="project" value="LOCAL" />
-      <updated>1678368515954</updated>
     </task>
     <task id="LOCAL-00067" summary="Update validators.py &amp; commons.py">
       <created>1678368553285</created>
@@ -496,7 +440,63 @@
       <option name="project" value="LOCAL" />
       <updated>1679260448129</updated>
     </task>
-    <option name="localTasksCounter" value="108" />
+    <task id="LOCAL-00108" summary="Remove unused and unnecessary codebase">
+      <created>1679264928971</created>
+      <option name="number" value="00108" />
+      <option name="presentableId" value="LOCAL-00108" />
+      <option name="project" value="LOCAL" />
+      <updated>1679264928971</updated>
+    </task>
+    <task id="LOCAL-00109" summary="Create a release note">
+      <created>1679298773092</created>
+      <option name="number" value="00109" />
+      <option name="presentableId" value="LOCAL-00109" />
+      <option name="project" value="LOCAL" />
+      <updated>1679298773093</updated>
+    </task>
+    <task id="LOCAL-00110" summary="Update the README.md file">
+      <created>1679298792649</created>
+      <option name="number" value="00110" />
+      <option name="presentableId" value="LOCAL-00110" />
+      <option name="project" value="LOCAL" />
+      <updated>1679298792649</updated>
+    </task>
+    <task id="LOCAL-00111" summary="Update the CHEATSHEET.md file">
+      <created>1679298805888</created>
+      <option name="number" value="00111" />
+      <option name="presentableId" value="LOCAL-00111" />
+      <option name="project" value="LOCAL" />
+      <updated>1679298805888</updated>
+    </task>
+    <task id="LOCAL-00112" summary="Update Dockerfile">
+      <created>1679298877445</created>
+      <option name="number" value="00112" />
+      <option name="presentableId" value="LOCAL-00112" />
+      <option name="project" value="LOCAL" />
+      <updated>1679298877445</updated>
+    </task>
+    <task id="LOCAL-00113" summary="Map server endpoints specs">
+      <created>1679365646911</created>
+      <option name="number" value="00113" />
+      <option name="presentableId" value="LOCAL-00113" />
+      <option name="project" value="LOCAL" />
+      <updated>1679365646911</updated>
+    </task>
+    <task id="LOCAL-00114" summary="Update SERVERSPECS.md with `message` requests &amp; responses.">
+      <created>1679779524339</created>
+      <option name="number" value="00114" />
+      <option name="presentableId" value="LOCAL-00114" />
+      <option name="project" value="LOCAL" />
+      <updated>1679779524341</updated>
+    </task>
+    <task id="LOCAL-00115" summary="Update README.md">
+      <created>1679780026920</created>
+      <option name="number" value="00115" />
+      <option name="presentableId" value="LOCAL-00115" />
+      <option name="project" value="LOCAL" />
+      <updated>1679780026920</updated>
+    </task>
+    <option name="localTasksCounter" value="116" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -514,14 +514,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Update emitter based on new naming protocol" />
-    <MESSAGE value="Remove :has_attachments attribute from Message model" />
-    <MESSAGE value="Refactor message context validators" />
-    <MESSAGE value="Add app dictionary" />
-    <MESSAGE value="Update functionalities to count for :remove_message routines" />
-    <MESSAGE value="Update test support to count for :remove_message routines" />
-    <MESSAGE value="Add test unit for :remove_message routines" />
-    <MESSAGE value="Update workspace dictionary" />
     <MESSAGE value="Enable db logging for session controller sql executions" />
     <MESSAGE value="Enable db logging for user controller sql executions" />
     <MESSAGE value="Optimize controllers" />
@@ -539,6 +531,14 @@
     <MESSAGE value="Add :all_messages data serializers" />
     <MESSAGE value="Add :all_messages test unit &amp; refactor pre-existing ones" />
     <MESSAGE value="Update project workspace dictionary" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update project workspace dictionary" />
+    <MESSAGE value="Remove unused and unnecessary codebase" />
+    <MESSAGE value="Create a release note" />
+    <MESSAGE value="Update the README.md file" />
+    <MESSAGE value="Update the CHEATSHEET.md file" />
+    <MESSAGE value="Update Dockerfile" />
+    <MESSAGE value="Map server endpoints specs" />
+    <MESSAGE value="Update SERVERSPECS.md with `message` requests &amp; responses." />
+    <MESSAGE value="Update README.md" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update README.md" />
   </component>
 </project>

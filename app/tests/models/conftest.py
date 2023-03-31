@@ -1,6 +1,6 @@
 import pytest
 
-from ..support.models import create_channel, create_message, create_activity, create_user
+from ..support.models import create_message, create_activity, create_user
 
 @pytest.fixture(scope='class')
 def user(request):
@@ -15,13 +15,6 @@ def other_user(request):
     request.cls.other_user = _user
     yield _user
     _user.delete_instance()
-
-@pytest.fixture(scope='class')
-def channel(request, user):
-    _channel = create_channel(created_by=user)
-    request.cls.channel = _channel
-    yield _channel
-    _channel.delete_instance()
 
 @pytest.fixture(scope='class')
 def message(request, other_user, user):

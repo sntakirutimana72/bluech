@@ -3,7 +3,7 @@ __pycache__
 
 # databases
 *.sqlite3
-*.sqlite3
+*.sqlite
 *.db
 
 # credentials

@@ -49,28 +49,3 @@ class AppServerSpec(MockServerSpec):
         )
         self._pulse = io.create_task(Responder.pulse())
         return self
-
-class ConnectivityMockServer(MockServerSpec):
-    def __init__(self, host='localhost', port=8080):
-        super().__init__(host, port)
-        self.con_counter = 0
-
-    async def initiate(self):
-        self._server = await io.start_server(
-            self._on_connected, host=self._host, port=self._port
-        )
-        self._console_debug()
-
-    async def _on_connected(self, _, writer):
-        print('Client connected!')
-        self.con_counter += 1
-        await self._handshake(writer)
-
-        # close pipeline
-        writer.close()
-        await writer.wait_closed()
-
-    @staticmethod
-    async def _handshake(writer):
-        writer.write(b'helo')
-        await writer.drain()

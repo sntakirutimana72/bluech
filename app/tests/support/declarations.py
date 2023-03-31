@@ -6,14 +6,6 @@ class Models:
         return {'email': 'admin@test.eu', 'password': 'test@123', 'nickname': 'admin760', **others}
 
     @staticmethod
-    def channel(**others):
-        return {'nickname': 'channel_728', **others}
-
-    @staticmethod
-    def resource(**others):
-        return {'location': 'app/ext_static/images/profile.png', **others}
-
-    @staticmethod
     def activity(**others):
         return {'level': 1111, **others}
 

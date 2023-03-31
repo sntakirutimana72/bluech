@@ -18,18 +18,11 @@ class ChannelLayer:
         self.writer = writer
 
     @property
-    def is_writable(self):
-        return bool(self.writer)
-
-    @property
-    def resource(self) -> User | Channel:
-        if self.is_writable:
-            return User.get_by_id(self.uid)
-        return Channel.get_by_id(self.uid)
+    def resource(self) -> User:
+        return User.get_by_id(self.uid)
 
     async def write(self, payload: dict[str, yi.Any]):
-        if self.is_writable:
-            await PipeLayer.pump(self.writer, payload)
+        await PipeLayer.pump(self.writer, payload)
 
 class TasksLayer:
     @staticmethod

@@ -70,5 +70,5 @@ class Validators:
     @staticmethod
     def all_messages(req):
         return Schema({
-            'params': {'recipient': int, Optional('page'): int}
+            'params': {'recipient': int, Optional('page'): And(int, lambda x: x >= 1, Use(int))}
         }).validate(req)

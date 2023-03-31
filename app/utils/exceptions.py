@@ -12,11 +12,12 @@ class CustomException(BaseException):
     message = 'Internal Error'
     proto = 'internal_error'
 
-    def __init__(self):
+    def __init__(self, debug_msg=None):
         super().__init__(self.message)
+        self.debug_message = debug_msg if debug_msg else self.message
 
     def __str__(self):
-        return f'{self.code} ~ {super().__str__()}'
+        return f'[{self.code}:{self.message}] ~ {self.debug_message}'
 
     @property
     def to_json(self):
